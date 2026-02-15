@@ -1,0 +1,319 @@
+/**
+ * nume-health.com – Custom overrides
+ * Sales-focused, responsive, social-campaign ready
+ */
+
+/* ========== Variables ========== */
+:root {
+  --nume-primary: #0D9B4D;
+  --nume-primary-dark: #087a3d;
+  --nume-accent: #FAA432;
+  --nume-heading: #1a1a2e;
+  --nume-text: #4a4a68;
+  --nume-light: #f8faf9;
+  --nume-white: #ffffff;
+  --nume-shadow: 0 4px 24px rgba(13, 155, 77, 0.12);
+  --nume-shadow-hover: 0 8px 32px rgba(13, 155, 77, 0.18);
+  --nume-radius: 12px;
+  --nume-radius-lg: 20px;
+  --nume-transition: 0.3s ease;
+}
+
+/* ========== Typography ========== */
+body {
+  color: var(--nume-text);
+}
+h1, h2, h3, h4, h5, h6 {
+  color: var(--nume-heading);
+  font-weight: 600;
+}
+.lead {
+  font-size: 1.2rem;
+  color: var(--nume-text);
+}
+
+/* ========== Landing hero – sales-oriented ========== */
+.banner-area {
+  background: linear-gradient(135deg, #0D9B4D 0%, #0a7a3d 50%, #065a2d 100%);
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  padding: 80px 0 100px;
+  position: relative;
+  overflow: hidden;
+}
+.banner-area::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.5;
+}
+.banner-content {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 0 !important;
+}
+.banner-content .banner-caption {
+  color: var(--nume-accent) !important;
+  font-size: 0.9rem !important;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 1rem !important;
+}
+.banner-content .title {
+  font-size: clamp(2rem, 5vw, 3.5rem) !important;
+  line-height: 1.15 !important;
+  color: var(--nume-white) !important;
+  margin-bottom: 1.25rem !important;
+  font-weight: 700;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.15);
+}
+.banner-content p {
+  color: rgba(255,255,255,0.95) !important;
+  font-size: 1.1rem !important;
+  max-width: 540px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.banner-content .btn {
+  border: 2px solid var(--nume-white) !important;
+  background: transparent !important;
+  color: var(--nume-white) !important;
+  padding: 14px 36px !important;
+  font-weight: 600;
+  border-radius: var(--nume-radius);
+  transition: var(--nume-transition);
+}
+.banner-content .btn:hover {
+  background: var(--nume-white) !important;
+  color: var(--nume-primary) !important;
+  transform: translateY(-2px);
+  box-shadow: var(--nume-shadow-hover);
+}
+.banner-content .btn.btn-primary-style,
+.banner-content .btn:first-of-type {
+  background: var(--nume-accent) !important;
+  border-color: var(--nume-accent) !important;
+  color: var(--nume-heading) !important;
+}
+.banner-content .btn.btn-primary-style:hover,
+.banner-content .btn:first-of-type:hover {
+  background: #ffb84d !important;
+  border-color: #ffb84d !important;
+  color: var(--nume-heading) !important;
+}
+.banner-images {
+  margin-top: 2rem;
+}
+.banner-images .main-img,
+.banner-images .bg-shape {
+  max-width: min(400px, 90vw);
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.2));
+}
+
+/* ========== Trust / social proof section ========== */
+.trust-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem 0;
+}
+.trust-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--nume-text);
+  font-size: 0.95rem;
+}
+.trust-badge i {
+  font-size: 1.5rem;
+  color: var(--nume-primary);
+}
+
+/* ========== Features / how it works ========== */
+.features-area.features-bg {
+  background: var(--nume-light) !important;
+  padding: 80px 0 !important;
+  margin: 0 !important;
+}
+.features-area .section-title {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  margin-bottom: 1rem;
+}
+.features-area p {
+  color: var(--nume-text);
+  font-size: 1.1rem;
+}
+
+/* ========== CTA buttons ========== */
+.btn-two {
+  background: var(--nume-primary) !important;
+  border-color: var(--nume-primary) !important;
+  color: var(--nume-white) !important;
+  border-radius: var(--nume-radius);
+  padding: 12px 28px !important;
+  font-weight: 600;
+  transition: var(--nume-transition);
+}
+.btn-two:hover {
+  background: var(--nume-primary-dark) !important;
+  border-color: var(--nume-primary-dark) !important;
+  color: var(--nume-white) !important;
+  transform: translateY(-2px);
+  box-shadow: var(--nume-shadow);
+}
+
+/* ========== Page content sections ========== */
+.section-padding {
+  padding: 60px 0 !important;
+}
+.page-hero {
+  background: linear-gradient(135deg, var(--nume-primary) 0%, var(--nume-primary-dark) 100%);
+  color: var(--nume-white);
+  padding: 50px 0 40px;
+  margin-bottom: 0;
+}
+.page-hero h1 {
+  color: var(--nume-white) !important;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  margin-bottom: 0.5rem;
+}
+.page-hero .breadcrumb {
+  background: transparent;
+}
+.page-hero .breadcrumb-item a {
+  color: rgba(255,255,255,0.9);
+}
+.page-hero .breadcrumb-item.active {
+  color: rgba(255,255,255,0.8);
+}
+.page-hero .breadcrumb-item + .breadcrumb-item::before {
+  color: rgba(255,255,255,0.6);
+}
+
+/* ========== Forms ========== */
+.form-control, .form-select {
+  border-radius: var(--nume-radius);
+  border: 1px solid #e0e0e0;
+  padding: 12px 16px;
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--nume-primary);
+  box-shadow: 0 0 0 3px rgba(13, 155, 77, 0.15);
+}
+.form-label {
+  font-weight: 600;
+  color: var(--nume-heading);
+}
+
+/* ========== Cards & product grid ========== */
+.card, .home-shop-item, .inner-shop-item {
+  border-radius: var(--nume-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--nume-shadow);
+  transition: var(--nume-transition);
+  border: none;
+}
+.card:hover, .home-shop-item:hover, .inner-shop-item:hover {
+  box-shadow: var(--nume-shadow-hover);
+  transform: translateY(-4px);
+}
+.home-shop-thumb, .inner-shop-item .home-shop-thumb {
+  aspect-ratio: 1;
+  background: var(--nume-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.home-shop-thumb img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+.home-shop-content, .inner-shop-item .home-shop-content {
+  padding: 1.25rem !important;
+}
+
+/* ========== Shop sidebar ========== */
+.shop-sidebar .widget {
+  background: var(--nume-light);
+  padding: 1.5rem;
+  border-radius: var(--nume-radius);
+  margin-bottom: 1.5rem;
+}
+.shop-sidebar .sidebar-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--nume-heading);
+}
+
+/* ========== Thank you page ========== */
+.thank-you-box {
+  max-width: 480px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 3rem 2rem;
+  background: var(--nume-light);
+  border-radius: var(--nume-radius-lg);
+  box-shadow: var(--nume-shadow);
+}
+.thank-you-box .success-icon {
+  width: 80px;
+  height: 80px;
+  background: var(--nume-primary);
+  color: var(--nume-white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  margin: 0 auto 1.5rem;
+}
+
+/* ========== Responsive – mobile first for social ========== */
+@media (max-width: 991px) {
+  .banner-area {
+    min-height: auto;
+    padding: 60px 0 70px;
+  }
+  .banner-content .btn.ms-2 {
+    margin-left: 0 !important;
+    margin-top: 0.75rem;
+    display: inline-block;
+  }
+  .banner-content .btn-grp {
+    flex-direction: column;
+    align-items: center;
+  }
+  .trust-badges {
+    gap: 1.25rem;
+  }
+}
+@media (max-width: 575px) {
+  .banner-area {
+    padding: 50px 0 60px;
+  }
+  .banner-content .title {
+    font-size: 1.75rem !important;
+  }
+  .section-padding {
+    padding: 40px 0 !important;
+  }
+  .shop-sidebar-pad.order-first {
+    order: 0;
+  }
+}
+
+/* ========== Utility: logo fallback ========== */
+.logo img[alt="nume-health.com"] {
+  max-height: 40px;
+  width: auto;
+}
+.footer-logo img {
+  max-height: 36px;
+}

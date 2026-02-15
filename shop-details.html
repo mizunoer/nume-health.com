@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Product – nume-health.com</title>
+    <title>Product details – nume-health.com</title>
+    <meta name="description" content="Treatment details – nume-health.com telehealth.">
     <link rel="shortcut icon" href="assets/img/favicon.png">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
@@ -11,6 +12,7 @@
     <link rel="stylesheet" href="assets/css/default.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="assets/css/nume-health.css">
 </head>
 <body>
     <div id="preloader"><div class="tg-cube-grid"><div class="tg-cube tg-cube1"></div><div class="tg-cube tg-cube2"></div><div class="tg-cube tg-cube3"></div><div class="tg-cube tg-cube4"></div><div class="tg-cube tg-cube5"></div><div class="tg-cube tg-cube6"></div><div class="tg-cube tg-cube7"></div><div class="tg-cube tg-cube8"></div><div class="tg-cube tg-cube9"></div></div></div>
@@ -24,7 +26,7 @@
                         <div class="mobile-nav-toggler"><i class="flaticon-layout"></i></div>
                         <div class="menu-wrap">
                             <nav class="menu-nav">
-                                <div class="logo"><a href="index.html"><img src="assets/img/logo/logo.png" alt="nume-health.com"></a></div>
+                                <div class="logo"><a href="index.html"><img src="assets/img/logo/logo.svg" alt="nume-health.com" onerror="this.src='assets/img/logo/logo.png'; this.onerror=null;"></a></div>
                                 <div class="navbar-wrap main-menu d-none d-xl-flex">
                                     <ul class="navigation">
                                         <li class="menu-item-has-children"><a href="index.html">Home</a><ul class="sub-menu"><li><a href="index.html">Landing 1</a></li><li><a href="index-2.html">Landing 2</a></li><li><a href="index-3.html">Landing 3</a></li></ul></li>
@@ -43,24 +45,94 @@
                 </div>
             </div>
         </div>
-        <div class="mobile-menu"><nav class="menu-box"><div class="close-btn"><i class="fas fa-times"></i></div><div class="nav-logo"><a href="index.html"><img src="assets/img/logo/logo.png" alt="nume-health.com"></a></div><div class="menu-outer"></div></nav></div>
+        <div class="mobile-menu"><nav class="menu-box"><div class="close-btn"><i class="fas fa-times"></i></div><div class="nav-logo"><a href="index.html"><img src="assets/img/logo/logo.svg" alt="nume-health.com" onerror="this.src='assets/img/logo/logo.png'; this.onerror=null;"></a></div><div class="menu-outer"></div></nav></div>
         <div class="menu-backdrop"></div>
     </header>
-    <main class="main-area fix section-padding">
-        <div class="container">
-            <h1 class="mb-3">Product details</h1>
-            <p>Add product image, description, and add-to-cart here.</p>
-            <a href="cart.html" class="btn btn-two">Add to cart</a>
-        </div>
+    <main class="main-area fix">
+        <section class="page-hero">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 text-center">
+                        <h1>Product details</h1>
+                        <nav aria-label="Breadcrumb" class="mt-2">
+                            <ol class="breadcrumb mb-0 justify-content-center">
+                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="breadcrumb-item"><a href="shop.html">Shop</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Product</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="inner-shop-details-area section-padding">
+            <div class="container">
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <div class="inner-shop-details-img bg-light rounded-3 p-4 text-center" style="aspect-ratio:1;">
+                            <img src="assets/img/products/placeholder.svg" alt="Product" class="img-fluid" style="max-height:400px;object-fit:contain;">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="inner-shop-details-content">
+                            <h2 class="mb-3">Multivitamin Complex</h2>
+                            <div class="inner-shop-details-meta mb-3">
+                                <div class="rating mb-2">
+                                    <i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star-half-alt text-warning"></i>
+                                    <span class="ms-2">(24 reviews)</span>
+                                </div>
+                                <span class="badge bg-success">In stock</span>
+                            </div>
+                            <div class="inner-shop-details-price mb-4">
+                                <h3 class="text-primary mb-0">$49.99</h3>
+                            </div>
+                            <p class="mb-4">A comprehensive multivitamin designed to support overall wellness. Formulated with essential vitamins and minerals. Suitable for daily use. Complete the <a href="assessment.html">assessment</a> to confirm this option is right for you.</p>
+                            <div class="inner-shop-perched-info d-flex align-items-center gap-3 flex-wrap">
+                                <div class="quickview-cart-plus-minus">
+                                    <input type="number" class="form-control" value="1" min="1" max="10" style="width:80px;">
+                                </div>
+                                <a href="cart.html" class="btn btn-two">Add to cart</a>
+                                <a href="shop.html" class="btn btn-outline-secondary">Continue shopping</a>
+                            </div>
+                            <div class="mt-4 pt-3 border-top">
+                                <small class="text-muted"><i class="fas fa-shield-alt me-1"></i> Secure checkout · Discreet delivery</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <div class="product-desc-wrap">
+                            <ul class="nav nav-tabs" id="productTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="desc-tab" data-bs-toggle="tab" data-bs-target="#desc" type="button" role="tab">Description</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab">Details</button>
+                                </li>
+                            </ul>
+                            <div class="tab-content p-4 border border-top-0 rounded-bottom">
+                                <div class="tab-pane fade show active" id="desc" role="tabpanel">
+                                    <p>This treatment is available after completing our telehealth assessment. A licensed provider will review your responses and prescribe when appropriate. All treatments are shipped in discreet packaging.</p>
+                                </div>
+                                <div class="tab-pane fade" id="info" role="tabpanel">
+                                    <p class="mb-0">Consult your healthcare provider before use. Results may vary. Keep out of reach of children.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
     <footer class="footer-area">
         <div class="footer-top-wrap"><div class="container"><div class="footer-widgets-wrap"><div class="row">
-            <div class="col-lg-4 col-md-6"><div class="footer-widget"><div class="footer-about"><div class="footer-logo logo"><a href="index.html"><img src="assets/img/logo/white_logo.png" alt="nume-health.com"></a></div><p>DTC Telehealth.</p></div></div></div>
+            <div class="col-lg-4 col-md-6"><div class="footer-widget"><div class="footer-about"><div class="footer-logo logo"><a href="index.html"><img src="assets/img/logo/white_logo.svg" alt="nume-health.com" onerror="this.src='assets/img/logo/white_logo.png'; this.onerror=null;"></a></div><p>DTC Telehealth – patient journey from landing to order fulfillment.</p></div></div></div>
             <div class="col-lg-2 col-md-6 col-6"><div class="footer-widget"><h4 class="fw-title">Site</h4><ul class="list-wrap"><li><a href="index.html">Home</a></li><li><a href="assessment.html">Assessment</a></li><li><a href="shop.html">Shop</a></li><li><a href="contact.html">Contact</a></li><li><a href="recommendations.html">Recommendations</a></li></ul></div></div>
             <div class="col-lg-2 col-md-6 col-6"><div class="footer-widget"><h4 class="fw-title">Account</h4><ul class="list-wrap"><li><a href="login.html">Login</a></li><li><a href="register.html">Register</a></li><li><a href="cart.html">Cart</a></li><li><a href="checkout.html">Checkout</a></li></ul></div></div>
             <div class="col-lg-4 col-md-6"><div class="footer-widget"><h4 class="fw-title">Contact</h4><p>nume-health.com</p><ul class="list-wrap"><li><a href="contact.html">Contact form</a></li></ul></div></div>
         </div></div></div></div>
-        <div class="copyright-wrap"><div class="container"><div class="row align-items-center"><div class="col-12"><p class="copyright-text mb-0">Copyright 2025 nume-health.com.</p></div></div></div></div>
+        <div class="copyright-wrap"><div class="container"><div class="row align-items-center"><div class="col-12"><p class="copyright-text mb-0">Copyright © 2025 nume-health.com. All rights reserved.</p></div></div></div>
     </footer>
     <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>

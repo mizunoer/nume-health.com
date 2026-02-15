@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="assets/css/default.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="assets/css/nume-health.css">
 </head>
 <body>
     <div id="preloader">
@@ -45,7 +46,7 @@
                         <div class="menu-wrap">
                             <nav class="menu-nav">
                                 <div class="logo">
-                                    <a href="index.html"><img src="assets/img/logo/logo.png" alt="nume-health.com"></a>
+                                    <a href="index.html"><img src="assets/img/logo/logo.svg" alt="nume-health.com" onerror="this.src='assets/img/logo/logo.png'; this.onerror=null;"></a>
                                 </div>
                                 <div class="navbar-wrap main-menu d-none d-xl-flex">
                                     <ul class="navigation">
@@ -95,7 +96,7 @@
         <div class="mobile-menu">
             <nav class="menu-box">
                 <div class="close-btn"><i class="fas fa-times"></i></div>
-                <div class="nav-logo"><a href="index.html"><img src="assets/img/logo/logo.png" alt="nume-health.com"></a></div>
+                <div class="nav-logo"><a href="index.html"><img src="assets/img/logo/logo.svg" alt="nume-health.com" onerror="this.src='assets/img/logo/logo.png'; this.onerror=null;"></a></div>
                 <div class="menu-outer"></div>
             </nav>
         </div>
@@ -106,34 +107,63 @@
         <section class="banner-area">
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-xxl-8 col-xl-7 col-lg-8 col-md-10">
+                    <div class="col-xxl-10 col-xl-10 col-lg-11 col-md-12">
                         <div class="banner-content text-center">
-                            <p class="banner-caption">DTC Telehealth – nume-health.com</p>
-                            <h2 class="title">Your Health Journey Starts Here</h2>
-                            <p class="mb-4">Complete a quick assessment, explore treatments, and order with confidence.</p>
-                            <a href="assessment.html" class="btn btn-two">Start assessment</a>
-                            <a href="shop.html" class="btn btn-two ms-2">Shop now</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="banner-images text-center">
-                            <img src="assets/img/banner/banner_img01.png" alt="" class="main-img">
-                            <img src="assets/img/banner/banner_round_bg.png" alt="" class="bg-shape">
+                            <p class="banner-caption">DTC Telehealth — Prescription care, delivered</p>
+                            <h2 class="title">Healthcare That Fits Your Life</h2>
+                            <p class="mb-4">Quick online assessment. Licensed prescribers. Same treatments you’d get in-clinic, delivered to your door. No waiting rooms. No hassle.</p>
+                            <div class="btn-grp d-flex flex-wrap justify-content-center gap-2">
+                                <a href="assessment.html" class="btn btn-two btn-primary-style">Start free assessment</a>
+                                <a href="shop.html" class="btn btn-two ms-2">Browse treatments</a>
+                            </div>
+                            <div class="trust-badges mt-5">
+                                <span class="trust-badge"><i class="fas fa-shield-alt"></i> Secure & HIPAA compliant</span>
+                                <span class="trust-badge"><i class="fas fa-user-md"></i> Licensed providers</span>
+                                <span class="trust-badge"><i class="fas fa-truck"></i> Discreet delivery</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="features-area features-bg section-padding" data-background="assets/img/bg/features_bg.jpg">
+        <section class="features-area features-bg section-padding">
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-lg-8 text-center">
+                    <div class="col-lg-10 text-center">
                         <h2 class="section-title">How it works</h2>
-                        <p>Landing → Assessment → Shop → Checkout. One simple flow.</p>
-                        <a href="assessment.html" class="btn btn-two">Get started</a>
+                        <p class="mb-4">Four simple steps — from first click to your door.</p>
+                        <div class="row g-4 text-start mt-3">
+                            <div class="col-md-6 col-lg-3">
+                                <div class="p-3 p-lg-4 rounded-3 h-100" style="background:#fff;box-shadow:0 4px 20px rgba(0,0,0,0.06);">
+                                    <span class="d-inline-block mb-3 rounded-circle bg-primary bg-opacity-10 text-primary px-3 py-2 fw-bold">1</span>
+                                    <h5 class="h6 fw-bold">Take the assessment</h5>
+                                    <p class="small mb-0 text-muted">Answer a few health questions online. Takes about 5 minutes.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="p-3 p-lg-4 rounded-3 h-100" style="background:#fff;box-shadow:0 4px 20px rgba(0,0,0,0.06);">
+                                    <span class="d-inline-block mb-3 rounded-circle bg-primary bg-opacity-10 text-primary px-3 py-2 fw-bold">2</span>
+                                    <h5 class="h6 fw-bold">Provider review</h5>
+                                    <p class="small mb-0 text-muted">A licensed clinician reviews your answers and prescribes when appropriate.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="p-3 p-lg-4 rounded-3 h-100" style="background:#fff;box-shadow:0 4px 20px rgba(0,0,0,0.06);">
+                                    <span class="d-inline-block mb-3 rounded-circle bg-primary bg-opacity-10 text-primary px-3 py-2 fw-bold">3</span>
+                                    <h5 class="h6 fw-bold">Order your treatment</h5>
+                                    <p class="small mb-0 text-muted">Shop approved options and checkout securely.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="p-3 p-lg-4 rounded-3 h-100" style="background:#fff;box-shadow:0 4px 20px rgba(0,0,0,0.06);">
+                                    <span class="d-inline-block mb-3 rounded-circle bg-primary bg-opacity-10 text-primary px-3 py-2 fw-bold">4</span>
+                                    <h5 class="h6 fw-bold">Discreet delivery</h5>
+                                    <p class="small mb-0 text-muted">Shipped to your door in discreet packaging.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="assessment.html" class="btn btn-two mt-5">Get started now</a>
                     </div>
                 </div>
             </div>
@@ -148,7 +178,7 @@
                         <div class="col-lg-4 col-md-6">
                             <div class="footer-widget">
                                 <div class="footer-about">
-                                    <div class="footer-logo logo"><a href="index.html"><img src="assets/img/logo/white_logo.png" alt="nume-health.com"></a></div>
+                                    <div class="footer-logo logo"><a href="index.html"><img src="assets/img/logo/white_logo.svg" alt="nume-health.com" onerror="this.src='assets/img/logo/white_logo.png'; this.onerror=null;"></a></div>
                                     <p>DTC Telehealth – patient journey from landing to order fulfillment.</p>
                                 </div>
                             </div>

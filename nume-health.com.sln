@@ -6,26 +6,21 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebSite1", ".", "{A1B2C3D4-
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8"
 		Debug.AspNetCompiler.VirtualPath = "/nume-health.com"
-		Debug.AspNetCompiler.PhysicalPath = ".\"
+		Debug.AspNetCompiler.PhysicalPath = "..\Numi\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\nume-health.com\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.KeyFile = ""
-		Debug.AspNetCompiler.KeyContainer = ""
-		Debug.AspNetCompiler.DelaySign = "false"
-		Debug.AspNetCompiler.AllowPartiallyTrustedCallers = "false"
+		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.VirtualPath = "/nume-health.com"
-		Release.AspNetCompiler.PhysicalPath = ".\"
+		Release.AspNetCompiler.PhysicalPath = "..\Numi\"
 		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\nume-health.com\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.KeyFile = ""
-		Release.AspNetCompiler.KeyContainer = ""
-		Release.AspNetCompiler.DelaySign = "false"
-		Release.AspNetCompiler.AllowPartiallyTrustedCallers = "false"
+		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "8080"
+		SlnRelativePath = "..\Numi\"
 	EndProjectSection
 EndProject
 Global
@@ -41,5 +36,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DA9848F9-6599-4E84-A4CC-7689692567AF}
 	EndGlobalSection
 EndGlobal
