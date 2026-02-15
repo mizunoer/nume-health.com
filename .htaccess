@@ -1,0 +1,12 @@
+# Serve index.html or index.php when visiting the directory root
+DirectoryIndex index.html index.php
+# If requesting directory with trailing slash, try index files
+<IfModule mod_dir.c>
+    DirectoryIndex index.html index.php
+</IfModule>
+
+# Disable directory listing
+Options -Indexes
+
+# Optional: force UTF-8 for text/html
+AddDefaultCharset UTF-8
