@@ -3,17 +3,24 @@
  * Sales-focused, responsive, social-campaign ready
  */
 
-/* ========== Variables ========== */
+/* ========== Variables (Nume Health Brand Guide v1) ========== */
 :root {
-  --nume-primary: #0D9B4D;
-  --nume-primary-dark: #087a3d;
-  --nume-accent: #FAA432;
-  --nume-heading: #1a1a2e;
-  --nume-text: #4a4a68;
-  --nume-light: #f8faf9;
+  --nume-navy: #0B1B2B;
+  --nume-teal: #1BB6A8;
+  --nume-mint: #D8F7F2;
+  --nume-offwhite: #F7FAFC;
+  --nume-slate: #2E3E50;
+  --nume-ocean: #0A5DB8;
+  /* Aliases for components */
+  --nume-primary: #1BB6A8;
+  --nume-primary-dark: #159a8e;
+  --nume-accent: #1BB6A8;
+  --nume-heading: #0B1B2B;
+  --nume-text: #2E3E50;
+  --nume-light: #F7FAFC;
   --nume-white: #ffffff;
-  --nume-shadow: 0 4px 24px rgba(13, 155, 77, 0.12);
-  --nume-shadow-hover: 0 8px 32px rgba(13, 155, 77, 0.18);
+  --nume-shadow: 0 4px 24px rgba(27, 182, 168, 0.12);
+  --nume-shadow-hover: 0 8px 32px rgba(27, 182, 168, 0.18);
   --nume-radius: 12px;
   --nume-radius-lg: 20px;
   --nume-transition: 0.3s ease;
@@ -34,7 +41,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ========== Landing hero – sales-oriented ========== */
 .banner-area {
-  background: linear-gradient(135deg, #0D9B4D 0%, #0a7a3d 50%, #065a2d 100%);
+  background: linear-gradient(135deg, #0B1B2B 0%, #0f2842 50%, #0B1B2B 100%);
   min-height: 85vh;
   display: flex;
   align-items: center;
@@ -55,7 +62,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 0 !important;
 }
 .banner-content .banner-caption {
-  color: var(--nume-accent) !important;
+  color: var(--nume-teal) !important;
   font-size: 0.9rem !important;
   font-weight: 700;
   letter-spacing: 0.15em;
@@ -88,21 +95,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 .banner-content .btn:hover {
   background: var(--nume-white) !important;
-  color: var(--nume-primary) !important;
+  color: var(--nume-navy) !important;
   transform: translateY(-2px);
   box-shadow: var(--nume-shadow-hover);
 }
 .banner-content .btn.btn-primary-style,
 .banner-content .btn:first-of-type {
-  background: var(--nume-accent) !important;
-  border-color: var(--nume-accent) !important;
-  color: var(--nume-heading) !important;
+  background: var(--nume-teal) !important;
+  border-color: var(--nume-teal) !important;
+  color: var(--nume-navy) !important;
 }
 .banner-content .btn.btn-primary-style:hover,
 .banner-content .btn:first-of-type:hover {
-  background: #ffb84d !important;
-  border-color: #ffb84d !important;
-  color: var(--nume-heading) !important;
+  background: var(--nume-primary-dark) !important;
+  border-color: var(--nume-primary-dark) !important;
+  color: var(--nume-white) !important;
 }
 .banner-images {
   margin-top: 2rem;
@@ -202,7 +209,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .form-control:focus, .form-select:focus {
   border-color: var(--nume-primary);
-  box-shadow: 0 0 0 3px rgba(13, 155, 77, 0.15);
+  box-shadow: 0 0 0 3px rgba(27, 182, 168, 0.2);
 }
 .form-label {
   font-weight: 600;
