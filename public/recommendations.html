@@ -1,0 +1,221 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Recommendations – nume-health.com</title>
+    <meta name="description" content="Submit suggestions and feedback for nume-health.com.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/css/flaticon.css">
+    <link rel="stylesheet" href="assets/css/default.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <style>
+        .recommendations-form { max-width: 640px; }
+        .recommendations-form label { font-weight: 600; }
+        .recommendations-table { overflow-x: auto; }
+        .recommendations-table table { width: 100%; min-width: 800px; }
+        .recommendations-table th, .recommendations-table td { padding: 0.5rem 0.75rem; vertical-align: top; border: 1px solid #dee2e6; }
+        .recommendations-table th { background: #f8f9fa; }
+        .recommendations-table .internal-only { background: #fff3cd; }
+        .recommendations-note { font-size: 0.9rem; color: #666; margin-top: 1rem; }
+    </style>
+</head>
+<body>
+    <div id="preloader"><div class="tg-cube-grid"><div class="tg-cube tg-cube1"></div><div class="tg-cube tg-cube2"></div><div class="tg-cube tg-cube3"></div><div class="tg-cube tg-cube4"></div><div class="tg-cube tg-cube5"></div><div class="tg-cube tg-cube6"></div><div class="tg-cube tg-cube7"></div><div class="tg-cube tg-cube8"></div><div class="tg-cube tg-cube9"></div></div></div>
+    <button class="scroll-top scroll-to-target" data-target="html"><i class="fas fa-angle-up"></i></button>
+
+    <header id="home">
+        <div id="header-top-fixed"></div>
+        <div id="sticky-header" class="menu-area">
+            <div class="container custom-container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="mobile-nav-toggler"><i class="flaticon-layout"></i></div>
+                        <div class="menu-wrap">
+                            <nav class="menu-nav">
+                                <div class="logo"><a href="index.html"><img src="assets/img/logo/logo.png" alt="nume-health.com"></a></div>
+                                <div class="navbar-wrap main-menu d-none d-xl-flex">
+                                    <ul class="navigation">
+                                        <li class="menu-item-has-children"><a href="index.html">Home</a>
+                                            <ul class="sub-menu">
+                                                <li><a href="index.html">Landing 1</a></li>
+                                                <li><a href="index-2.html">Landing 2</a></li>
+                                                <li><a href="index-3.html">Landing 3</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="menu-item-has-children"><a href="#">Page</a><ul class="sub-menu" id="nav-pages-dropdown"></ul></li>
+                                        <li><a href="assessment.html">Assessment</a></li>
+                                        <li class="menu-item-has-children"><a href="shop.html">Shop</a>
+                                            <ul class="sub-menu">
+                                                <li><a href="shop.html">Shop</a></li>
+                                                <li><a href="shop-details.html">Product details</a></li>
+                                                <li><a href="cart.html">Cart</a></li>
+                                                <li><a href="checkout.html">Checkout</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="menu-item-has-children"><a href="login.html">Account</a>
+                                            <ul class="sub-menu">
+                                                <li><a href="login.html">Login</a></li>
+                                                <li><a href="register.html">Register</a></li>
+                                                <li><a href="reset-password.html">Reset password</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="contact.html">Contact</a></li>
+                                        <li class="active"><a href="recommendations.html">Recommendations</a></li>
+                                    </ul>
+                                </div>
+                                <div class="header-action d-none d-sm-block">
+                                    <ul><li class="header-shop-cart"><a href="cart.html" class="cart-count"><i class="flaticon-shopping-cart"></i><span class="mini-cart-count">0</span></a></li></ul>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mobile-menu"><nav class="menu-box"><div class="close-btn"><i class="fas fa-times"></i></div><div class="nav-logo"><a href="index.html"><img src="assets/img/logo/logo.png" alt="nume-health.com"></a></div><div class="menu-outer"></div></nav></div>
+        <div class="menu-backdrop"></div>
+    </header>
+
+    <main class="main-area fix section-padding">
+        <div class="container">
+            <h1 class="mb-4">Recommendations &amp; suggestions</h1>
+            <p class="lead">Submit feedback or suggestions for the site. <strong>You cannot edit Dev Notes or Status</strong>—those are for internal use only.</p>
+
+            <section class="recommendations-form mt-5">
+                <h2 class="h4 mb-3">Submit a suggestion</h2>
+                <form id="recommendations-form" action="#" method="post" enctype="multipart/form-data">
+                    <!-- Optional: use Formspree – replace # with https://formspree.io/f/YOUR_ID -->
+                    <div class="mb-3">
+                        <label for="rec-name" class="form-label">Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="rec-name" name="Name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="recommendations-page-select" class="form-label">Page <span class="text-danger">*</span></label>
+                        <select class="form-select" id="recommendations-page-select" name="Page" required>
+                            <option value="">Select a page...</option>
+                            <!-- filled by site-nav.js from SITE_PAGES -->
+                        </select>
+                        <small class="form-text text-muted">Every site page is listed here; new pages are added to this dropdown when we add them.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="rec-feedback" class="form-label">Feedback <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="rec-feedback" name="Feedback" rows="4" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="rec-images" class="form-label">Images / screenshots</label>
+                        <input type="text" class="form-control" id="rec-images" name="Images_screenshots" placeholder="Paste a link to your screenshot or image (e.g. Imgur, Google Drive link)">
+                        <small class="form-text text-muted">Optional. Use a shareable link to your image or screenshot.</small>
+                    </div>
+                    <!-- Dev Notes and Status are NOT in the form – submitters cannot edit them -->
+                    <button type="submit" class="btn btn-two">Submit suggestion</button>
+                </form>
+            </section>
+
+            <section class="recommendations-table mt-5">
+                <h2 class="h4 mb-3">Suggestions (internal view)</h2>
+                <p class="recommendations-note">Table columns: <strong>Name</strong>, <strong>Page</strong>, <strong>Feedback</strong>, <strong>Images/screenshots</strong>, <strong>Dev Notes</strong>, <strong>Status</strong>. Only staff can edit Dev Notes and Status. Connect this to your Google Sheet or backend to show live data.</p>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Page</th>
+                            <th>Feedback</th>
+                            <th>Images/screenshots</th>
+                            <th class="internal-only">Dev Notes</th>
+                            <th class="internal-only">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Example User</td>
+                            <td>Home</td>
+                            <td>Sample feedback text. Add a CTA above the fold.</td>
+                            <td>https://example.com/screenshot.png</td>
+                            <td class="internal-only"><em>Internal only – not editable by submitters</em></td>
+                            <td class="internal-only">
+                                <select class="form-select form-select-sm" disabled title="Only staff can change status">
+                                    <option>suggestion</option>
+                                    <option>plan</option>
+                                    <option>in progress</option>
+                                    <option>done</option>
+                                </select>
+                                <small class="d-block mt-1 text-muted">Status: suggestion | plan | in progress | done</small>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="recommendations-note">To use a spreadsheet: create a Google Sheet with columns <strong>Name, Page, Feedback, Images/screenshots, Dev Notes, Status</strong>. Use Google Forms or Formspree to send form submissions to the sheet. Edit Dev Notes and Status in the sheet. You can embed the sheet below or link to it.</p>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer-area">
+        <div class="footer-top-wrap">
+            <div class="container">
+                <div class="footer-widgets-wrap">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6">
+                            <div class="footer-widget">
+                                <div class="footer-about">
+                                    <div class="footer-logo logo"><a href="index.html"><img src="assets/img/logo/white_logo.png" alt="nume-health.com"></a></div>
+                                    <p>DTC Telehealth – patient journey from landing to order fulfillment.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-6 col-6">
+                            <div class="footer-widget">
+                                <h4 class="fw-title">Site</h4>
+                                <ul class="list-wrap">
+                                    <li><a href="index.html">Home</a></li>
+                                    <li><a href="assessment.html">Assessment</a></li>
+                                    <li><a href="shop.html">Shop</a></li>
+                                    <li><a href="contact.html">Contact</a></li>
+                                    <li><a href="recommendations.html">Recommendations</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-6 col-6">
+                            <div class="footer-widget">
+                                <h4 class="fw-title">Account</h4>
+                                <ul class="list-wrap">
+                                    <li><a href="login.html">Login</a></li>
+                                    <li><a href="register.html">Register</a></li>
+                                    <li><a href="cart.html">Cart</a></li>
+                                    <li><a href="checkout.html">Checkout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="footer-widget">
+                                <h4 class="fw-title">Contact</h4>
+                                <p>nume-health.com</p>
+                                <ul class="list-wrap"><li><a href="contact.html">Contact form</a></li></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright-wrap">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-12">
+                        <p class="copyright-text mb-0">Copyright © 2025 nume-health.com. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/site-config.js"></script>
+    <script src="assets/js/site-nav.js"></script>
+</body>
+</html>
