@@ -108,9 +108,13 @@
                         <textarea class="form-control" id="rec-feedback" name="Feedback" rows="4" required></textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="rec-images" class="form-label">Images / screenshots</label>
-                        <input type="text" class="form-control" id="rec-images" name="Images_screenshots" placeholder="Paste a link to your screenshot or image (e.g. Imgur, Google Drive link)">
-                        <small class="form-text text-muted">Optional. Use a shareable link to your image or screenshot.</small>
+                        <label for="rec-images" class="form-label">Add a screenshot or photo</label>
+                        <input type="file" class="form-control" id="rec-images" name="Images_screenshots" accept="image/*" aria-describedby="rec-images-help">
+                        <small id="rec-images-help" class="form-text text-muted">Optional. Choose a picture from your computer (e.g. a screenshot or photo of the issue).</small>
+                        <div id="rec-image-preview" class="mt-2" style="display:none;">
+                            <p class="small text-muted mb-1">Preview:</p>
+                            <img id="rec-image-preview-img" src="" alt="Your image" class="rounded border" style="max-width:100%; max-height:200px; object-fit:contain;">
+                        </div>
                     </div>
                     <!-- Dev Notes and Status are NOT in the form – submitters cannot edit them -->
                     <button type="submit" class="btn btn-two">Submit suggestion</button>
@@ -218,5 +222,20 @@
     <script src="assets/js/main.js"></script>
     <script src="assets/js/site-config.js"></script>
     <script src="assets/js/site-nav.js"></script>
+    <script>
+        document.getElementById('rec-images').addEventListener('change', function(e) {
+            var preview = document.getElementById('rec-image-preview');
+            var img = document.getElementById('rec-image-preview-img');
+            var file = e.target.files && e.target.files[0];
+            if (file && file.type.indexOf('image/') === 0) {
+                var r = new FileReader();
+                r.onload = function() { img.src = r.result; preview.style.display = 'block'; };
+                r.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+                img.src = '';
+            }
+        });
+    </script>
 </body>
 </html>
