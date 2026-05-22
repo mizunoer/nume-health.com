@@ -1,0 +1,28 @@
+:root {
+  --nume-blue: #0077B6;
+  --nume-cyan: #00A6C8;
+  --nume-teal: #12C8B8;
+  --nume-navy: #101D31;
+  --nume-slate: #7A8794;
+  --nume-white: #FFFFFF;
+}
+
+/* Typical website usage */
+.logo-header {
+  height: 56px;
+  width: auto;
+}
+
+.logo-email {
+  width: 300px;
+  height: auto;
+}
+
+.brand-gradient {
+  background: linear-gradient(135deg, var(--nume-blue), var(--nume-teal));
+}
+
+.brand-dark {
+  background-color: var(--nume-navy);
+  color: var(--nume-white);
+}

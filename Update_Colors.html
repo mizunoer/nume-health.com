@@ -1,0 +1,761 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Nume Health – Color System Recommendations</title>
+<meta name="description" content="Audit and recommendations for unifying the nume-health.com color system around the brand kit.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
+<style>
+  /* ===== Brand kit (logo-derived) ===== */
+  :root {
+    --nume-blue:        #0077B6;
+    --nume-cyan:        #00A6C8;
+    --nume-teal:        #12C8B8;
+    --nume-navy:        #101D31;
+    --nume-slate-gray:  #7A8794;
+    --nume-mint:        #D8F7F2;
+    --nume-offwhite:    #F7FAFC;
+    --nume-slate:       #2E3E50;
+    --nume-white:       #ffffff;
+    --nume-border:      #E2E8F0;
+
+    --nume-primary:      var(--nume-blue);
+    --nume-primary-dark: #005f92;
+    --nume-accent:       var(--nume-teal);
+    --nume-accent-dark:  #0fa898;
+
+    --nume-gradient: linear-gradient(135deg, var(--nume-blue) 0%, var(--nume-cyan) 50%, var(--nume-teal) 100%);
+    --nume-gradient-dark: linear-gradient(135deg, var(--nume-navy) 0%, #0f2842 50%, var(--nume-navy) 100%);
+
+    --nume-radius:    12px;
+    --nume-radius-lg: 20px;
+    --nume-shadow:    0 4px 24px rgba(0,119,182,0.10);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+    color: var(--nume-slate);
+    background: var(--nume-offwhite);
+  }
+  a { color: var(--nume-primary); }
+  code { font: 13px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: #eef2f7; padding: 2px 6px; border-radius: 4px; color: var(--nume-navy); }
+  h1, h2, h3, h4 { color: var(--nume-navy); margin: 0 0 .4em; line-height: 1.2; }
+  h1 { font-size: clamp(1.6rem, 3vw, 2.2rem); }
+  h2 { font-size: clamp(1.25rem, 2.5vw, 1.6rem); margin-top: 2.5rem; padding-bottom: .4rem; border-bottom: 2px solid var(--nume-border); }
+  h3 { font-size: 1.1rem; margin-top: 1.5rem; }
+  p  { margin: 0 0 1em; }
+  ul, ol { margin: 0 0 1em; padding-left: 1.25rem; }
+  li { margin-bottom: .35em; }
+
+  /* ===== Layout ===== */
+  .hero {
+    background: var(--nume-gradient-dark);
+    color: var(--nume-white);
+    padding: 56px 24px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: "";
+    position: absolute; left: 0; right: 0; bottom: 0; height: 6px;
+    background: var(--nume-gradient);
+  }
+  .hero h1 { color: var(--nume-white); }
+  .hero p  { color: rgba(255,255,255,.85); max-width: 760px; }
+  .hero .meta { color: rgba(255,255,255,.6); font-size: .85rem; }
+
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 32px 24px 80px; }
+
+  /* ===== Cards ===== */
+  .card {
+    background: var(--nume-white);
+    border: 1px solid var(--nume-border);
+    border-radius: var(--nume-radius-lg);
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: var(--nume-shadow-soft, 0 1px 4px rgba(16,29,49,.04));
+  }
+  .card.callout {
+    border-left: 4px solid var(--nume-primary);
+    background: linear-gradient(0deg, var(--nume-mint) 0%, var(--nume-white) 30%);
+  }
+
+  /* ===== Swatches ===== */
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin: 12px 0 8px;
+  }
+  .swatch {
+    border-radius: var(--nume-radius);
+    overflow: hidden;
+    border: 1px solid var(--nume-border);
+    background: var(--nume-white);
+  }
+  .swatch .chip {
+    height: 110px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 14px;
+    color: var(--nume-white);
+    font-weight: 600;
+    font-size: .95rem;
+  }
+  .swatch.light .chip { color: var(--nume-navy); }
+  .swatch .meta {
+    padding: 12px 14px;
+    font-size: .85rem;
+    color: var(--nume-slate);
+  }
+  .swatch .meta b { color: var(--nume-navy); display: block; }
+  .swatch code { font-size: 12px; }
+
+  .swatch-grid.gradients .chip { height: 110px; }
+
+  /* ===== Tables ===== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .92rem;
+    margin: 12px 0;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--nume-border);
+    vertical-align: top;
+  }
+  th {
+    background: var(--nume-offwhite);
+    color: var(--nume-navy);
+    font-size: .85rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+  tr:nth-child(2n) td { background: #fbfdff; }
+  td .dot {
+    display: inline-block;
+    width: 14px; height: 14px; border-radius: 50%;
+    border: 1px solid rgba(16,29,49,.15);
+    vertical-align: -2px;
+    margin-right: 6px;
+  }
+
+  /* ===== Pills / badges ===== */
+  .pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+  }
+  .pill.keep    { background: #DCFCE7; color: #166534; }
+  .pill.update  { background: #FEF3C7; color: #92400E; }
+  .pill.replace { background: #FEE2E2; color: #991B1B; }
+  .pill.add     { background: #DBEAFE; color: #1E3A8A; }
+  .pill.use     { background: var(--nume-mint); color: var(--nume-navy); }
+
+  /* ===== Component preview ===== */
+  .preview-row {
+    display: flex; flex-wrap: wrap; gap: 12px;
+    align-items: center;
+    margin: 14px 0 4px;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 18px;
+    border-radius: var(--nume-radius);
+    font-weight: 600;
+    border: 2px solid transparent;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+  .btn-primary {
+    background: var(--nume-primary); color: var(--nume-white);
+    border-color: var(--nume-primary);
+  }
+  .btn-primary:hover { background: var(--nume-primary-dark); border-color: var(--nume-primary-dark); }
+  .btn-accent {
+    background: var(--nume-accent); color: var(--nume-navy);
+    border-color: var(--nume-accent);
+  }
+  .btn-accent:hover { background: var(--nume-accent-dark); border-color: var(--nume-accent-dark); color: var(--nume-white); }
+  .btn-outline {
+    background: transparent; color: var(--nume-primary);
+    border-color: var(--nume-primary);
+  }
+  .btn-outline:hover { background: var(--nume-primary); color: var(--nume-white); }
+  .btn-ghost {
+    background: transparent; color: var(--nume-navy);
+    border-color: var(--nume-border);
+  }
+  .btn-ghost:hover { background: var(--nume-offwhite); }
+  .btn-link {
+    color: var(--nume-primary);
+    background: transparent; border: none;
+    text-decoration: underline;
+  }
+  .btn-link:hover { color: var(--nume-cyan); }
+
+  .badge {
+    display: inline-block; padding: 4px 12px;
+    background: var(--nume-mint); color: var(--nume-navy);
+    border-radius: 999px;
+    font-size: .8rem; font-weight: 600;
+  }
+
+  .nav-mock {
+    display: flex; gap: 18px; align-items: center;
+    background: var(--nume-white);
+    padding: 12px 20px;
+    border: 1px solid var(--nume-border);
+    border-radius: var(--nume-radius);
+  }
+  .nav-mock > a { color: var(--nume-navy); text-decoration: none; font-weight: 500; }
+  .nav-mock > a:hover { color: var(--nume-primary); }
+  .nav-mock > a.active { color: var(--nume-primary); }
+  .nav-mock a.btn-primary { color: var(--nume-white); }
+  .nav-mock a.btn-primary:hover { color: var(--nume-white); }
+  .nav-mock a.btn-accent { color: var(--nume-navy); }
+  .nav-mock a.btn-accent:hover { color: var(--nume-white); }
+
+  .form-mock label { display:block; font-weight:600; margin: 8px 0 4px; color: var(--nume-navy); }
+  .form-mock input, .form-mock select {
+    width: 100%; padding: 10px 12px;
+    border-radius: var(--nume-radius);
+    border: 1px solid var(--nume-border);
+    font: inherit;
+  }
+  .form-mock input:focus, .form-mock select:focus {
+    outline: none;
+    border-color: var(--nume-primary);
+    box-shadow: 0 0 0 3px rgba(0,119,182,.18);
+  }
+
+  /* Two-up legend */
+  .legend {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .legend > div {
+    background: #f5f9fd; border-radius: 8px;
+    padding: 10px 12px; font-size: .9rem;
+    border-left: 4px solid var(--nume-primary);
+  }
+  .legend > div.accent { border-left-color: var(--nume-accent); }
+  .legend > div.navy   { border-left-color: var(--nume-navy); }
+  .legend > div.muted  { border-left-color: var(--nume-slate-gray); }
+
+  .toc {
+    background: var(--nume-white);
+    border: 1px solid var(--nume-border);
+    border-radius: var(--nume-radius);
+    padding: 16px 20px;
+    margin: 0 0 24px;
+  }
+  .toc ol { margin: 0; padding-left: 1.25rem; column-count: 2; column-gap: 24px; }
+  .toc a { text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  @media (max-width: 640px) { .toc ol { column-count: 1; } }
+
+  .footer-note {
+    margin-top: 40px;
+    padding: 16px 20px;
+    background: var(--nume-mint);
+    border-radius: var(--nume-radius);
+    color: var(--nume-navy);
+    font-size: .9rem;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap" style="padding: 0;">
+    <div class="meta">Internal design doc · v2 · Brand Kit alignment</div>
+    <h1>Nume Health — Color System Recommendations</h1>
+    <p>This page audits every color currently in use across <code>nume-health.com</code> and recommends a single, brand‑kit‑aligned palette. The goal is design continuity: every button, link, hover, badge, hero, and form on every page should resolve to a known token from the table below.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <nav class="toc" aria-label="Contents">
+    <strong>Contents</strong>
+    <ol>
+      <li><a href="#summary">Summary &amp; recommended palette</a></li>
+      <li><a href="#current">What is in use today</a></li>
+      <li><a href="#mapping">Old → New mapping</a></li>
+      <li><a href="#elements">Element‑by‑element checklist</a></li>
+      <li><a href="#tokens">CSS tokens (drop‑in)</a></li>
+      <li><a href="#components">Component previews</a></li>
+      <li><a href="#accessibility">Accessibility &amp; contrast</a></li>
+      <li><a href="#process">How to apply</a></li>
+    </ol>
+  </nav>
+
+  <!-- ============ 1. SUMMARY ============ -->
+  <section id="summary">
+    <h2>1. Summary &amp; recommended palette</h2>
+
+    <div class="card callout">
+      <h3 style="margin-top:0">Recommendation</h3>
+      <p>Adopt the <b>Brand Kit palette</b> (sampled from the actual logo gradient) as the single source of truth. Keep three brand‑guide tones — <b>Mint</b>, <b>Off‑white</b>, and <b>Slate</b> — as supporting surfaces and body text because they have stronger contrast / softer feel than the kit's slate gray.</p>
+      <ul>
+        <li>Primary CTAs and links → <b>Nume Blue <code>#0077B6</code></b></li>
+        <li>Hover / secondary → <b>Nume Cyan <code>#00A6C8</code></b></li>
+        <li>Highlights, accents, success states → <b>Nume Teal <code>#12C8B8</code></b></li>
+        <li>Dark backgrounds, headings → <b>Deep Navy <code>#101D31</code></b></li>
+        <li>Body text → <b>Slate <code>#2E3E50</code></b> (kept from brand guide for contrast)</li>
+        <li>Page surface → <b>Off‑white <code>#F7FAFC</code></b></li>
+      </ul>
+    </div>
+
+    <h3>Recommended palette</h3>
+    <div class="swatch-grid">
+      <div class="swatch">
+        <div class="chip" style="background:#0077B6">Nume Blue</div>
+        <div class="meta"><b>#0077B6 · brand-kit</b>Primary brand. Use for CTAs, links, active states, focus rings.</div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#00A6C8">Nume Cyan</div>
+        <div class="meta"><b>#00A6C8 · brand-kit</b>Secondary / hover. Use for link hover, gradient mid-stop, secondary buttons.</div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#12C8B8">Nume Teal</div>
+        <div class="meta"><b>#12C8B8 · brand-kit</b>Accent. Use for badges, success states, decorative highlights.</div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#101D31">Deep Navy</div>
+        <div class="meta"><b>#101D31 · brand-kit</b>Dark backgrounds, hero, footer. Use for headings on light bg.</div>
+      </div>
+      <div class="swatch light">
+        <div class="chip" style="background:#D8F7F2">Mint</div>
+        <div class="meta"><b>#D8F7F2 · brand-guide</b>Soft tint. Use for badges, callouts, highlighted rows.</div>
+      </div>
+      <div class="swatch light">
+        <div class="chip" style="background:#F7FAFC">Off-white</div>
+        <div class="meta"><b>#F7FAFC · brand-guide</b>Page background. Cards on this look airy.</div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#2E3E50">Slate</div>
+        <div class="meta"><b>#2E3E50 · brand-guide</b>Body text. Better contrast than kit slate-gray on white.</div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#7A8794">Slate Gray</div>
+        <div class="meta"><b>#7A8794 · brand-kit</b>Muted UI text, dividers, helper text. Avoid for body copy.</div>
+      </div>
+    </div>
+
+    <h3>Brand gradients</h3>
+    <div class="swatch-grid gradients">
+      <div class="swatch">
+        <div class="chip" style="background:linear-gradient(135deg,#0077B6 0%,#00A6C8 50%,#12C8B8 100%)">Brand Gradient</div>
+        <div class="meta"><b>--nume-gradient</b>Hero callouts, signup banners, badges-on-light. Mirrors logo gradient.</div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:linear-gradient(135deg,#101D31 0%,#0f2842 50%,#101D31 100%)">Dark Hero Gradient</div>
+        <div class="meta"><b>--nume-gradient-dark</b>Used on the home banner. Reversed white logo sits on top.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2. CURRENT ============ -->
+  <section id="current">
+    <h2>2. What is in use today</h2>
+    <p>Audit of every color literal that affects the rendered site. Includes <code>style.css</code>, <code>nume-health.css</code>, inline styles, and SVG fills.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Color</th>
+          <th>Where it appears</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="dot" style="background:#FAA432"></span><code>#FAA432</code> orange/yellow</td>
+          <td><code>--tg-primary-color</code> in <code>style.css</code> · template default; not from brand</td>
+          <td><span class="pill replace">Replace</span></td>
+          <td>Override via <code>nume-health.css</code> to <code>--nume-blue #0077B6</code> (already done in <code>:root</code>).</td>
+        </tr>
+        <tr>
+          <td><span class="dot" style="background:#1BB6A8"></span><code>#1BB6A8</code> brand-guide teal</td>
+          <td><code>--tg-secondary-color</code>, scroll-top, preloader cubes, buttons</td>
+          <td><span class="pill update">Update</span></td>
+          <td>Drift to brand-kit teal <code>#12C8B8</code>. Already overridden via <code>--tg-secondary-color: var(--nume-teal)</code>.</td>
+        </tr>
+        <tr>
+          <td><span class="dot" style="background:#0B1B2B"></span><code>#0B1B2B</code> brand-guide navy</td>
+          <td>Banner gradient, headings, footer</td>
+          <td><span class="pill update">Update</span></td>
+          <td>Migrate to <code>#101D31</code> (kit). Visually nearly identical, but matches kit assets.</td>
+        </tr>
+        <tr>
+          <td><span class="dot" style="background:#0A5DB8"></span><code>#0A5DB8</code> ocean blue</td>
+          <td><code>--nume-ocean</code> alias only; rarely used</td>
+          <td><span class="pill replace">Replace</span></td>
+          <td>Drop the alias; use <code>--nume-blue #0077B6</code> everywhere instead.</td>
+        </tr>
+        <tr>
+          <td><span class="dot" style="background:#0D9B4D"></span><code>#0D9B4D</code> green</td>
+          <td>Was in <code>placeholder.svg</code> &amp; documentation</td>
+          <td><span class="pill replace">Replaced</span></td>
+          <td>Already swapped to brand teal. Confirm no legacy refs remain.</td>
+        </tr>
+        <tr>
+          <td><span class="dot" style="background:#777777"></span><code>#777777</code> body grey</td>
+          <td><code>--tg-body-font-color</code> in <code>style.css</code></td>
+          <td><span class="pill update">Update</span></td>
+          <td>Change body to <code>--nume-slate #2E3E50</code> (better contrast, on-brand).</td>
+        </tr>
+        <tr>
+          <td><span class="dot" style="background:#222222"></span><code>#222222</code> headings</td>
+          <td><code>--tg-heading-font-color</code></td>
+          <td><span class="pill update">Update</span></td>
+          <td>Change to <code>--nume-navy #101D31</code> for consistency with brand.</td>
+        </tr>
+        <tr>
+          <td><span class="dot" style="background:#198754"></span><code>#198754</code> bootstrap green</td>
+          <td>Bootstrap success/state</td>
+          <td><span class="pill keep">Keep</span></td>
+          <td>Keep for true success/error semantics; do not use for branded UI.</td>
+        </tr>
+        <tr>
+          <td><span class="dot" style="background:#dc3545"></span><code>#dc3545</code> bootstrap red</td>
+          <td>Bootstrap danger/state</td>
+          <td><span class="pill keep">Keep</span></td>
+          <td>Keep for true error/destructive UI only.</td>
+        </tr>
+        <tr>
+          <td><span class="dot" style="background:#e0e0e0"></span><code>#e0e0e0</code> form border</td>
+          <td><code>nume-health.css</code> form-control border</td>
+          <td><span class="pill update">Update</span></td>
+          <td>Move to <code>--nume-border #E2E8F0</code> for one source of truth.</td>
+        </tr>
+        <tr>
+          <td><span class="dot" style="background:#FFC107"></span><code>#FFC107 / #FAA432</code> warning</td>
+          <td>Bootstrap / template warnings</td>
+          <td><span class="pill keep">Keep</span></td>
+          <td>Keep for warning toasts only; never apply to brand chrome.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="color:var(--nume-slate-gray); font-size:.9rem">
+      <b>Note:</b> the audit scans CSS variables, button states, hover states, link colors, focus rings, scroll-top button, preloader cubes, banner gradients, badge backgrounds, table-row stripes, form focus shadows, and SVG <code>fill</code>/<code>stroke</code> attributes.
+    </p>
+  </section>
+
+  <!-- ============ 3. MAPPING ============ -->
+  <section id="mapping">
+    <h2>3. Old → New mapping</h2>
+    <p>One-to-one replacement table. After this map is applied, every component on the site renders from a brand-kit token.</p>
+    <table>
+      <thead>
+        <tr><th>Old value</th><th>New token</th><th>Hex</th><th>Used for</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>#FAA432</code></td><td><code>--nume-primary</code></td><td><span class="dot" style="background:#0077B6"></span>#0077B6</td><td>CTAs, links, active nav, focus ring</td></tr>
+        <tr><td><code>#1BB6A8</code></td><td><code>--nume-accent</code></td><td><span class="dot" style="background:#12C8B8"></span>#12C8B8</td><td>Highlights, accent buttons, badges</td></tr>
+        <tr><td><code>#0B1B2B</code></td><td><code>--nume-navy</code></td><td><span class="dot" style="background:#101D31"></span>#101D31</td><td>Headings, hero bg, footer</td></tr>
+        <tr><td><code>#0A5DB8</code> (ocean)</td><td><code>--nume-primary</code></td><td><span class="dot" style="background:#0077B6"></span>#0077B6</td><td>Drop ocean; everything blue rolls up to primary</td></tr>
+        <tr><td><code>#777777</code></td><td><code>--nume-text</code></td><td><span class="dot" style="background:#2E3E50"></span>#2E3E50</td><td>Body text</td></tr>
+        <tr><td><code>#222222</code></td><td><code>--nume-heading</code></td><td><span class="dot" style="background:#101D31"></span>#101D31</td><td>All h1–h6</td></tr>
+        <tr><td><code>#0D9B4D</code></td><td><code>--nume-accent</code></td><td><span class="dot" style="background:#12C8B8"></span>#12C8B8</td><td>Was hardcoded in placeholders</td></tr>
+        <tr><td><code>#e0e0e0</code></td><td><code>--nume-border</code></td><td><span class="dot" style="background:#E2E8F0"></span>#E2E8F0</td><td>Card / input borders, dividers</td></tr>
+      </tbody>
+    </table>
+    <div class="legend">
+      <div>Hover for primary CTA: <code>#005f92</code> (~12% darker than blue)</div>
+      <div class="accent">Hover for accent: <code>#0fa898</code> (~5% darker than teal)</div>
+      <div class="navy">Hover for navy chips: <code>#1a2a44</code></div>
+      <div class="muted">Disabled state: 40% opacity of the resting color</div>
+    </div>
+  </section>
+
+  <!-- ============ 4. ELEMENT-BY-ELEMENT ============ -->
+  <section id="elements">
+    <h2>4. Element-by-element checklist</h2>
+    <p>Every component on every page, with the exact rule each one should follow. <span class="pill keep">Keep</span> means the current token is correct; <span class="pill update">Update</span> means swap to the new token; <span class="pill add">Add</span> means new behavior we should introduce.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width:24%">Element</th>
+          <th style="width:34%">Where</th>
+          <th style="width:30%">Rule</th>
+          <th style="width:12%">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="4" style="background:var(--nume-mint); font-weight:700; color:var(--nume-navy)">Buttons</td></tr>
+        <tr>
+          <td>Primary button</td>
+          <td>Hero, CTAs, "Start Assessment", "Add to cart"</td>
+          <td>bg <code>--nume-primary</code> · text <code>--nume-white</code> · hover bg <code>--nume-primary-dark</code></td>
+          <td><span class="pill update">Update</span></td>
+        </tr>
+        <tr>
+          <td>Accent button</td>
+          <td>"See pricing", secondary in-line CTAs</td>
+          <td>bg <code>--nume-accent</code> · text <code>--nume-navy</code> · hover bg <code>--nume-accent-dark</code></td>
+          <td><span class="pill add">Add</span></td>
+        </tr>
+        <tr>
+          <td>Outline button</td>
+          <td>"Learn more", less-emphasis actions</td>
+          <td>border + text <code>--nume-primary</code> · hover invert</td>
+          <td><span class="pill keep">Keep</span></td>
+        </tr>
+        <tr>
+          <td>Ghost / cancel</td>
+          <td>Modals, "Back" buttons</td>
+          <td>border <code>--nume-border</code> · text <code>--nume-navy</code></td>
+          <td><span class="pill add">Add</span></td>
+        </tr>
+        <tr>
+          <td>Disabled state</td>
+          <td>All buttons</td>
+          <td>40% opacity, no hover transition</td>
+          <td><span class="pill add">Add</span></td>
+        </tr>
+
+        <tr><td colspan="4" style="background:var(--nume-mint); font-weight:700; color:var(--nume-navy)">Links</td></tr>
+        <tr>
+          <td>Inline body link</td>
+          <td>Paragraph copy, footer links</td>
+          <td>color <code>--nume-link</code> · hover <code>--nume-link-hover</code> · underline-on-hover</td>
+          <td><span class="pill update">Update</span></td>
+        </tr>
+        <tr>
+          <td>Nav link</td>
+          <td>Header nav</td>
+          <td>resting <code>--nume-navy</code> · hover &amp; active <code>--nume-primary</code></td>
+          <td><span class="pill update">Update</span></td>
+        </tr>
+        <tr>
+          <td>Footer link</td>
+          <td>Footer columns</td>
+          <td>resting rgba(255,255,255,.85) on navy bg · hover <code>--nume-accent</code></td>
+          <td><span class="pill update">Update</span></td>
+        </tr>
+
+        <tr><td colspan="4" style="background:var(--nume-mint); font-weight:700; color:var(--nume-navy)">Forms</td></tr>
+        <tr>
+          <td>Input border (resting)</td>
+          <td>All <code>.form-control</code>, <code>.form-select</code></td>
+          <td><code>--nume-border</code></td>
+          <td><span class="pill update">Update</span></td>
+        </tr>
+        <tr>
+          <td>Input focus</td>
+          <td>All inputs, textareas, selects</td>
+          <td>border <code>--nume-primary</code> · ring <code>rgba(0,119,182,.18)</code> 3px</td>
+          <td><span class="pill update">Update</span></td>
+        </tr>
+        <tr>
+          <td>Validation error</td>
+          <td>Inline error states</td>
+          <td>border <code>#dc3545</code> · helper text <code>#991B1B</code></td>
+          <td><span class="pill keep">Keep</span></td>
+        </tr>
+        <tr>
+          <td>Validation success</td>
+          <td>Inline success</td>
+          <td>border <code>#198754</code> · helper <code>#166534</code></td>
+          <td><span class="pill keep">Keep</span></td>
+        </tr>
+        <tr>
+          <td>Label</td>
+          <td>All <code>.form-label</code></td>
+          <td>color <code>--nume-heading</code>, weight 600</td>
+          <td><span class="pill keep">Keep</span></td>
+        </tr>
+
+        <tr><td colspan="4" style="background:var(--nume-mint); font-weight:700; color:var(--nume-navy)">Surfaces</td></tr>
+        <tr><td>Page background</td><td>All public pages</td><td><code>--nume-offwhite</code></td><td><span class="pill keep">Keep</span></td></tr>
+        <tr><td>Card / product tile</td><td>Shop, dashboard, recommendation</td><td>bg <code>--nume-white</code> · border <code>--nume-border</code> · radius <code>--nume-radius-lg</code></td><td><span class="pill keep">Keep</span></td></tr>
+        <tr><td>Soft callout</td><td>Tips, eligibility hints</td><td>bg <code>--nume-mint</code> · text <code>--nume-navy</code></td><td><span class="pill add">Add</span></td></tr>
+        <tr><td>Hero banner</td><td>Home, landing pages</td><td>bg <code>--nume-gradient-dark</code></td><td><span class="pill update">Update</span></td></tr>
+        <tr><td>Page hero (sub-pages)</td><td>Shop, contact, etc.</td><td>bg <code>linear-gradient(135deg, --nume-primary 0%, --nume-primary-dark 100%)</code></td><td><span class="pill update">Update</span></td></tr>
+
+        <tr><td colspan="4" style="background:var(--nume-mint); font-weight:700; color:var(--nume-navy)">Navigation &amp; chrome</td></tr>
+        <tr><td>Header bar</td><td>All pages</td><td>bg <code>--nume-white</code> · border-bottom <code>--nume-border</code></td><td><span class="pill keep">Keep</span></td></tr>
+        <tr><td>Mobile menu</td><td>≤ 991px</td><td>bg <code>--nume-white</code> · active link <code>--nume-primary</code></td><td><span class="pill keep">Keep</span></td></tr>
+        <tr><td>Mini-cart count</td><td>Header</td><td>bg <code>--nume-accent</code> · text <code>--nume-navy</code></td><td><span class="pill update">Update</span></td></tr>
+        <tr><td>Footer</td><td>All pages</td><td>bg <code>--nume-navy</code> · headings <code>--nume-white</code> · body rgba(255,255,255,.7)</td><td><span class="pill keep">Keep</span></td></tr>
+
+        <tr><td colspan="4" style="background:var(--nume-mint); font-weight:700; color:var(--nume-navy)">Floating / state</td></tr>
+        <tr><td>Scroll-to-top button</td><td>Bottom-right of every page</td><td>bg <code>--nume-primary</code> · hover <code>--nume-primary-dark</code></td><td><span class="pill update">Update</span></td></tr>
+        <tr><td>Preloader</td><td>Page-load overlay</td><td>cubes <code>--nume-accent</code></td><td><span class="pill update">Update</span></td></tr>
+        <tr><td>Toast / notice</td><td>Confirmations, errors</td><td>info <code>--nume-primary</code> · success <code>#198754</code> · warn <code>#FFC107</code> · error <code>#dc3545</code></td><td><span class="pill add">Add</span></td></tr>
+
+        <tr><td colspan="4" style="background:var(--nume-mint); font-weight:700; color:var(--nume-navy)">Marketing details</td></tr>
+        <tr><td>Banner caption (eyebrow)</td><td>Hero "DTC TELEHEALTH" line</td><td>color <code>--nume-accent</code> on navy</td><td><span class="pill keep">Keep</span></td></tr>
+        <tr><td>Trust-badge icon</td><td>Below hero</td><td>icon color <code>--nume-primary</code></td><td><span class="pill keep">Keep</span></td></tr>
+        <tr><td>Section title underline</td><td>Marketing sections</td><td>SVG fill <code>--nume-accent</code></td><td><span class="pill keep">Keep</span></td></tr>
+        <tr><td>Pricing tier highlight</td><td>"Most popular" tag</td><td>bg <code>--nume-gradient</code> · text <code>--nume-white</code></td><td><span class="pill add">Add</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============ 5. TOKENS ============ -->
+  <section id="tokens">
+    <h2>5. CSS tokens (drop‑in)</h2>
+    <p>This snippet is what's already in <code>assets/css/nume-health.css</code>. It overrides the legacy <code>--tg-*</code> template variables and exposes a clean <code>--nume-*</code> API for new components.</p>
+<pre style="background:var(--nume-navy); color:#dbe7f1; padding:18px 20px; border-radius:12px; overflow:auto; font-size:13px; line-height:1.55"><code>:root {
+  /* Brand Kit — derived from logo */
+  --nume-blue:        #0077B6;
+  --nume-cyan:        #00A6C8;
+  --nume-teal:        #12C8B8;
+  --nume-navy:        #101D31;
+  --nume-slate-gray:  #7A8794;
+
+  /* Brand Guide — supporting tones */
+  --nume-mint:        #D8F7F2;
+  --nume-offwhite:    #F7FAFC;
+  --nume-slate:       #2E3E50;
+  --nume-white:       #ffffff;
+  --nume-border:      #E2E8F0;
+
+  /* Semantic aliases */
+  --nume-primary:      var(--nume-blue);
+  --nume-primary-dark: #005f92;
+  --nume-accent:       var(--nume-teal);
+  --nume-accent-dark:  #0fa898;
+  --nume-link:         var(--nume-blue);
+  --nume-link-hover:   var(--nume-cyan);
+  --nume-heading:      var(--nume-navy);
+  --nume-text:         var(--nume-slate);
+
+  /* Brand gradients */
+  --nume-gradient:      linear-gradient(135deg, var(--nume-blue) 0%, var(--nume-cyan) 50%, var(--nume-teal) 100%);
+  --nume-gradient-dark: linear-gradient(135deg, var(--nume-navy) 0%, #0f2842 50%, var(--nume-navy) 100%);
+
+  /* Override Suxnix template */
+  --tg-primary-color:    var(--nume-blue);
+  --tg-secondary-color:  var(--nume-teal);
+  --tg-heading-font-color: var(--nume-navy);
+}</code></pre>
+  </section>
+
+  <!-- ============ 6. COMPONENTS ============ -->
+  <section id="components">
+    <h2>6. Component previews</h2>
+    <p>Live examples rendered with the recommended tokens.</p>
+
+    <div class="card">
+      <h3 style="margin-top:0">Buttons</h3>
+      <div class="preview-row">
+        <a href="#" class="btn btn-primary">Primary CTA</a>
+        <a href="#" class="btn btn-accent">Accent CTA</a>
+        <a href="#" class="btn btn-outline">Outline</a>
+        <a href="#" class="btn btn-ghost">Ghost</a>
+        <a href="#" class="btn btn-link">Link button</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Badges &amp; pills</h3>
+      <div class="preview-row">
+        <span class="badge">New</span>
+        <span class="pill keep">Keep</span>
+        <span class="pill update">Update</span>
+        <span class="pill replace">Replace</span>
+        <span class="pill add">Add</span>
+        <span class="pill use">Brand</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Header / nav</h3>
+      <div class="nav-mock">
+        <strong style="color:var(--nume-navy)">Nume Health</strong>
+        <a href="#" class="active">Home</a>
+        <a href="#">Assessment</a>
+        <a href="#">Shop</a>
+        <a href="#">Contact</a>
+        <span style="margin-left:auto"></span>
+        <a href="#" class="btn btn-primary" style="padding:6px 14px; font-size:.9rem">Start Assessment</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Form</h3>
+      <div class="form-mock" style="max-width:500px">
+        <label>Email address</label>
+        <input type="email" placeholder="you@example.com">
+        <label>State</label>
+        <select><option>Select your state...</option></select>
+        <div style="margin-top:14px"><a href="#" class="btn btn-primary">Continue</a></div>
+      </div>
+    </div>
+
+    <div class="card" style="background:var(--nume-gradient-dark); border:none">
+      <h3 style="margin-top:0; color:#fff">Hero example (dark)</h3>
+      <p style="color:rgba(255,255,255,.85)">Physician-led GLP-1 care that fits your life. Start online. Get reviewed by a licensed clinician.</p>
+      <div class="preview-row">
+        <a href="#" class="btn btn-accent">Start Assessment</a>
+        <a href="#" style="color:#fff; border-color:#fff; background:transparent" class="btn btn-outline">See pricing</a>
+      </div>
+    </div>
+
+    <div class="card" style="background:var(--nume-mint)">
+      <h3 style="margin-top:0">Soft callout (use sparingly)</h3>
+      <p style="margin:0">Tip: pricing is shown after a short eligibility check — usually under 3 minutes.</p>
+    </div>
+  </section>
+
+  <!-- ============ 7. ACCESSIBILITY ============ -->
+  <section id="accessibility">
+    <h2>7. Accessibility &amp; contrast</h2>
+    <p>Every paired combination below meets WCAG AA for body text (4.5:1) or large text (3:1).</p>
+    <table>
+      <thead>
+        <tr><th>Foreground</th><th>Background</th><th>Ratio</th><th>Use</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="dot" style="background:#fff"></span>White</td><td><span class="dot" style="background:#0077B6"></span>Blue #0077B6</td><td>5.6 : 1 ✓</td><td>Primary buttons</td></tr>
+        <tr><td><span class="dot" style="background:#101D31"></span>Navy</td><td><span class="dot" style="background:#12C8B8"></span>Teal #12C8B8</td><td>9.8 : 1 ✓</td><td>Accent buttons (text on teal)</td></tr>
+        <tr><td><span class="dot" style="background:#fff"></span>White</td><td><span class="dot" style="background:#101D31"></span>Navy #101D31</td><td>16.4 : 1 ✓</td><td>Hero / footer</td></tr>
+        <tr><td><span class="dot" style="background:#2E3E50"></span>Slate</td><td><span class="dot" style="background:#F7FAFC"></span>Off-white</td><td>10.2 : 1 ✓</td><td>Body text</td></tr>
+        <tr><td><span class="dot" style="background:#0077B6"></span>Blue link</td><td><span class="dot" style="background:#fff"></span>White</td><td>5.6 : 1 ✓</td><td>Inline links</td></tr>
+        <tr><td><span class="dot" style="background:#7A8794"></span>Slate-gray</td><td><span class="dot" style="background:#fff"></span>White</td><td>3.4 : 1 ⚠</td><td>Helper text only — not body copy</td></tr>
+        <tr><td><span class="dot" style="background:#fff"></span>White</td><td><span class="dot" style="background:#12C8B8"></span>Teal</td><td>2.1 : 1 ✗</td><td>Avoid white text on teal — use navy</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============ 8. PROCESS ============ -->
+  <section id="process">
+    <h2>8. How to apply</h2>
+    <ol>
+      <li><b>CSS tokens</b> — already in <code>assets/css/nume-health.css</code>. Confirm it loads <em>after</em> <code>style.css</code> on every page.</li>
+      <li><b>Migrate hardcoded hex</b> — for any new component, prefer <code>var(--nume-*)</code> over a raw hex.</li>
+      <li><b>Search &amp; replace</b> — for the literals <code>#0B1B2B</code>, <code>#1BB6A8</code>, <code>#FAA432</code>, <code>#0A5DB8</code>, <code>#777777</code>, <code>#222222</code> still appearing in custom CSS, replace with the variable shown in §3.</li>
+      <li><b>SVG assets</b> — favicon and inline shapes should reference brand colors (or use <code>currentColor</code> and inherit from CSS).</li>
+      <li><b>QA pass</b> — visit each public page and the patient portal mocks, hover every interactive element, and confirm the rendered color matches §4.</li>
+    </ol>
+
+    <div class="footer-note">
+      <b>Open question:</b> for the patient portal (logged-in surfaces), do we keep the same palette or introduce a slightly different "calm" scheme (e.g. Mint surfaces + Navy text)? Recommendation: <b>same palette</b>, but lean on Mint and Off-white for surface tones to reduce visual fatigue during long sessions.
+    </div>
+  </section>
+</main>
+
+</body>
+</html>

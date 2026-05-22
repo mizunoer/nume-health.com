@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Nume Health – Logo &amp; Image Selection</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<style>
+  :root {
+    --nume-blue:  #0077B6;
+    --nume-cyan:  #00A6C8;
+    --nume-teal:  #12C8B8;
+    --nume-navy:  #101D31;
+    --nume-mint:  #D8F7F2;
+    --nume-offwhite: #F7FAFC;
+    --nume-slate: #2E3E50;
+    --nume-slate-gray: #7A8794;
+    --nume-white: #fff;
+    --nume-border: #E2E8F0;
+    --nume-primary: var(--nume-blue);
+    --nume-primary-dark: #005f92;
+    --nume-accent: var(--nume-teal);
+    --radius: 12px;
+    --radius-lg: 20px;
+    --shadow: 0 4px 24px rgba(0,119,182,.10);
+    --gradient-dark: linear-gradient(135deg, var(--nume-navy) 0%, #0f2842 50%, var(--nume-navy) 100%);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+    color: var(--nume-slate);
+    background: var(--nume-offwhite);
+  }
+  h1, h2, h3 { color: var(--nume-navy); margin: 0 0 .4em; line-height: 1.2; }
+  h1 { font-size: clamp(1.6rem, 3vw, 2.2rem); }
+  h2 { font-size: 1.4rem; margin-top: 2.2rem; }
+  h3 { font-size: 1.05rem; margin: 0 0 .25em; }
+  p { margin: 0 0 1em; }
+  code { font: 12.5px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: #eef2f7; padding: 2px 6px; border-radius: 4px; color: var(--nume-navy); }
+
+  /* hero */
+  .hero {
+    background: var(--gradient-dark);
+    color: var(--nume-white);
+    padding: 48px 24px 36px;
+    position: relative;
+  }
+  .hero::after {
+    content: ""; position: absolute; left:0; right:0; bottom:0; height: 5px;
+    background: linear-gradient(90deg, var(--nume-blue) 0%, var(--nume-cyan) 50%, var(--nume-teal) 100%);
+  }
+  .hero h1 { color: var(--nume-white); margin-bottom: .25em; }
+  .hero p  { color: rgba(255,255,255,.85); max-width: 800px; margin: 0; }
+
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 28px 24px 80px; }
+
+  .toolbar {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--nume-white);
+    border: 1px solid var(--nume-border);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
+    box-shadow: var(--shadow);
+  }
+  .toolbar .summary {
+    flex: 1 1 200px;
+    font-size: .92rem;
+  }
+  .toolbar .summary b { color: var(--nume-navy); }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 9px 16px;
+    border-radius: var(--radius);
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    border: 2px solid transparent;
+    font-size: .9rem;
+    transition: 0.2s ease;
+    background: transparent;
+    color: var(--nume-navy);
+  }
+  .btn-primary { background: var(--nume-primary); color: var(--nume-white); border-color: var(--nume-primary); }
+  .btn-primary:hover { background: var(--nume-primary-dark); border-color: var(--nume-primary-dark); }
+  .btn-outline { border-color: var(--nume-primary); color: var(--nume-primary); }
+  .btn-outline:hover { background: var(--nume-primary); color: var(--nume-white); }
+  .btn-ghost { border-color: var(--nume-border); }
+  .btn-ghost:hover { background: var(--nume-offwhite); }
+
+  /* Slots layout */
+  .slots {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  .slot {
+    background: var(--nume-white);
+    border: 1px solid var(--nume-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .slot header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--nume-border);
+    background: linear-gradient(0deg, var(--nume-offwhite) 0%, var(--nume-white) 100%);
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px;
+  }
+  .slot header h3 { margin: 0; }
+  .slot header .where {
+    font-size: .82rem; color: var(--nume-slate-gray);
+  }
+  .slot header .where code { background: var(--nume-mint); color: var(--nume-navy); }
+  .slot header .specs {
+    color: var(--nume-slate-gray);
+    font-size: .82rem;
+  }
+  .slot header .selected-name {
+    background: var(--nume-mint);
+    color: var(--nume-navy);
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: .75rem;
+    font-weight: 600;
+    margin-left: 8px;
+  }
+  .slot header .selected-name.empty { background: #FEF3C7; color: #92400E; }
+
+  .candidates {
+    padding: 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .cand {
+    border: 2px solid var(--nume-border);
+    background: var(--nume-white);
+    border-radius: var(--radius);
+    padding: 12px;
+    cursor: pointer;
+    transition: 0.18s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: left;
+    font: inherit;
+    color: inherit;
+  }
+  .cand:hover {
+    border-color: var(--nume-cyan);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,119,182,.10);
+  }
+  .cand.selected {
+    border-color: var(--nume-primary);
+    background: linear-gradient(0deg, #eaf6fd 0%, var(--nume-white) 60%);
+    box-shadow: 0 4px 16px rgba(0,119,182,.18);
+  }
+  .cand.selected::after {
+    content: "✓ Selected";
+    position: absolute; top: 8px; right: 8px;
+    background: var(--nume-primary); color: var(--nume-white);
+    font-size: .7rem; font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 999px;
+    letter-spacing: .04em;
+  }
+  .cand .preview {
+    width: 100%; height: 100px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    background: var(--nume-offwhite);
+    border: 1px dashed var(--nume-border);
+  }
+  .cand.dark .preview { background: var(--nume-navy); border-color: rgba(255,255,255,.1); }
+  .cand.checkered .preview {
+    background-image:
+      linear-gradient(45deg, #eef3f8 25%, transparent 25%),
+      linear-gradient(-45deg, #eef3f8 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #eef3f8 75%),
+      linear-gradient(-45deg, transparent 75%, #eef3f8 75%);
+    background-size: 16px 16px;
+    background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+    background-color: #fff;
+  }
+  .cand .preview img {
+    max-width: 90%; max-height: 80%;
+    object-fit: contain;
+  }
+  .cand .name {
+    font-weight: 600; font-size: .9rem;
+    color: var(--nume-navy);
+    margin-bottom: 4px;
+    word-break: break-word;
+  }
+  .cand .path {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .72rem;
+    color: var(--nume-slate-gray);
+    word-break: break-all;
+  }
+  .cand .tag {
+    display: inline-block;
+    margin-top: 6px;
+    background: var(--nume-mint);
+    color: var(--nume-navy);
+    font-size: .7rem;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 999px;
+    letter-spacing: .03em;
+  }
+  .cand .tag.recommended {
+    background: var(--nume-primary);
+    color: var(--nume-white);
+  }
+
+  /* Output panel */
+  .output {
+    background: var(--nume-navy);
+    color: #dbe7f1;
+    border-radius: var(--radius-lg);
+    padding: 18px 20px;
+    margin-top: 24px;
+    overflow: auto;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.55;
+    max-height: 500px;
+  }
+  .output h3 { color: #fff; font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin-bottom: 10px; }
+  .output pre { margin: 0; white-space: pre-wrap; word-break: break-word; }
+
+  details > summary {
+    cursor: pointer;
+    padding: 8px 0;
+    font-weight: 600;
+    color: var(--nume-navy);
+  }
+  details > summary:hover { color: var(--nume-primary); }
+
+  .legend-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; align-items: center; }
+  .legend-row .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px;
+    font-size: .78rem; font-weight: 600;
+    background: var(--nume-mint); color: var(--nume-navy);
+  }
+  .legend-row .pill.rec { background: var(--nume-primary); color: var(--nume-white); }
+  .legend-row .pill.alt { background: #fef3c7; color: #92400E; }
+
+  .empty-msg {
+    color: var(--nume-slate-gray);
+    font-size: .9rem;
+    grid-column: 1 / -1;
+    padding: 16px;
+    text-align: center;
+    border: 1px dashed var(--nume-border);
+    border-radius: var(--radius);
+  }
+
+  @media (max-width: 600px) {
+    .toolbar { flex-direction: column; align-items: stretch; }
+    .toolbar .summary { text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap" style="padding:0">
+    <h1>Nume Health — Logo &amp; Image Selection</h1>
+    <p>This is the asset picker for the website. Each slot below shows where an image is used in the project, what dimensions are recommended, and the candidate files from the brand kit. <b>Click a candidate to assign it to that slot.</b> Choices are saved in your browser. Use <em>Copy mapping</em> at the bottom to share your selection with engineering.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div class="toolbar" id="toolbar">
+    <div class="summary">
+      <b id="selectedCount">0</b> of <b id="totalCount">0</b> slots selected.
+      <span id="defaultsHint" style="color:var(--nume-slate-gray); margin-left:8px">
+        Tip: click "Use recommended" to auto-fill with the production-ready defaults.
+      </span>
+    </div>
+    <button class="btn btn-primary" id="useRecommended" type="button">Use recommended</button>
+    <button class="btn btn-outline" id="copyMapping" type="button">Copy mapping</button>
+    <button class="btn btn-ghost" id="resetAll" type="button">Reset</button>
+  </div>
+
+  <div class="legend-row">
+    <span class="pill rec">★ Recommended</span>
+    <span class="pill alt">Alternative</span>
+    <span class="pill">Click to assign</span>
+  </div>
+
+  <div class="slots" id="slots"></div>
+
+  <details style="margin-top:28px">
+    <summary>Show all logos in the brand kit (browse)</summary>
+    <div id="allAssets" class="candidates" style="padding-top:12px"></div>
+  </details>
+
+  <div id="outputPanel" style="display:none">
+    <h2 style="margin-top:32px">Your selection</h2>
+    <p>This is the mapping engineering will apply. Drop these paths into header / footer templates, the manifest, and meta tags.</p>
+    <div class="output">
+      <h3>JSON</h3>
+      <pre id="outJson"></pre>
+    </div>
+    <div class="output" style="background:#0f2842">
+      <h3>HTML snippets (header / favicon / OG)</h3>
+      <pre id="outHtml"></pre>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  /* ---------- Asset library (relative paths, project-rooted) ---------- */
+  const KIT = "nume_health_brand_kit";
+  const KIT2 = "project documents/nume_health_logo_kit";
+
+  /* Meta about each candidate file. Used by both slot rendering and the
+     full asset browser at the bottom of the page. */
+  const ASSETS = [
+    /* === Brand Kit – horizontal / lockup === */
+    { id: "kit-website-header-png-480",     path: KIT+"/web/website-header-logo-480w.png",      label: "Header lockup 480w (PNG)",   bg: "light",     dims: "480px wide" },
+    { id: "kit-website-header-png-320",     path: KIT+"/web/website-header-logo-320w.png",      label: "Header lockup 320w (PNG)",   bg: "light",     dims: "320px wide (mobile)" },
+    { id: "kit-website-header-svg",         path: KIT+"/svg/nume-health-website-header.svg",    label: "Header lockup (SVG)",        bg: "light",     dims: "scalable vector" },
+    { id: "kit-primary-horizontal-png",     path: KIT+"/logos/primary/nume-health-primary-horizontal-color-transparent.png", label: "Primary horizontal (PNG)", bg: "light", dims: "transparent ~1500px" },
+    { id: "kit-primary-horizontal-svg",     path: KIT+"/svg/nume-health-primary-horizontal.svg",label: "Primary horizontal (SVG)",   bg: "light",     dims: "scalable vector" },
+    { id: "kit-stacked-svg",                path: KIT+"/svg/nume-health-stacked.svg",           label: "Stacked lockup (SVG)",       bg: "light",     dims: "vertical layout" },
+    { id: "kit-stacked-png",                path: KIT+"/transparent-png/nume-health-stacked.png", label: "Stacked lockup (PNG)",    bg: "light",     dims: "transparent ~1200px" },
+
+    /* === Reversed (for dark backgrounds) === */
+    { id: "kit-reversed-svg",               path: KIT+"/svg/nume-health-reversed-horizontal.svg", label: "Reversed horizontal (SVG)", bg: "dark",     dims: "scalable vector" },
+    { id: "kit-reversed-on-navy-png",       path: KIT+"/logos/reversed/nume-health-logo-reversed-on-navy.png", label: "Reversed on Navy (PNG)", bg: "dark", dims: "navy bg, ~1500px" },
+    { id: "kit-reversed-trans-png",         path: KIT+"/logos/reversed/nume-health-logo-reversed-transparent.png", label: "Reversed on transparent (PNG)", bg: "dark", dims: "transparent" },
+    { id: "kit-marketing-reversed-1200",    path: KIT+"/marketing/marketing-reversed-on-navy-1200w.png", label: "Marketing reversed 1200w", bg: "dark", dims: "1200px wide" },
+
+    /* === Mark / icon only === */
+    { id: "kit-mark-svg",                   path: KIT+"/svg/nume-health-mark-only.svg",          label: "Mark only (SVG)",            bg: "any",       dims: "scalable vector" },
+    { id: "kit-mark-png",                   path: KIT+"/logos/marks/nume-health-mark-color-transparent.png", label: "Mark only (PNG)",  bg: "any",       dims: "transparent" },
+    { id: "kit-mark-compact-png",           path: KIT+"/logos/marks/nume-health-mark-color-compact-transparent.png", label: "Mark compact (PNG)", bg: "any", dims: "tighter padding" },
+    { id: "kit-app-icon-svg",               path: KIT+"/svg/nume-health-app-icon.svg",           label: "App icon (SVG)",             bg: "any",       dims: "rounded square" },
+    { id: "kit-app-icon-png",               path: KIT+"/transparent-png/nume-health-app-icon.png", label: "App icon (PNG)",          bg: "any",       dims: "transparent" },
+
+    /* === Favicons (PNG sizes) === */
+    { id: "kit-favicon-ico",                path: KIT+"/web/favicon.ico",                        label: "favicon.ico (multi-size)",   bg: "any",       dims: "16/32/48 ICO" },
+    { id: "kit-favicon-16",                 path: KIT+"/web/favicon-16x16.png",                  label: "favicon 16×16",              bg: "any",       dims: "16×16" },
+    { id: "kit-favicon-32",                 path: KIT+"/web/favicon-32x32.png",                  label: "favicon 32×32",              bg: "any",       dims: "32×32" },
+    { id: "kit-favicon-48",                 path: KIT+"/web/favicon-48x48.png",                  label: "favicon 48×48",              bg: "any",       dims: "48×48" },
+    { id: "kit-favicon-64",                 path: KIT+"/web/favicon-64x64.png",                  label: "favicon 64×64",              bg: "any",       dims: "64×64" },
+    { id: "kit-favicon-128",                path: KIT+"/web/favicon-128x128.png",                label: "favicon 128×128",            bg: "any",       dims: "128×128" },
+    { id: "kit-favicon-256",                path: KIT+"/web/favicon-256x256.png",                label: "favicon 256×256",            bg: "any",       dims: "256×256" },
+
+    /* === iOS / Android === */
+    { id: "kit-apple-touch-180",            path: KIT+"/web/apple-touch-icon.png",               label: "Apple touch icon",            bg: "any",       dims: "180×180" },
+    { id: "kit-android-192",                path: KIT+"/web/android-chrome-192x192.png",         label: "Android Chrome 192",          bg: "any",       dims: "192×192" },
+    { id: "kit-android-512",                path: KIT+"/web/android-chrome-512x512.png",         label: "Android Chrome 512",          bg: "any",       dims: "512×512" },
+
+    /* === Email signatures === */
+    { id: "kit-email-300",                  path: KIT+"/email/email-signature-logo-300w.png",    label: "Email signature 300w",        bg: "light",     dims: "300px wide" },
+    { id: "kit-email-600",                  path: KIT+"/email/email-signature-logo-600w.png",    label: "Email signature 600w",        bg: "light",     dims: "600px wide (retina)" },
+    { id: "kit-email-svg",                  path: KIT+"/svg/nume-health-email-signature.svg",    label: "Email signature (SVG)",       bg: "light",     dims: "vector" },
+
+    /* === Social / OG === */
+    { id: "kit-social-cover-rev",           path: KIT+"/social/social-cover-1200x630-reversed.png", label: "OG / share image (reversed)", bg: "dark", dims: "1200×630" },
+    { id: "kit-social-cover-white",         path: KIT+"/social/social-cover-1200x630-white.png", label: "OG / share image (white)",     bg: "light", dims: "1200×630" },
+    { id: "kit-social-banner-logo",         path: KIT+"/social/nume-health-social-banner-logo.png", label: "Social banner logo",        bg: "light", dims: "wide horizontal" },
+    { id: "kit-social-avatar-svg",          path: KIT+"/svg/nume-health-social-avatar.svg",      label: "Social avatar (SVG)",         bg: "any",       dims: "round-friendly" },
+    { id: "kit-profile-white-1080",         path: KIT+"/social/profile-logo-white-1080.png",     label: "Profile avatar – white",      bg: "light",     dims: "1080×1080" },
+    { id: "kit-profile-teal-1080",          path: KIT+"/social/profile-logo-teal-1080.png",      label: "Profile avatar – teal",       bg: "any",       dims: "1080×1080" },
+    { id: "kit-profile-navy-1080",          path: KIT+"/social/profile-logo-reversed-navy-1080.png", label: "Profile avatar – navy",   bg: "dark",      dims: "1080×1080" },
+
+    /* === Marketing / large === */
+    { id: "kit-marketing-primary",          path: KIT+"/marketing/marketing-primary-transparent.png", label: "Marketing primary", bg: "light", dims: "transparent, large" },
+    { id: "kit-marketing-banner-1200",      path: KIT+"/marketing/marketing-social-banner-1200w.png", label: "Marketing banner 1200w", bg: "light", dims: "1200×~400" },
+
+    /* === Legacy logo kit (alternates) === */
+    { id: "old-lockup-color-512",           path: KIT2+"/exports/png/logo-lockup/numehealth_lockup_color_w512.png", label: "Legacy lockup color 512w", bg: "light", dims: "512px wide" },
+    { id: "old-lockup-color-1024",          path: KIT2+"/exports/png/logo-lockup/numehealth_lockup_color_w1024.png", label: "Legacy lockup color 1024w", bg: "light", dims: "1024px wide" },
+    { id: "old-lockup-white-512",           path: KIT2+"/exports/png/logo-lockup/numehealth_lockup_white_w512.png", label: "Legacy lockup white 512w", bg: "dark", dims: "512px wide" },
+    { id: "old-lockup-white-1024",          path: KIT2+"/exports/png/logo-lockup/numehealth_lockup_white_w1024.png", label: "Legacy lockup white 1024w", bg: "dark", dims: "1024px wide" },
+    { id: "old-icon-512",                   path: KIT2+"/exports/png/icon-mark/numehealth_icon_color_512.png", label: "Legacy icon 512", bg: "any", dims: "512×512" },
+    { id: "old-icon-white-512",             path: KIT2+"/exports/png/icon-mark/numehealth_icon_white_512.png", label: "Legacy icon white 512", bg: "dark", dims: "512×512" },
+    { id: "old-app-icon-1024",              path: KIT2+"/exports/app-icons/app_icon_1024.png", label: "Legacy app icon 1024", bg: "any", dims: "1024×1024" },
+    { id: "old-svg-lockup",                 path: KIT2+"/exports/svg/numehealth_lockup_embed.svg", label: "Legacy lockup (SVG)", bg: "light", dims: "vector" },
+    { id: "old-svg-icon",                   path: KIT2+"/exports/svg/numehealth_icon_embed.svg", label: "Legacy icon (SVG)", bg: "any", dims: "vector" }
+  ];
+  const ASSET_BY_ID = Object.fromEntries(ASSETS.map(a => [a.id, a]));
+
+  /* ---------- Slot definitions ---------- */
+  /*
+    Each slot:
+      key:       project-internal slot id (saved to localStorage)
+      title:     human label
+      where:     destination file in the project
+      specs:     dimensions / format guidance
+      candidates: ordered list of asset ids (first = recommended)
+  */
+  const SLOTS = [
+    {
+      key: "header_logo_primary",
+      title: "Site header logo",
+      where: "assets/img/logo/logo.png  ·  assets/img/logo/logo.svg",
+      specs: "Lockup on light background. Header height ~40–56px on desktop. Provide PNG + SVG.",
+      candidates: ["kit-website-header-svg", "kit-website-header-png-480", "kit-primary-horizontal-svg", "kit-primary-horizontal-png", "old-svg-lockup", "old-lockup-color-1024"]
+    },
+    {
+      key: "header_logo_mobile",
+      title: "Mobile header logo",
+      where: "Mobile menu drawer (≤ 991px)",
+      specs: "Smaller-friendly variant; either same lockup or compact mark.",
+      candidates: ["kit-website-header-png-320", "kit-website-header-svg", "kit-mark-svg", "kit-mark-compact-png"]
+    },
+    {
+      key: "footer_logo",
+      title: "Footer / hero logo (dark bg)",
+      where: "assets/img/logo/white_logo.svg  ·  assets/img/logo/white_logo.png",
+      specs: "Reversed lockup on Navy. Used in footer and dark hero blocks.",
+      candidates: ["kit-reversed-svg", "kit-reversed-trans-png", "kit-reversed-on-navy-png", "old-lockup-white-1024", "old-lockup-white-512"]
+    },
+    {
+      key: "favicon_svg",
+      title: "Favicon (SVG, primary)",
+      where: "assets/img/favicon.svg",
+      specs: "Scalable vector. Mark only — no wordmark — for legibility at 16px.",
+      candidates: ["kit-mark-svg", "kit-app-icon-svg", "old-svg-icon"]
+    },
+    {
+      key: "favicon_ico",
+      title: "Favicon ICO (legacy fallback)",
+      where: "assets/img/favicon.ico",
+      specs: "Multi-size ICO (16/32/48). For older browsers.",
+      candidates: ["kit-favicon-ico"]
+    },
+    {
+      key: "favicon_png_32",
+      title: "Favicon 32×32 PNG",
+      where: "assets/img/favicon-32x32.png",
+      specs: "Modern browsers also use this when SVG is unsupported.",
+      candidates: ["kit-favicon-32"]
+    },
+    {
+      key: "favicon_png_16",
+      title: "Favicon 16×16 PNG",
+      where: "assets/img/favicon-16x16.png",
+      specs: "Tiny — readability-first. Mark only.",
+      candidates: ["kit-favicon-16"]
+    },
+    {
+      key: "apple_touch",
+      title: "Apple Touch Icon",
+      where: "assets/img/apple-touch-icon.png",
+      specs: "180×180. Opaque background recommended (iOS won't add one).",
+      candidates: ["kit-apple-touch-180"]
+    },
+    {
+      key: "android_192",
+      title: "Android / PWA icon 192",
+      where: "assets/img/android-chrome-192x192.png",
+      specs: "192×192 for installable PWA.",
+      candidates: ["kit-android-192"]
+    },
+    {
+      key: "android_512",
+      title: "Android / PWA icon 512",
+      where: "assets/img/android-chrome-512x512.png",
+      specs: "512×512 for installable PWA splash / app launcher.",
+      candidates: ["kit-android-512"]
+    },
+    {
+      key: "og_share_image",
+      title: "Open Graph / Twitter share image",
+      where: "<meta property=\"og:image\"> on every page",
+      specs: "1200×630. Use the reversed-on-navy version for high contrast in feeds.",
+      candidates: ["kit-social-cover-rev", "kit-social-cover-white"]
+    },
+    {
+      key: "email_signature",
+      title: "Email signature logo",
+      where: "Outlook / Gmail signature template",
+      specs: "300px wide standard, 600px wide for retina.",
+      candidates: ["kit-email-300", "kit-email-600", "kit-email-svg"]
+    },
+    {
+      key: "social_avatar",
+      title: "Social profile avatar (Instagram, X, LinkedIn)",
+      where: "Each platform's profile image",
+      specs: "1080×1080 square. Pick one variant for consistent recognition across platforms.",
+      candidates: ["kit-profile-white-1080", "kit-profile-teal-1080", "kit-profile-navy-1080", "kit-social-avatar-svg"]
+    },
+    {
+      key: "marketing_primary",
+      title: "Marketing primary (decks, ads on light bg)",
+      where: "Slides, ad creative, partner pages",
+      specs: "Transparent PNG, large width for resampling.",
+      candidates: ["kit-marketing-primary", "kit-primary-horizontal-png", "kit-stacked-png"]
+    },
+    {
+      key: "marketing_reversed",
+      title: "Marketing reversed (dark bg ads, takeovers)",
+      where: "Slides, paid social, dark hero photography",
+      specs: "Reversed lockup on transparent. Use on Navy or dark imagery.",
+      candidates: ["kit-marketing-reversed-1200", "kit-reversed-trans-png", "old-lockup-white-1024"]
+    },
+    {
+      key: "app_icon_master",
+      title: "App icon master (1024)",
+      where: "iOS / Android store submissions",
+      specs: "1024×1024 master, opaque, no transparency.",
+      candidates: ["old-app-icon-1024", "kit-app-icon-png", "kit-android-512"]
+    }
+  ];
+
+  const STORAGE_KEY = "nume.imageSelection.v1";
+  let state = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+
+  function save() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    refreshHeader();
+    refreshSelectionVisuals();
+    refreshOutput();
+  }
+
+  function refreshHeader() {
+    const total = SLOTS.length;
+    const selected = SLOTS.filter(s => state[s.key]).length;
+    document.getElementById("totalCount").textContent = total;
+    document.getElementById("selectedCount").textContent = selected;
+  }
+
+  function refreshSelectionVisuals() {
+    SLOTS.forEach(slot => {
+      const sel = state[slot.key];
+      const slotEl = document.querySelector('[data-slot="'+slot.key+'"]');
+      if (!slotEl) return;
+      slotEl.querySelectorAll(".cand").forEach(btn => {
+        btn.classList.toggle("selected", btn.dataset.assetId === sel);
+      });
+      const tag = slotEl.querySelector(".selected-name");
+      if (sel) {
+        const a = ASSET_BY_ID[sel];
+        tag.textContent = "Selected: " + (a ? a.label : sel);
+        tag.classList.remove("empty");
+      } else {
+        tag.textContent = "Not selected";
+        tag.classList.add("empty");
+      }
+    });
+  }
+
+  function refreshOutput() {
+    const out = document.getElementById("outputPanel");
+    const anySelected = SLOTS.some(s => state[s.key]);
+    out.style.display = anySelected ? "block" : "none";
+    if (!anySelected) return;
+
+    const json = {};
+    SLOTS.forEach(s => {
+      if (state[s.key]) {
+        const a = ASSET_BY_ID[state[s.key]];
+        json[s.key] = { destination: s.where, source: a ? a.path : null, label: a ? a.label : null };
+      }
+    });
+    document.getElementById("outJson").textContent = JSON.stringify(json, null, 2);
+
+    const lines = [];
+    const get = (k) => state[k] ? ASSET_BY_ID[state[k]] : null;
+
+    const headSvg = get("favicon_svg");
+    const headIco = get("favicon_ico");
+    const head32  = get("favicon_png_32");
+    const head16  = get("favicon_png_16");
+    const apple   = get("apple_touch");
+    const og      = get("og_share_image");
+
+    lines.push("<!-- Place inside <head> on every page -->");
+    if (headSvg) lines.push('<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">');
+    if (head32)  lines.push('<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">');
+    if (head16)  lines.push('<link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png">');
+    if (headIco) lines.push('<link rel="alternate icon" href="assets/img/favicon.ico">');
+    if (apple)   lines.push('<link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">');
+    lines.push('<link rel="manifest" href="site.webmanifest">');
+    if (og) {
+      lines.push('');
+      lines.push('<!-- Social share -->');
+      lines.push('<meta property="og:image" content="https://nume-health.com/assets/img/og-image.png">');
+      lines.push('<meta name="twitter:card" content="summary_large_image">');
+      lines.push('<!-- Source for og-image.png: '+og.path+' -->');
+    }
+
+    const headerLogo = get("header_logo_primary");
+    if (headerLogo) {
+      lines.push('');
+      lines.push('<!-- Header logo (replace existing <img>) -->');
+      lines.push('<img src="assets/img/logo/logo.png" alt="Nume Health" onerror="this.src=\'assets/img/logo/logo.svg\'; this.onerror=null;">');
+      lines.push('<!-- Source: '+headerLogo.path+' -->');
+    }
+    const footerLogo = get("footer_logo");
+    if (footerLogo) {
+      lines.push('');
+      lines.push('<!-- Footer logo -->');
+      lines.push('<img src="assets/img/logo/white_logo.svg" alt="Nume Health" onerror="this.src=\'assets/img/logo/white_logo.png\'; this.onerror=null;">');
+      lines.push('<!-- Source: '+footerLogo.path+' -->');
+    }
+
+    document.getElementById("outHtml").textContent = lines.join("\n");
+  }
+
+  /* ---------- Renderers ---------- */
+  function bgClass(bg) {
+    if (bg === "dark") return "dark";
+    if (bg === "any")  return "checkered";
+    return "";
+  }
+
+  function renderCandidate(slot, assetId, isFirst) {
+    const a = ASSET_BY_ID[assetId];
+    if (!a) return "";
+    const cls = bgClass(a.bg);
+    return `
+      <button class="cand ${cls}" data-asset-id="${a.id}" data-slot="${slot.key}" type="button" title="Click to assign to ${slot.title}">
+        <div class="preview"><img src="${a.path}" alt="${a.label}" loading="lazy" onerror="this.style.opacity=.2"></div>
+        <div class="name">${a.label}</div>
+        <div class="path">${a.path}</div>
+        <div>
+          <span class="tag${isFirst ? ' recommended' : ''}">${isFirst ? '★ Recommended' : 'Alternative'}</span>
+          <span class="tag" style="background:#e2e8f0; color:#334155">${a.dims}</span>
+        </div>
+      </button>`;
+  }
+
+  function renderSlot(slot) {
+    const cands = slot.candidates.map((c,i) => renderCandidate(slot, c, i===0)).join("");
+    return `
+      <section class="slot" data-slot="${slot.key}">
+        <header>
+          <div>
+            <h3>${slot.title}</h3>
+            <div class="where">Goes in: <code>${slot.where}</code></div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <span class="specs">${slot.specs}</span>
+            <span class="selected-name empty">Not selected</span>
+          </div>
+        </header>
+        <div class="candidates">${cands || '<div class="empty-msg">No candidates wired up.</div>'}</div>
+      </section>`;
+  }
+
+  function renderAllAssets() {
+    return ASSETS.map(a => `
+      <div class="cand ${bgClass(a.bg)}" style="cursor:default" tabindex="-1">
+        <div class="preview"><img src="${a.path}" alt="${a.label}" loading="lazy" onerror="this.style.opacity=.2"></div>
+        <div class="name">${a.label}</div>
+        <div class="path">${a.path}</div>
+        <div><span class="tag" style="background:#e2e8f0; color:#334155">${a.dims}</span></div>
+      </div>`).join("");
+  }
+
+  /* ---------- Boot ---------- */
+  document.getElementById("slots").innerHTML = SLOTS.map(renderSlot).join("");
+  document.getElementById("allAssets").innerHTML = renderAllAssets();
+
+  document.getElementById("slots").addEventListener("click", (e) => {
+    const btn = e.target.closest(".cand");
+    if (!btn) return;
+    const slotKey = btn.dataset.slot;
+    const assetId = btn.dataset.assetId;
+    if (state[slotKey] === assetId) {
+      delete state[slotKey];
+    } else {
+      state[slotKey] = assetId;
+    }
+    save();
+  });
+
+  document.getElementById("useRecommended").addEventListener("click", () => {
+    SLOTS.forEach(s => { if (s.candidates[0]) state[s.key] = s.candidates[0]; });
+    save();
+  });
+
+  document.getElementById("resetAll").addEventListener("click", () => {
+    if (!confirm("Clear all selections?")) return;
+    state = {};
+    save();
+  });
+
+  document.getElementById("copyMapping").addEventListener("click", async () => {
+    const json = {};
+    SLOTS.forEach(s => {
+      if (state[s.key]) {
+        const a = ASSET_BY_ID[state[s.key]];
+        json[s.key] = { destination: s.where, source: a ? a.path : null };
+      }
+    });
+    const md = ["# Nume Health — Image Selection",""];
+    SLOTS.forEach(s => {
+      const sel = state[s.key];
+      const a = sel ? ASSET_BY_ID[sel] : null;
+      md.push("## "+s.title);
+      md.push("- Destination: `"+s.where+"`");
+      md.push("- Selected: "+(a ? "`"+a.path+"` ("+a.label+")" : "_(not selected)_"));
+      md.push("");
+    });
+    const txt = md.join("\n") + "\n\n```json\n" + JSON.stringify(json, null, 2) + "\n```\n";
+    try {
+      await navigator.clipboard.writeText(txt);
+      alert("Selection mapping copied to clipboard.");
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = txt;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      alert("Selection mapping copied (fallback).");
+    }
+  });
+
+  refreshHeader();
+  refreshSelectionVisuals();
+  refreshOutput();
+</script>
+</body>
+</html>

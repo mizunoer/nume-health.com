@@ -3,27 +3,66 @@
  * Sales-focused, responsive, social-campaign ready
  */
 
-/* ========== Variables (Nume Health Brand Guide v1) ========== */
+/* ==========================================================
+   Nume Health – Color System (Brand Kit aligned)
+   ----------------------------------------------------------
+   Sources of truth:
+   - nume_health_brand_kit/web/nume-brand.css   (logo-derived)
+   - project documents/Nume_Health_Brand_Guide_v1.md (initial guide)
+
+   The brand-kit colors are sampled from the real lockup
+   (blue -> cyan -> teal gradient) so they take priority for
+   anything that touches the logo. The brand-guide palette is
+   kept as supporting tones (mint, off-white, slate) for
+   surfaces and body text.
+   ========================================================== */
 :root {
-  --nume-navy: #0B1B2B;
-  --nume-teal: #1BB6A8;
-  --nume-mint: #D8F7F2;
-  --nume-offwhite: #F7FAFC;
-  --nume-slate: #2E3E50;
-  --nume-ocean: #0A5DB8;
-  /* Aliases for components */
-  --nume-primary: #1BB6A8;
-  --nume-primary-dark: #159a8e;
-  --nume-accent: #1BB6A8;
-  --nume-heading: #0B1B2B;
-  --nume-text: #2E3E50;
-  --nume-light: #F7FAFC;
-  --nume-white: #ffffff;
-  --nume-shadow: 0 4px 24px rgba(27, 182, 168, 0.12);
-  --nume-shadow-hover: 0 8px 32px rgba(27, 182, 168, 0.18);
-  --nume-radius: 12px;
-  --nume-radius-lg: 20px;
-  --nume-transition: 0.3s ease;
+  /* --- Core brand-kit palette (matches the logo gradient) --- */
+  --nume-blue:   #0077B6;   /* Primary brand blue (CTAs, links) */
+  --nume-cyan:   #00A6C8;   /* Secondary / hover, gradient mid-stop */
+  --nume-teal:   #12C8B8;   /* Accent (highlights, success-y states) */
+  --nume-navy:   #101D31;   /* Dark backgrounds, headers */
+  --nume-slate-gray: #7A8794; /* Muted UI text, dividers */
+
+  /* --- Brand-guide supporting tones --- */
+  --nume-mint:     #D8F7F2;  /* Soft tinted backgrounds, badges */
+  --nume-offwhite: #F7FAFC;  /* Page background, light surfaces */
+  --nume-slate:    #2E3E50;  /* Body text (better contrast than slate-gray) */
+  --nume-white:    #ffffff;
+
+  /* --- Semantic aliases used by components --- */
+  --nume-primary:        var(--nume-blue);
+  --nume-primary-dark:   #005f92;        /* darker blue for hover */
+  --nume-accent:         var(--nume-teal);
+  --nume-accent-dark:    #0fa898;
+  --nume-link:           var(--nume-blue);
+  --nume-link-hover:     var(--nume-cyan);
+  --nume-heading:        var(--nume-navy);
+  --nume-text:           var(--nume-slate);
+  --nume-text-muted:     var(--nume-slate-gray);
+  --nume-light:          var(--nume-offwhite);
+  --nume-border:         #E2E8F0;
+
+  /* --- Brand gradient (use for hero/CTA backgrounds) --- */
+  --nume-gradient: linear-gradient(135deg, var(--nume-blue) 0%, var(--nume-cyan) 50%, var(--nume-teal) 100%);
+  --nume-gradient-dark: linear-gradient(135deg, var(--nume-navy) 0%, #0f2842 50%, var(--nume-navy) 100%);
+
+  /* --- Shadows / radii / motion --- */
+  --nume-shadow:        0 4px 24px rgba(0, 119, 182, 0.10);
+  --nume-shadow-hover:  0 8px 32px rgba(0, 119, 182, 0.18);
+  --nume-shadow-soft:   0 2px 12px rgba(16, 29, 49, 0.06);
+  --nume-radius:        12px;
+  --nume-radius-lg:     20px;
+  --nume-transition:    0.3s ease;
+
+  /* --- Override template (Suxnix) variables to brand --- */
+  --tg-primary-color:      var(--nume-blue);
+  --tg-secondary-color:    var(--nume-teal);
+  --tg-heading-font-color: var(--nume-navy);
+  --tg-body-font-color:    var(--nume-slate);
+  --tg-paragraph-color:    var(--nume-slate);
+  --tg-dark:               var(--nume-navy);
+  --tg-dark-two:           var(--nume-navy);
 }
 
 /* ========== Typography ========== */
@@ -41,7 +80,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ========== Landing hero – sales-oriented ========== */
 .banner-area {
-  background: linear-gradient(135deg, #0B1B2B 0%, #0f2842 50%, #0B1B2B 100%);
+  background: var(--nume-gradient-dark);
   min-height: 85vh;
   display: flex;
   align-items: center;
@@ -209,7 +248,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .form-control:focus, .form-select:focus {
   border-color: var(--nume-primary);
-  box-shadow: 0 0 0 3px rgba(27, 182, 168, 0.2);
+  box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.18);
 }
 .form-label {
   font-weight: 600;
@@ -316,11 +355,223 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* ========== Bottom-corner elements – brand colors ========== */
+.scroll-top {
+  background: var(--nume-primary) !important;
+  color: var(--nume-white) !important;
+}
+.scroll-top:hover {
+  background: var(--nume-primary-dark) !important;
+}
+#preloader .tg-cube {
+  background: var(--nume-accent) !important;
+}
+
 /* ========== Utility: logo fallback ========== */
+.logo img[alt="Nume Health"],
 .logo img[alt="nume-health.com"] {
   max-height: 40px;
   width: auto;
 }
 .footer-logo img {
   max-height: 36px;
+}
+
+/* ==========================================================
+   Implementation of Update_Colors.html recommendations
+   - body/heading variables already overridden in :root
+   - utilities below cover element-by-element rules
+   ========================================================== */
+
+/* ---------- Links: brand-aligned states ---------- */
+a {
+  color: var(--nume-link);
+  transition: color var(--nume-transition);
+}
+a:hover, a:focus {
+  color: var(--nume-link-hover);
+}
+
+/* ---------- Buttons: utility classes ---------- */
+.nume-btn,
+a.nume-btn,
+button.nume-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: var(--nume-radius);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.2;
+  text-decoration: none;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: var(--nume-transition);
+  white-space: nowrap;
+}
+.nume-btn--primary,
+a.nume-btn--primary {
+  background: var(--nume-primary);
+  border-color: var(--nume-primary);
+  color: var(--nume-white) !important;
+}
+.nume-btn--primary:hover,
+a.nume-btn--primary:hover {
+  background: var(--nume-primary-dark);
+  border-color: var(--nume-primary-dark);
+  color: var(--nume-white) !important;
+  transform: translateY(-1px);
+  box-shadow: var(--nume-shadow);
+}
+.nume-btn--accent,
+a.nume-btn--accent {
+  background: var(--nume-accent);
+  border-color: var(--nume-accent);
+  color: var(--nume-navy) !important;
+}
+.nume-btn--accent:hover,
+a.nume-btn--accent:hover {
+  background: var(--nume-accent-dark);
+  border-color: var(--nume-accent-dark);
+  color: var(--nume-white) !important;
+  transform: translateY(-1px);
+  box-shadow: var(--nume-shadow);
+}
+.nume-btn--outline,
+a.nume-btn--outline {
+  background: transparent;
+  border-color: var(--nume-primary);
+  color: var(--nume-primary) !important;
+}
+.nume-btn--outline:hover,
+a.nume-btn--outline:hover {
+  background: var(--nume-primary);
+  color: var(--nume-white) !important;
+}
+.nume-btn--ghost,
+a.nume-btn--ghost {
+  background: transparent;
+  border-color: var(--nume-border);
+  color: var(--nume-navy) !important;
+}
+.nume-btn--ghost:hover,
+a.nume-btn--ghost:hover {
+  background: var(--nume-offwhite);
+  border-color: var(--nume-slate-gray);
+  color: var(--nume-navy) !important;
+}
+.nume-btn[disabled],
+.nume-btn.is-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ---------- Soft callouts ---------- */
+.nume-callout {
+  background: var(--nume-mint);
+  color: var(--nume-navy);
+  padding: 16px 20px;
+  border-radius: var(--nume-radius);
+  border-left: 4px solid var(--nume-primary);
+  margin: 16px 0;
+}
+.nume-callout--accent { border-left-color: var(--nume-accent); }
+.nume-callout--warn   { background: #FEF3C7; border-left-color: #92400E; color: #78350F; }
+.nume-callout--danger { background: #FEE2E2; border-left-color: #991B1B; color: #7F1D1D; }
+.nume-callout strong { color: var(--nume-navy); }
+
+/* ---------- Toasts ---------- */
+.nume-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 20px;
+  border-radius: var(--nume-radius);
+  background: var(--nume-primary);
+  color: var(--nume-white);
+  box-shadow: var(--nume-shadow-hover);
+  font-weight: 600;
+  z-index: 9999;
+  max-width: 90vw;
+}
+.nume-toast--success { background: #198754; }
+.nume-toast--warn    { background: #FFC107; color: var(--nume-navy); }
+.nume-toast--error   { background: #dc3545; }
+
+/* ---------- Pricing tier highlight ---------- */
+.nume-tier-popular {
+  position: relative;
+  border: 2px solid transparent;
+  background:
+    linear-gradient(var(--nume-white), var(--nume-white)) padding-box,
+    var(--nume-gradient) border-box;
+}
+.nume-tier-popular::before {
+  content: "Most popular";
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--nume-gradient);
+  color: var(--nume-white);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+/* ---------- Mini cart count badge ---------- */
+.header-shop-cart .mini-cart-count {
+  background: var(--nume-accent) !important;
+  color: var(--nume-navy) !important;
+  font-weight: 700;
+}
+.header-shop-cart .cart-count i {
+  color: var(--nume-navy);
+}
+.header-shop-cart .cart-count:hover i {
+  color: var(--nume-primary);
+}
+
+/* ---------- Body / heading global colors (extra safety) ---------- */
+body { color: var(--nume-text); }
+h1, h2, h3, h4, h5, h6 { color: var(--nume-heading); }
+p { color: var(--nume-text); }
+
+/* ---------- Footer link hover (dark bg) ---------- */
+.footer-area a,
+footer a {
+  color: rgba(255, 255, 255, 0.85);
+  transition: color var(--nume-transition);
+}
+.footer-area a:hover,
+footer a:hover {
+  color: var(--nume-accent);
+}
+.footer-area .fw-title,
+footer .fw-title {
+  color: var(--nume-white);
+}
+
+/* ---------- Section title underline shape (SVG color) ---------- */
+.title-shape svg path { fill: var(--nume-accent) !important; }
+
+/* ---------- Hero banner caption ---------- */
+.banner-content .banner-caption,
+.section-title .sub-title {
+  color: var(--nume-accent) !important;
+}
+
+/* ---------- Disabled inputs ---------- */
+.form-control:disabled,
+.form-select:disabled {
+  background: var(--nume-offwhite);
+  color: var(--nume-slate-gray);
+  cursor: not-allowed;
 }
