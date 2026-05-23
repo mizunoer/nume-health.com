@@ -44,7 +44,11 @@
   th { background: var(--nume-offwhite); color: var(--nume-navy); font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
   tr:last-child td { border-bottom: 0; }
 
-  .pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: .72rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; }
+  .pill {
+    display: inline-block; padding: 3px 10px; border-radius: 999px;
+    font-size: .72rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase;
+    user-select: none;
+  }
   .pill-done    { background: #DCFCE7; color: #166534; }
   .pill-prog    { background: #DBEAFE; color: #1E3A8A; }
   .pill-blocked { background: #FEE2E2; color: #991B1B; }
@@ -73,6 +77,7 @@
     margin-bottom: 18px;
   }
   .ns-callout--warn { background:#fef3c7; border-left-color:#92400e; color:#78350f; }
+  .ns-callout--info { background:#eaf6fd; border-left-color: var(--nume-primary); color: var(--nume-navy); }
   .ns-callout strong { color: var(--nume-navy); }
   .ns-callout--warn strong { color:#78350f; }
 
@@ -84,8 +89,87 @@
     border-radius: var(--nume-radius); padding: 16px 18px;
   }
   .ns-day h3 { font-size: 1rem; margin:0 0 8px; color: var(--nume-navy); }
-  .ns-day ul { margin: 0; padding-left: 18px; font-size: .9rem; }
-  .ns-day li { margin-bottom: 4px; color: var(--nume-slate); }
+  .ns-day ul { margin: 0; padding: 0; list-style: none; font-size: .9rem; }
+  .ns-day li {
+    margin-bottom: 6px; color: var(--nume-slate);
+    padding-left: 22px; position: relative;
+    line-height: 1.45;
+  }
+  .ns-day li::before {
+    content: "";
+    position: absolute; left: 0; top: 7px;
+    width: 14px; height: 14px;
+    border: 1.5px solid var(--nume-border);
+    border-radius: 4px;
+    background: #fff;
+  }
+  .ns-day li.is-done {
+    color: var(--nume-slate-gray);
+    text-decoration: line-through;
+  }
+  .ns-day li.is-done::before {
+    background: #16a34a; border-color: #16a34a;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13.485 4.515a1 1 0 010 1.414l-6.5 6.5a1 1 0 01-1.414 0l-3-3a1 1 0 011.414-1.414L6.278 10.31l5.793-5.794a1 1 0 011.414 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: center;
+  }
+
+  /* ---------- Update / edit mode ---------- */
+  .ns-toolbar {
+    position: sticky; top: 0; z-index: 50;
+    background: #fff;
+    border: 1px solid var(--nume-border);
+    border-radius: var(--nume-radius);
+    padding: 12px 16px;
+    margin-bottom: 18px;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.04);
+  }
+  .ns-toolbar__hint { flex: 1 1 220px; font-size: .9rem; color: var(--nume-slate); }
+  .ns-toolbar__hint b { color: var(--nume-navy); }
+  .ns-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 14px; border-radius: var(--nume-radius);
+    font: inherit; font-weight: 700; font-size: .85rem;
+    border: 2px solid transparent; cursor: pointer; text-decoration: none;
+    color: var(--nume-navy);
+    background: transparent;
+  }
+  .ns-btn--primary { background: var(--nume-primary); color: #fff; border-color: var(--nume-primary); }
+  .ns-btn--primary:hover { background: var(--nume-primary-dark); border-color: var(--nume-primary-dark); }
+  .ns-btn--ghost { border-color: var(--nume-border); }
+  .ns-btn--ghost:hover { background: var(--nume-offwhite); }
+  .ns-btn--accent { background: var(--nume-accent); color: var(--nume-navy); border-color: var(--nume-accent); }
+  .ns-btn--accent:hover { background: var(--nume-accent-dark); color: #fff; border-color: var(--nume-accent-dark); }
+  .ns-toolbar__saved {
+    font-size: .8rem; color: #16a34a; font-weight: 600;
+    opacity: 0; transition: opacity .3s ease;
+  }
+  .ns-toolbar__saved.is-on { opacity: 1; }
+
+  body.is-editing .pill[data-item-key] {
+    cursor: pointer;
+    box-shadow: 0 0 0 1px var(--nume-primary), 0 0 0 4px rgba(0,119,182,.12);
+    transition: transform .15s ease;
+  }
+  body.is-editing .pill[data-item-key]:hover { transform: scale(1.06); }
+  body.is-editing .ns-day li {
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 4px 4px 4px 22px;
+    margin-left: -4px;
+  }
+  body.is-editing .ns-day li:hover { background: var(--nume-mint); }
+
+  .ns-output {
+    background: var(--nume-navy); color: #dbe7f1;
+    border-radius: var(--nume-radius-lg);
+    padding: 16px 18px; margin-top: 16px;
+    overflow: auto; max-height: 360px;
+    font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    white-space: pre-wrap; word-break: break-word;
+    display: none;
+  }
+  .ns-output.is-on { display: block; }
 </style>
 </head>
 <body>
@@ -100,6 +184,28 @@
 
 <main class="ns-wrap">
 
+  <!-- ============= How to update ============= -->
+  <div class="ns-callout ns-callout--info">
+    <strong>Updating items:</strong>
+    Anything tracked in <a href="Client_Onboarding.html"><strong>Client_Onboarding.html</strong></a> updates from the export the client sends back.
+    Everything else on this page — compliance gates, dev tasks, launch-sequence tasks — is updated right here.
+    Click <strong>Update mode</strong>, then click any status pill to cycle it (To do → In progress → Blocking → Awaiting client → Done) or click any launch-sequence task to mark it done.
+    Changes save in your browser. Use <strong>Export JSON</strong> to commit a snapshot the team shares; <strong>Import JSON</strong> loads someone else's.
+  </div>
+
+  <!-- ============= Toolbar ============= -->
+  <div class="ns-toolbar" role="toolbar" aria-label="Update tracker">
+    <div class="ns-toolbar__hint">
+      <b id="nsModeLabel">Read-only</b> · counts and statuses below reflect the current saved state in this browser.
+    </div>
+    <span class="ns-toolbar__saved" id="nsSaved">Saved</span>
+    <button type="button" class="ns-btn ns-btn--accent" id="nsToggleEdit">Update mode</button>
+    <button type="button" class="ns-btn ns-btn--ghost" id="nsExport">Export JSON</button>
+    <button type="button" class="ns-btn ns-btn--ghost" id="nsImport">Import JSON</button>
+    <button type="button" class="ns-btn ns-btn--ghost" id="nsReset">Reset</button>
+  </div>
+  <pre class="ns-output" id="nsOutput"></pre>
+
   <!-- ============= Stat cards ============= -->
   <div class="ns-cards">
     <div class="ns-card ns-card--ready">
@@ -107,15 +213,15 @@
       <div class="ns-card__label">Pages built &amp; ready</div>
     </div>
     <div class="ns-card ns-card--client">
-      <div class="ns-card__count">13</div>
-      <div class="ns-card__label">Client values needed</div>
+      <div class="ns-card__count" id="nsCountClient">13</div>
+      <div class="ns-card__label">Client values pending</div>
     </div>
     <div class="ns-card ns-card--blocked">
-      <div class="ns-card__count">4</div>
+      <div class="ns-card__count" id="nsCountBlocking">4</div>
       <div class="ns-card__label">Compliance gates blocking launch</div>
     </div>
     <div class="ns-card ns-card--us">
-      <div class="ns-card__count">3</div>
+      <div class="ns-card__count" id="nsCountDev">3</div>
       <div class="ns-card__label">Open dev tasks (post-config)</div>
     </div>
   </div>
@@ -165,129 +271,129 @@
   </section>
 
   <!-- ============= 2. Compliance / launch gates ============= -->
-  <section class="ns-section">
+  <section class="ns-section" data-status-group="compliance">
     <h2><span class="ns-section__num">2</span>Launch gates (compliance &amp; ad approvals)</h2>
     <table>
       <thead>
         <tr><th style="width:32%">Gate</th><th>Who owns it</th><th style="width:14%">Status</th></tr>
       </thead>
       <tbody>
-        <tr><td>Healthcare counsel review of landing-page claims</td><td>Client / counsel</td><td><span class="pill pill-blocked">Blocking</span></td></tr>
-        <tr><td>LegitScript / Google Healthcare Merchant Certification</td><td>Client</td><td><span class="pill pill-blocked">Blocking</span></td></tr>
-        <tr><td>Compounded-medication disclosure approved</td><td>Client / counsel</td><td><span class="pill pill-blocked">Blocking</span></td></tr>
-        <tr><td>Prescribing entity, network, pharmacy partners confirmed</td><td>Client</td><td><span class="pill pill-blocked">Blocking</span></td></tr>
-        <tr><td>State availability list confirmed</td><td>Client</td><td><span class="pill pill-client">Awaiting client</span></td></tr>
-        <tr><td>Privacy policy / consumer health data policy / TOS / telehealth consent live</td><td>Client / counsel</td><td><span class="pill pill-client">Awaiting client</span></td></tr>
-        <tr><td>Refund &amp; cancellation policy documented</td><td>Client</td><td><span class="pill pill-client">Awaiting client</span></td></tr>
-        <tr><td>Tracking events confirmed PHI-free with privacy counsel</td><td>Client / counsel</td><td><span class="pill pill-client">Awaiting client</span></td></tr>
+        <tr><td>Healthcare counsel review of landing-page claims</td><td>Client / counsel</td><td><span class="pill" data-item-key="comp.counsel-review" data-default-status="blocking"></span></td></tr>
+        <tr><td>LegitScript / Google Healthcare Merchant Certification</td><td>Client</td><td><span class="pill" data-item-key="comp.legitscript" data-default-status="blocking"></span></td></tr>
+        <tr><td>Compounded-medication disclosure approved</td><td>Client / counsel</td><td><span class="pill" data-item-key="comp.compounded-disclosure" data-default-status="blocking"></span></td></tr>
+        <tr><td>Prescribing entity, network, pharmacy partners confirmed</td><td>Client</td><td><span class="pill" data-item-key="comp.entities-confirmed" data-default-status="blocking"></span></td></tr>
+        <tr><td>State availability list confirmed</td><td>Client</td><td><span class="pill" data-item-key="comp.states-list" data-default-status="client"></span></td></tr>
+        <tr><td>Privacy policy / consumer health data policy / TOS / telehealth consent live</td><td>Client / counsel</td><td><span class="pill" data-item-key="comp.legal-pages" data-default-status="client"></span></td></tr>
+        <tr><td>Refund &amp; cancellation policy documented</td><td>Client</td><td><span class="pill" data-item-key="comp.refund-cancel" data-default-status="client"></span></td></tr>
+        <tr><td>Tracking events confirmed PHI-free with privacy counsel</td><td>Client / counsel</td><td><span class="pill" data-item-key="comp.tracking-phi-free" data-default-status="client"></span></td></tr>
       </tbody>
     </table>
   </section>
 
   <!-- ============= 3. Client deliverables ============= -->
-  <section class="ns-section">
+  <section class="ns-section" data-status-group="client">
     <h2><span class="ns-section__num">3</span>What the client owes us</h2>
-    <p style="color: var(--nume-slate); margin-bottom: 12px">All of this is captured in <a href="Client_Onboarding.html"><strong>Client_Onboarding.html</strong></a>. They fill it in once and we drop the exported file into <code>assets/js/landing-config.js</code>. Every landing page picks up the values.</p>
+    <p style="color: var(--nume-slate); margin-bottom: 12px">All of this is captured in <a href="Client_Onboarding.html"><strong>Client_Onboarding.html</strong></a>. They fill it in once and we drop the exported file into <code>assets/js/landing-config.js</code>. Every landing page picks up the values. Mark each row "Done" once the value lands in the config.</p>
     <table>
       <thead>
         <tr><th>Field</th><th>Why</th><th style="width:14%">Status</th></tr>
       </thead>
       <tbody>
-        <tr><td>Public product name + active ingredient</td><td>Pricing card title; FAQ anchor; ad copy</td><td><span class="pill pill-client">Pending</span></td></tr>
-        <tr><td>Monthly price</td><td>Headline number on pricing page + cards</td><td><span class="pill pill-client">Pending</span></td></tr>
-        <tr><td>Annual prepay equivalent (optional)</td><td>If yes, becomes a savings ribbon on the card</td><td><span class="pill pill-client">Pending</span></td></tr>
-        <tr><td>First-month promo (optional)</td><td>Hero callout if used; needs substantiation</td><td><span class="pill pill-client">Pending</span></td></tr>
-        <tr><td>What's included list</td><td>Renders as ✓ list under each price</td><td><span class="pill pill-client">Pending</span></td></tr>
-        <tr><td>Refund &amp; cancellation copy</td><td>Pricing card note + FAQ</td><td><span class="pill pill-client">Pending</span></td></tr>
-        <tr><td>Refill cadence</td><td>"How it works" step 5</td><td><span class="pill pill-client">Pending</span></td></tr>
-        <tr><td>Service states (2-letter list)</td><td>Drives ad geo; quiz pre-screen</td><td><span class="pill pill-client">Pending</span></td></tr>
-        <tr><td>Prescribing entity legal name</td><td>Required in footer disclosures</td><td><span class="pill pill-client">Pending</span></td></tr>
-        <tr><td>Provider network description</td><td>Trust block + footer</td><td><span class="pill pill-client">Pending</span></td></tr>
-        <tr><td>Pharmacy partner description</td><td>FDA-mandated source clarity</td><td><span class="pill pill-client">Pending</span></td></tr>
-        <tr><td>Provider-review SLA + shipping SLA</td><td>"How it works" reassurance</td><td><span class="pill pill-client">Pending</span></td></tr>
-        <tr><td>Support email, phone, hours</td><td>Header CTA, footer, ad disclaimer</td><td><span class="pill pill-client">Pending</span></td></tr>
+        <tr><td>Public product name + active ingredient</td><td>Pricing card title; FAQ anchor; ad copy</td><td><span class="pill" data-item-key="cli.product-name" data-default-status="client"></span></td></tr>
+        <tr><td>Monthly price</td><td>Headline number on pricing page + cards</td><td><span class="pill" data-item-key="cli.monthly-price" data-default-status="client"></span></td></tr>
+        <tr><td>Annual prepay equivalent (optional)</td><td>If yes, becomes a savings ribbon on the card</td><td><span class="pill" data-item-key="cli.annual-price" data-default-status="client"></span></td></tr>
+        <tr><td>First-month promo (optional)</td><td>Hero callout if used; needs substantiation</td><td><span class="pill" data-item-key="cli.first-month" data-default-status="client"></span></td></tr>
+        <tr><td>What's included list</td><td>Renders as ✓ list under each price</td><td><span class="pill" data-item-key="cli.included-list" data-default-status="client"></span></td></tr>
+        <tr><td>Refund &amp; cancellation copy</td><td>Pricing card note + FAQ</td><td><span class="pill" data-item-key="cli.refund-cancel" data-default-status="client"></span></td></tr>
+        <tr><td>Refill cadence</td><td>"How it works" step 5</td><td><span class="pill" data-item-key="cli.refill-cadence" data-default-status="client"></span></td></tr>
+        <tr><td>Service states (2-letter list)</td><td>Drives ad geo; quiz pre-screen</td><td><span class="pill" data-item-key="cli.service-states" data-default-status="client"></span></td></tr>
+        <tr><td>Prescribing entity legal name</td><td>Required in footer disclosures</td><td><span class="pill" data-item-key="cli.prescribing-entity" data-default-status="client"></span></td></tr>
+        <tr><td>Provider network description</td><td>Trust block + footer</td><td><span class="pill" data-item-key="cli.provider-network" data-default-status="client"></span></td></tr>
+        <tr><td>Pharmacy partner description</td><td>FDA-mandated source clarity</td><td><span class="pill" data-item-key="cli.pharmacy-partners" data-default-status="client"></span></td></tr>
+        <tr><td>Provider-review SLA + shipping SLA</td><td>"How it works" reassurance</td><td><span class="pill" data-item-key="cli.slas" data-default-status="client"></span></td></tr>
+        <tr><td>Support email, phone, hours</td><td>Header CTA, footer, ad disclaimer</td><td><span class="pill" data-item-key="cli.support-contacts" data-default-status="client"></span></td></tr>
       </tbody>
     </table>
   </section>
 
-  <!-- ============= 4. 7-day plan ============= -->
+  <!-- ============= 4. Launch sequence ============= -->
   <section class="ns-section">
-    <h2><span class="ns-section__num">4</span>7-day launch sequence (after gates clear)</h2>
-    <p style="color: var(--nume-slate); margin-bottom: 18px">Pulled directly from §11 of the marketing plan. Begin Day 1 only after every blocking gate above is closed.</p>
+    <h2><span class="ns-section__num">4</span>Launch sequence (after gates clear)</h2>
+    <p style="color: var(--nume-slate); margin-bottom: 18px">Pulled directly from §11 of the marketing plan. Begin only after every blocking gate above is closed. In <strong>Update mode</strong>, click a task to mark it done.</p>
     <div class="ns-week-grid">
       <div class="ns-day">
-        <h3>Pre-launch (this week)</h3>
+        <h3>Pre-launch</h3>
         <ul>
-          <li>Client fills <code>Client_Onboarding.html</code></li>
-          <li>Engineering drops in <code>landing-config.js</code></li>
-          <li>QA every page on mobile + desktop</li>
-          <li>Set up Search Console, GA4, server logs</li>
+          <li data-task-key="seq.pre.client-fills">Client fills <code>Client_Onboarding.html</code></li>
+          <li data-task-key="seq.pre.eng-config">Engineering drops in <code>landing-config.js</code></li>
+          <li data-task-key="seq.pre.qa">QA every page on mobile + desktop</li>
+          <li data-task-key="seq.pre.analytics">Set up Search Console, GA4, server logs</li>
         </ul>
       </div>
       <div class="ns-day">
-        <h3>Mon — Foundation</h3>
+        <h3>Foundation</h3>
         <ul>
-          <li>Landing pages live</li>
-          <li>Submit Google Search ads for review</li>
-          <li>Launch educational organic posts</li>
-          <li>Support team scripts ready</li>
+          <li data-task-key="seq.foundation.pages-live">Landing pages live</li>
+          <li data-task-key="seq.foundation.ads-review">Submit Google Search ads for review</li>
+          <li data-task-key="seq.foundation.organic-posts">Launch educational organic posts</li>
+          <li data-task-key="seq.foundation.support-scripts">Support team scripts ready</li>
         </ul>
       </div>
       <div class="ns-day">
-        <h3>Tue — Google Search</h3>
+        <h3>Google Search</h3>
         <ul>
-          <li>Turn on high-intent campaigns</li>
-          <li>Conservative budget ($250–$500/day total)</li>
-          <li>Hourly disapproval / policy check</li>
-          <li>Live negative-keyword updates</li>
+          <li data-task-key="seq.google.high-intent-on">Turn on high-intent campaigns</li>
+          <li data-task-key="seq.google.budget">Conservative budget ($250–$500/day total)</li>
+          <li data-task-key="seq.google.policy-check">Hourly disapproval / policy check</li>
+          <li data-task-key="seq.google.neg-keywords">Live negative-keyword updates</li>
         </ul>
       </div>
       <div class="ns-day">
-        <h3>Wed — Meta test</h3>
+        <h3>Meta test</h3>
         <ul>
-          <li>3 educational creatives only</li>
-          <li>$50–$150/day initial</li>
-          <li>18+ targeting; broad geo within served states</li>
-          <li>No before/after, no body-shame copy</li>
+          <li data-task-key="seq.meta.three-creatives">3 educational creatives only</li>
+          <li data-task-key="seq.meta.budget">$50–$150/day initial</li>
+          <li data-task-key="seq.meta.18-plus">18+ targeting; broad geo within served states</li>
+          <li data-task-key="seq.meta.no-shame">No before/after, no body-shame copy</li>
         </ul>
       </div>
       <div class="ns-day">
-        <h3>Thu — Conversion review</h3>
+        <h3>Conversion review</h3>
         <ul>
-          <li>CPC, quiz-start rate, qualified-lead rate</li>
-          <li>Fix friction (mobile form, CTA visibility)</li>
-          <li>Pull approval reasons</li>
+          <li data-task-key="seq.review.metrics">CPC, quiz-start rate, qualified-lead rate</li>
+          <li data-task-key="seq.review.fix-friction">Fix friction (mobile form, CTA visibility)</li>
+          <li data-task-key="seq.review.approval-reasons">Pull approval reasons</li>
         </ul>
       </div>
       <div class="ns-day">
-        <h3>Fri — Expand winners</h3>
+        <h3>Expand winners</h3>
         <ul>
-          <li>Increase budget on qualified-lead ad groups</li>
-          <li>Pause low-intent / expensive broad terms</li>
-          <li>Add real chat/call FAQs to /glp1-faq</li>
+          <li data-task-key="seq.expand.budget-up">Increase budget on qualified-lead ad groups</li>
+          <li data-task-key="seq.expand.pause-broad">Pause low-intent / expensive broad terms</li>
+          <li data-task-key="seq.expand.faq-update">Add real chat/call FAQs to /glp1-faq</li>
         </ul>
       </div>
       <div class="ns-day">
-        <h3>Weekend — Trust</h3>
+        <h3>Trust build</h3>
         <ul>
-          <li>Publish 3–5 SEO articles</li>
-          <li>Record clinician explainer videos</li>
-          <li>Spin up "switching providers" segment</li>
+          <li data-task-key="seq.trust.seo-articles">Publish 3–5 SEO articles</li>
+          <li data-task-key="seq.trust.clinician-videos">Record clinician explainer videos</li>
+          <li data-task-key="seq.trust.switch-segment">Spin up "switching providers" segment</li>
         </ul>
       </div>
       <div class="ns-day">
-        <h3>Week 2 — Scale</h3>
+        <h3>Scale</h3>
         <ul>
-          <li>Add Brand-name pricing page if approvals allow</li>
-          <li>Test TikTok organic + Spark</li>
-          <li>Begin remarketing IF privacy counsel approves</li>
+          <li data-task-key="seq.scale.brand-name-page">Add Brand-name pricing page if approvals allow</li>
+          <li data-task-key="seq.scale.tiktok">Test TikTok organic + Spark</li>
+          <li data-task-key="seq.scale.remarketing">Begin remarketing IF privacy counsel approves</li>
         </ul>
       </div>
     </div>
   </section>
 
   <!-- ============= 5. Open dev tasks ============= -->
-  <section class="ns-section">
+  <section class="ns-section" data-status-group="dev">
     <h2><span class="ns-section__num">5</span>Open dev tasks (after config lands)</h2>
     <table>
       <thead><tr><th>Task</th><th>Notes</th><th style="width:14%">Status</th></tr></thead>
@@ -295,17 +401,17 @@
         <tr>
           <td>Build the multi-step assessment quiz (Layer 1)</td>
           <td>From §5 of the plan: 9-question public marketing qualifier. Save state on each step. Hand off to clinical intake (Layer 2) only after qualifier completes.</td>
-          <td><span class="pill pill-todo">Open</span></td>
+          <td><span class="pill" data-item-key="dev.quiz-layer1" data-default-status="todo"></span></td>
         </tr>
         <tr>
           <td>Wire <code>numeTrack</code> events to GA4 + (optionally) Meta CAPI</td>
           <td>Generic events only: <code>page_view</code>, <code>cta_click</code>, <code>quiz_started</code>, <code>quiz_completed</code>. <strong>Never</strong> pass BMI, condition, medication, or pregnancy data.</td>
-          <td><span class="pill pill-todo">Open</span></td>
+          <td><span class="pill" data-item-key="dev.tracking-wire" data-default-status="todo"></span></td>
         </tr>
         <tr>
           <td>State eligibility gate in quiz</td>
           <td>Use <code>NUME_CONFIG.states.served</code> to short-circuit ineligible visitors with a soft "we'll let you know when we serve your state" capture.</td>
-          <td><span class="pill pill-todo">Open</span></td>
+          <td><span class="pill" data-item-key="dev.state-gate" data-default-status="todo"></span></td>
         </tr>
       </tbody>
     </table>
@@ -342,6 +448,190 @@
   </section>
 
 </main>
+
+<script>
+(function(){
+  "use strict";
+  var STORAGE_KEY = "nume.marketingNextSteps.v1";
+  var STATUS_ORDER = ["todo", "in-progress", "blocking", "client", "done"];
+  var STATUS_LABEL = { "todo":"To do", "in-progress":"In progress", "blocking":"Blocking", "client":"Awaiting client", "done":"Done" };
+  var STATUS_CLASS = { "todo":"pill-todo", "in-progress":"pill-prog", "blocking":"pill-blocked", "client":"pill-client", "done":"pill-done" };
+
+  /* ---------- Per-section status overrides (custom labels) ---------- */
+  /* Some sections want "Open" instead of "To do", etc. */
+  var GROUP_LABEL_OVERRIDES = {
+    /* Open dev tasks: "todo" reads as "Open" not "To do" */
+    "dev": { "todo": "Open" },
+    /* Client deliverables: "client" reads as "Pending" */
+    "client": { "client": "Pending" }
+  };
+
+  function getGroup(el){
+    var sec = el.closest("[data-status-group]");
+    return sec ? sec.getAttribute("data-status-group") : null;
+  }
+  function labelFor(group, status){
+    if (group && GROUP_LABEL_OVERRIDES[group] && GROUP_LABEL_OVERRIDES[group][status]) {
+      return GROUP_LABEL_OVERRIDES[group][status];
+    }
+    return STATUS_LABEL[status];
+  }
+
+  /* ---------- State ---------- */
+  var state = (function(){
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch(e){ return {}; }
+  })();
+  if (!state.items) state.items = {};
+  if (!state.tasks) state.tasks = {};
+
+  function saveState(){
+    state.updatedAt = new Date().toISOString();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    flashSaved();
+  }
+
+  /* ---------- Apply state to DOM ---------- */
+  function applyPill(pill){
+    var key = pill.getAttribute("data-item-key");
+    var status = state.items[key] || pill.getAttribute("data-default-status") || "todo";
+    var group = getGroup(pill);
+    pill.className = "pill " + (STATUS_CLASS[status] || "pill-todo");
+    pill.textContent = labelFor(group, status);
+    pill.setAttribute("data-status", status);
+  }
+  function applyTask(li){
+    var key = li.getAttribute("data-task-key");
+    var done = state.tasks[key] === "done";
+    li.classList.toggle("is-done", done);
+    li.setAttribute("aria-checked", done ? "true" : "false");
+    li.setAttribute("role", "checkbox");
+    li.setAttribute("tabindex", "0");
+  }
+  function applyAll(){
+    document.querySelectorAll(".pill[data-item-key]").forEach(applyPill);
+    document.querySelectorAll("[data-task-key]").forEach(applyTask);
+    recountCards();
+  }
+
+  /* ---------- Counter cards ---------- */
+  function recountCards(){
+    var blockingPills = document.querySelectorAll('[data-status-group="compliance"] .pill[data-item-key]');
+    var blockingCount = 0;
+    blockingPills.forEach(function(p){ if (p.getAttribute("data-status") === "blocking") blockingCount++; });
+    document.getElementById("nsCountBlocking").textContent = blockingCount;
+
+    var clientPills = document.querySelectorAll('[data-status-group="client"] .pill[data-item-key]');
+    var clientPending = 0;
+    clientPills.forEach(function(p){ if (p.getAttribute("data-status") !== "done") clientPending++; });
+    document.getElementById("nsCountClient").textContent = clientPending;
+
+    var devPills = document.querySelectorAll('[data-status-group="dev"] .pill[data-item-key]');
+    var devOpen = 0;
+    devPills.forEach(function(p){ if (p.getAttribute("data-status") !== "done") devOpen++; });
+    document.getElementById("nsCountDev").textContent = devOpen;
+  }
+
+  /* ---------- Edit mode ---------- */
+  var editing = false;
+  function setEditing(on){
+    editing = on;
+    document.body.classList.toggle("is-editing", on);
+    document.getElementById("nsToggleEdit").textContent = on ? "Done editing" : "Update mode";
+    document.getElementById("nsToggleEdit").classList.toggle("ns-btn--accent", !on);
+    document.getElementById("nsToggleEdit").classList.toggle("ns-btn--primary", on);
+    document.getElementById("nsModeLabel").textContent = on ? "Update mode" : "Read-only";
+  }
+
+  /* ---------- Click handling ---------- */
+  document.addEventListener("click", function(e){
+    if (!editing) return;
+    var pill = e.target.closest(".pill[data-item-key]");
+    if (pill) {
+      var key = pill.getAttribute("data-item-key");
+      var cur = pill.getAttribute("data-status") || pill.getAttribute("data-default-status") || "todo";
+      var next = STATUS_ORDER[(STATUS_ORDER.indexOf(cur) + 1) % STATUS_ORDER.length];
+      state.items[key] = next;
+      saveState();
+      applyPill(pill);
+      recountCards();
+      return;
+    }
+    var task = e.target.closest("[data-task-key]");
+    if (task) {
+      var tkey = task.getAttribute("data-task-key");
+      state.tasks[tkey] = state.tasks[tkey] === "done" ? "todo" : "done";
+      saveState();
+      applyTask(task);
+    }
+  });
+  /* Keyboard: space/enter on a focused task toggles done */
+  document.addEventListener("keydown", function(e){
+    if (!editing) return;
+    if (e.key !== " " && e.key !== "Enter") return;
+    var task = document.activeElement && document.activeElement.closest("[data-task-key]");
+    if (!task) return;
+    e.preventDefault();
+    var tkey = task.getAttribute("data-task-key");
+    state.tasks[tkey] = state.tasks[tkey] === "done" ? "todo" : "done";
+    saveState();
+    applyTask(task);
+  });
+
+  /* ---------- Toolbar buttons ---------- */
+  document.getElementById("nsToggleEdit").addEventListener("click", function(){
+    setEditing(!editing);
+  });
+  document.getElementById("nsExport").addEventListener("click", function(){
+    var snap = { version: 1, updatedAt: state.updatedAt || new Date().toISOString(), items: state.items, tasks: state.tasks };
+    var text = JSON.stringify(snap, null, 2);
+    var out = document.getElementById("nsOutput");
+    out.textContent = text;
+    out.classList.add("is-on");
+    out.scrollIntoView({ behavior: "smooth", block: "start" });
+    try { navigator.clipboard.writeText(text); } catch(e){}
+    var blob = new Blob([text], { type:"application/json" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "marketing-status.json";
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); }, 500);
+  });
+  document.getElementById("nsImport").addEventListener("click", function(){
+    var pasted = prompt("Paste a marketing-status.json snapshot:");
+    if (!pasted) return;
+    try {
+      var parsed = JSON.parse(pasted);
+      if (parsed.items) state.items = parsed.items;
+      if (parsed.tasks) state.tasks = parsed.tasks;
+      saveState();
+      applyAll();
+      alert("Imported.");
+    } catch (err) {
+      alert("Couldn't parse. Make sure it's valid JSON exported from this page.");
+    }
+  });
+  document.getElementById("nsReset").addEventListener("click", function(){
+    if (!confirm("Reset every status to its default? This clears your local edits.")) return;
+    state.items = {};
+    state.tasks = {};
+    saveState();
+    applyAll();
+  });
+
+  /* ---------- Saved indicator ---------- */
+  var savedTimer = null;
+  function flashSaved(){
+    var s = document.getElementById("nsSaved");
+    s.classList.add("is-on");
+    if (savedTimer) clearTimeout(savedTimer);
+    savedTimer = setTimeout(function(){ s.classList.remove("is-on"); }, 1200);
+  }
+
+  /* ---------- Boot ---------- */
+  applyAll();
+})();
+</script>
 
 </body>
 </html>
