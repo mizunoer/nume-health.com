@@ -3,8 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Recommendations – nume-health.com</title>
-    <meta name="description" content="Submit suggestions and feedback for nume-health.com.">
+    <title>Recommendations (internal) - Nume Health</title>
+    <meta name="description" content="Internal recommendations form. Not for public use.">
+    <meta name="robots" content="noindex,nofollow">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
@@ -55,16 +56,10 @@
                                 <div class="navbar-wrap main-menu d-none d-xl-flex">
                                     <ul class="navigation">
                                         <li><a href="index.html">Home</a></li>
-                                        <li class="menu-item-has-children"><a href="#">Page</a><ul class="sub-menu" id="nav-pages-dropdown"></ul></li>
-                                        <li><a href="assessment.html">Assessment</a></li>
-                                        <li class="menu-item-has-children"><a href="shop.html">Shop</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="shop.html">Shop</a></li>
-                                                <li><a href="shop-details.html">Product details</a></li>
-                                                <li><a href="cart.html">Cart</a></li>
-                                                <li><a href="checkout.html">Checkout</a></li>
-                                            </ul>
-                                        </li>
+                                        <li><a href="shop.html">Plans</a></li>
+                                        <li><a href="glp1-pricing.html">Pricing</a></li>
+                                        <li><a href="assessment.html">Eligibility</a></li>
+                                        <li><a href="glp1-faq.html">FAQ</a></li>
                                         <li class="menu-item-has-children"><a href="login.html">Account</a>
                                             <ul class="sub-menu">
                                                 <li><a href="login.html">Login</a></li>
@@ -72,110 +67,11 @@
                                                 <li><a href="reset-password.html">Reset password</a></li>
                                             </ul>
                                         </li>
+                                        <li class="menu-item-has-children"><a href="#">More</a>
+                                            <ul class="sub-menu" id="nav-pages-dropdown"></ul>
+                                        </li>
                                         <li><a href="contact.html">Contact</a></li>
-                                        <li class="active"><a href="recommendations.html">Recommendations</a></li>
                                     </ul>
-                                </div>
-                                <div class="header-action d-none d-sm-block">
-                                    <ul><li class="header-shop-cart"><a href="cart.html" class="cart-count"><i class="flaticon-shopping-cart"></i><span class="mini-cart-count">0</span></a></li></ul>
-                                </div>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="mobile-menu"><nav class="menu-box"><div class="close-btn"><i class="fas fa-times"></i></div><div class="nav-logo"><a href="index.html"><img src="assets/img/logo/logo.svg" alt="Nume Health" onerror="this.src='assets/img/logo/logo.png'; this.onerror=null;"></a></div><div class="menu-outer"></div></nav></div>
-        <div class="menu-backdrop"></div>
-    </header>
-
-    <main class="main-area fix section-padding">
-        <div class="container">
-            <h1 class="mb-4">Recommendations &amp; suggestions</h1>
-            <p class="lead">Submit feedback or suggestions for the site. We review all submissions and will follow up as needed.</p>
-
-            <section class="recommendations-form mt-5">
-                <h2 class="h4 mb-3">Submit a suggestion</h2>
-                <form id="recommendations-form" action="#" method="post" enctype="multipart/form-data">
-                    <!-- Optional: use Formspree – replace # with https://formspree.io/f/YOUR_ID -->
-                    <div class="mb-3">
-                        <label for="rec-name" class="form-label">Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="rec-name" name="Name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="recommendations-page-select" class="form-label">Page <span class="text-danger">*</span></label>
-                        <select class="form-select" id="recommendations-page-select" name="Page" required>
-                            <option value="">Select a page...</option>
-                            <!-- filled by site-nav.js from SITE_PAGES -->
-                        </select>
-                        <small class="form-text text-muted">Every site page is listed here; new pages are added to this dropdown when we add them.</small>
-                    </div>
-                    <div class="mb-3">
-                        <label for="rec-feedback" class="form-label">Feedback <span class="text-danger">*</span></label>
-                        <textarea class="form-control" id="rec-feedback" name="Feedback" rows="4" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="rec-images" class="form-label">Add a screenshot or photo</label>
-                        <input type="file" class="form-control" id="rec-images" name="Images_screenshots" accept="image/*" aria-describedby="rec-images-help">
-                        <small id="rec-images-help" class="form-text text-muted">Optional. Choose a picture from your computer (e.g. a screenshot or photo of the issue).</small>
-                        <div id="rec-image-preview" class="mt-2" style="display:none;">
-                            <p class="small text-muted mb-1">Preview:</p>
-                            <img id="rec-image-preview-img" src="" alt="Your image" class="rounded border" style="max-width:100%; max-height:200px; object-fit:contain;">
-                        </div>
-                    </div>
-                    <!-- Dev Notes and Status are NOT in the form – submitters cannot edit them -->
-                    <button type="submit" class="btn btn-two">Submit suggestion</button>
-                </form>
-            </section>
-
-            <section class="recommendations-table mt-5 d-none">
-                <!-- Internal admin table – hidden from public. Uncomment and connect to backend when ready. -->
-                <h2 class="h4 mb-3">Suggestions</h2>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Page</th>
-                            <th>Feedback</th>
-                            <th>Images</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Example User</td>
-                            <td>Home</td>
-                            <td>Sample feedback text.</td>
-                            <td>—</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-        </div>
-    </main>
-
-    <footer class="footer-area">
-        <div class="footer-top-wrap">
-            <div class="container">
-                <div class="footer-widgets-wrap">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-6">
-                            <div class="footer-widget">
-                                <div class="footer-about">
-                                    <div class="footer-logo logo"><a href="index.html"><img src="assets/img/logo/white_logo.svg" alt="nume-health.com" onerror="this.src='assets/img/logo/white_logo.png'; this.onerror=null;"></a></div>
-                                    <p>DTC Telehealth – patient journey from landing to order fulfillment.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-6 col-6">
-                            <div class="footer-widget">
-                                <h4 class="fw-title">Site</h4>
-                                <ul class="list-wrap">
-                                    <li><a href="index.html">Home</a></li>
-                                    <li><a href="assessment.html">Assessment</a></li>
-                                    <li><a href="shop.html">Shop</a></li>
-                                    <li><a href="contact.html">Contact</a></li>
-                                    <li><a href="recommendations.html">Recommendations</a></li>
-                                </ul>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-6 col-6">

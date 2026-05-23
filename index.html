@@ -1,10 +1,10 @@
-<!doctype html>
+﻿<!doctype html>
 <html class="no-js" lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>nume-health.com – DTC Telehealth</title>
-    <meta name="description" content="DTC Telehealth patient journey: assessment, shop, and order fulfillment.">
+    <title>Nume Health — Clinician-Guided Cash-Pay GLP-1 Care</title>
+    <meta name="description" content="Clinician-guided weight-care, online. Cash-pay prescription treatment options may be available after licensed provider review. No insurance required.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
@@ -32,6 +32,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
     <link rel="stylesheet" href="assets/css/nume-health.css">
+    <link rel="stylesheet" href="assets/css/landing.css">
 </head>
 <body>
     <div id="preloader">
@@ -63,19 +64,11 @@
                                 </div>
                                 <div class="navbar-wrap main-menu d-none d-xl-flex">
                                     <ul class="navigation">
-                                        <li class="active"><a href="index.html">Home</a></li>
-                                        <li class="menu-item-has-children"><a href="#">Page</a>
-                                            <ul class="sub-menu" id="nav-pages-dropdown"></ul>
-                                        </li>
-                                        <li><a href="assessment.html">Assessment</a></li>
-                                        <li class="menu-item-has-children"><a href="shop.html">Shop</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="shop.html">Shop</a></li>
-                                                <li><a href="shop-details.html">Product details</a></li>
-                                                <li><a href="cart.html">Cart</a></li>
-                                                <li><a href="checkout.html">Checkout</a></li>
-                                            </ul>
-                                        </li>
+                                        <li><a href="index.html">Home</a></li>
+                                        <li><a href="shop.html">Plans</a></li>
+                                        <li><a href="glp1-pricing.html">Pricing</a></li>
+                                        <li><a href="assessment.html">Eligibility</a></li>
+                                        <li><a href="glp1-faq.html">FAQ</a></li>
                                         <li class="menu-item-has-children"><a href="login.html">Account</a>
                                             <ul class="sub-menu">
                                                 <li><a href="login.html">Login</a></li>
@@ -83,16 +76,14 @@
                                                 <li><a href="reset-password.html">Reset password</a></li>
                                             </ul>
                                         </li>
+                                        <li class="menu-item-has-children"><a href="#">More</a>
+                                            <ul class="sub-menu" id="nav-pages-dropdown"></ul>
+                                        </li>
                                         <li><a href="contact.html">Contact</a></li>
-                                        <li><a href="recommendations.html">Recommendations</a></li>
                                     </ul>
                                 </div>
                                 <div class="header-action d-none d-sm-block">
-                                    <ul>
-                                        <li class="header-shop-cart">
-                                            <a href="cart.html" class="cart-count"><i class="flaticon-shopping-cart"></i><span class="mini-cart-count">0</span></a>
-                                        </li>
-                                    </ul>
+                                    <a href="assessment.html" class="btn btn-two btn-primary-style" style="padding:10px 22px;">See if I qualify</a>
                                 </div>
                             </nav>
                         </div>
@@ -110,132 +101,235 @@
         <div class="menu-backdrop"></div>
     </header>
 
-    <main class="main-area fix">
-        <section class="banner-area">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-xxl-10 col-xl-10 col-lg-11 col-md-12">
-                        <div class="banner-content text-center">
-                            <p class="banner-caption">DTC Telehealth — Prescription care, delivered</p>
-                            <h2 class="title">Healthcare That Fits Your Life</h2>
-                            <p class="mb-4">Quick online assessment. Licensed prescribers. Same treatments you’d get in-clinic, delivered to your door. No waiting rooms. No hassle.</p>
-                            <div class="btn-grp d-flex flex-wrap justify-content-center gap-2">
-                                <a href="assessment.html" class="btn btn-two btn-primary-style">Start free assessment</a>
-                                <a href="shop.html" class="btn btn-two ms-2">Browse treatments</a>
-                            </div>
-                            <div class="trust-badges mt-5">
-                                <span class="trust-badge"><i class="fas fa-shield-alt"></i> Secure, privacy-first platform</span>
-                                <span class="trust-badge"><i class="fas fa-user-md"></i> Licensed providers</span>
-                                <span class="trust-badge"><i class="fas fa-truck"></i> Discreet delivery</span>
-                            </div>
-                        </div>
+    <main class="main-area fix lp-page">
+
+        <!-- ===== Hero ===== -->
+        <section class="lp-hero lp-hero--dark">
+            <div class="lp-container lp-hero__inner">
+                <div>
+                    <span class="lp-hero__eyebrow">Cash-pay GLP-1 program</span>
+                    <h1>Clinician-guided weight-care, online.</h1>
+                    <p class="lp-hero__subhead">
+                        Start with a private eligibility assessment. Cash-pay prescription treatment options
+                        may be available after a licensed provider reviews your information.
+                        No insurance required.
+                    </p>
+                    <div class="lp-hero__ctas">
+                        <a class="lp-btn lp-btn--accent lp-btn--lg" href="assessment.html" data-track="cta_click_hero">See if I qualify</a>
+                        <a class="lp-btn lp-btn--ghost lp-btn--lg" href="glp1-pricing.html" data-track="cta_click_pricing">View pricing</a>
+                    </div>
+                    <p class="lp-hero__micro" data-bind="disclosures.prescriptionNotGuaranteed">
+                        Prescription is not guaranteed. A licensed provider determines whether treatment is appropriate.
+                    </p>
+                </div>
+                <div class="lp-hero__visual" aria-hidden="true"></div>
+            </div>
+        </section>
+
+        <!-- ===== Trust bar ===== -->
+        <section class="lp-trust">
+            <div class="lp-container">
+                <div class="lp-trust__row">
+                    <div class="lp-trust__item"><span class="lp-trust__icon">✓</span><span>Licensed U.S. providers</span></div>
+                    <div class="lp-trust__item"><span class="lp-trust__icon">℞</span><span>U.S.-licensed pharmacy partners</span></div>
+                    <div class="lp-trust__item"><span class="lp-trust__icon">$</span><span>No insurance required</span></div>
+                    <div class="lp-trust__item"><span class="lp-trust__icon">🔒</span><span>Secure &amp; private intake</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== How it works ===== -->
+        <section class="lp-section">
+            <div class="lp-container">
+                <div class="lp-section__head">
+                    <h2>How it works</h2>
+                    <p>A short eligibility check, then a licensed provider reviews your information.
+                       If treatment is appropriate, your medication ships from a licensed pharmacy.</p>
+                </div>
+                <div class="lp-steps lp-steps--5">
+                    <div class="lp-step">
+                        <h3>Take the eligibility check</h3>
+                        <p>About 90 seconds. Cash-pay only — no insurance required.</p>
+                    </div>
+                    <div class="lp-step">
+                        <h3>Complete medical intake</h3>
+                        <p>History, current medications, weight goals, and consents.</p>
+                    </div>
+                    <div class="lp-step">
+                        <h3>Licensed provider reviews</h3>
+                        <p data-bind="clinical.intakeSLA">Most reviews completed within 24–48 hours.</p>
+                    </div>
+                    <div class="lp-step">
+                        <h3>If prescribed, medication ships</h3>
+                        <p data-bind="clinical.shippingSLA">Most orders ship within 2–3 business days after approval.</p>
+                    </div>
+                    <div class="lp-step">
+                        <h3>Ongoing check-ins &amp; refills</h3>
+                        <p data-bind="product.refillCadence">Every 28 days, after a brief provider check-in.</p>
+                    </div>
+                </div>
+                <div style="text-align:center; margin-top: 32px">
+                    <a class="lp-btn lp-btn--primary lp-btn--lg" href="assessment.html" data-track="cta_click_howitworks">See if I qualify</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Pricing teaser ===== -->
+        <section class="lp-section lp-section--alt" id="pricing">
+            <div class="lp-container">
+                <div class="lp-section__head">
+                    <h2>One simple cash-pay plan</h2>
+                    <p>Provider review, medication if prescribed, supplies, shipping, and refill review — bundled into one monthly price. No insurance billing.</p>
+                </div>
+                <div class="lp-price-grid" style="max-width:520px">
+                    <article class="lp-price-card lp-price-card--featured">
+                        <h3 data-bind="product.publicName">Compounded semaglutide plan</h3>
+                        <p class="lp-price-card__sub">Provider-reviewed, cash-pay</p>
+                        <div class="lp-price-card__price" data-bind="product.monthlyPrice">[CLIENT TO CONFIRM]</div>
+                        <div class="lp-price-card__period">per month, all-in</div>
+                        <ul class="lp-price-card__list" data-bind-list="product.included" data-bind-list-tpl="<li>{value}</li>">
+                            <li>Licensed clinician review</li>
+                            <li>Medication, if prescribed</li>
+                            <li>Injection supplies</li>
+                            <li>Shipping</li>
+                            <li>Refill review</li>
+                            <li>Ongoing support</li>
+                        </ul>
+                        <a class="lp-btn lp-btn--primary" href="assessment.html" data-track="cta_click_pricecard">See if I qualify</a>
+                        <p class="lp-price-card__note" data-bind="disclosures.prescriptionNotGuaranteed">Prescription not guaranteed. Provider determines appropriateness.</p>
+                    </article>
+                </div>
+                <div style="text-align:center; margin-top: 22px">
+                    <a class="lp-btn lp-btn--outline" href="glp1-pricing.html">See full pricing details</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Eligibility / safety ===== -->
+        <section class="lp-section">
+            <div class="lp-container lp-container--narrow">
+                <div class="lp-section__head">
+                    <h2>Is this right for you?</h2>
+                    <p>GLP-1 medications are powerful prescription treatments. They are not appropriate for everyone, and a licensed clinician makes that decision.</p>
+                </div>
+                <div class="lp-callout">
+                    <strong>Tell your provider about any history of:</strong>
+                    pancreatitis · medullary thyroid cancer / MEN2 · severe GI disease ·
+                    gallbladder disease · kidney or liver disease · gastroparesis ·
+                    bariatric surgery · eating disorders · pregnancy or breastfeeding.
+                </div>
+                <p data-bind="disclosures.safetyShort" style="font-size:.95rem; color: var(--nume-slate)">GLP-1 medications are prescription treatments and are not appropriate for everyone. Tell your provider about any history of pancreatitis, medullary thyroid cancer, MEN2, severe GI disease, gallbladder or kidney disease, eating disorders, or pregnancy/breastfeeding.</p>
+                <div class="lp-callout lp-callout--warn" style="margin-top:18px">
+                    <strong>If you experience severe side effects</strong> — persistent vomiting, severe abdominal pain, or signs of an allergic reaction — seek emergency care.
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Why us ===== -->
+        <section class="lp-section lp-section--alt">
+            <div class="lp-container">
+                <div class="lp-section__head">
+                    <h2>Why patients choose Nume Health</h2>
+                </div>
+                <div class="lp-clinicians">
+                    <div class="lp-clinician">
+                        <div class="lp-clinician__avatar">$</div>
+                        <h3>Transparent pricing</h3>
+                        <p class="lp-clinician__role">All-in monthly price. No surprise membership-plus-medication math.</p>
+                    </div>
+                    <div class="lp-clinician">
+                        <div class="lp-clinician__avatar">RX</div>
+                        <h3>Provider-led care</h3>
+                        <p class="lp-clinician__role" data-bind="clinical.providerNetwork">Independent licensed clinicians review every assessment.</p>
+                    </div>
+                    <div class="lp-clinician">
+                        <div class="lp-clinician__avatar">↻</div>
+                        <h3>Ongoing support</h3>
+                        <p class="lp-clinician__role">Refill reviews, side-effect support, and dose changes — included.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="features-area features-bg section-padding">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-10 text-center">
-                        <h2 class="section-title">How it works</h2>
-                        <p class="mb-4">Four simple steps — from first click to your door.</p>
-                        <div class="row g-4 text-start mt-3">
-                            <div class="col-md-6 col-lg-3">
-                                <div class="p-3 p-lg-4 rounded-3 h-100" style="background:#fff;box-shadow:0 4px 20px rgba(0,0,0,0.06);">
-                                    <span class="d-inline-block mb-3 rounded-circle bg-primary bg-opacity-10 text-primary px-3 py-2 fw-bold">1</span>
-                                    <h5 class="h6 fw-bold">Take the assessment</h5>
-                                    <p class="small mb-0 text-muted">Answer a few health questions online. Takes about 5 minutes.</p>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-3">
-                                <div class="p-3 p-lg-4 rounded-3 h-100" style="background:#fff;box-shadow:0 4px 20px rgba(0,0,0,0.06);">
-                                    <span class="d-inline-block mb-3 rounded-circle bg-primary bg-opacity-10 text-primary px-3 py-2 fw-bold">2</span>
-                                    <h5 class="h6 fw-bold">Provider review</h5>
-                                    <p class="small mb-0 text-muted">A licensed clinician reviews your answers and prescribes when appropriate.</p>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-3">
-                                <div class="p-3 p-lg-4 rounded-3 h-100" style="background:#fff;box-shadow:0 4px 20px rgba(0,0,0,0.06);">
-                                    <span class="d-inline-block mb-3 rounded-circle bg-primary bg-opacity-10 text-primary px-3 py-2 fw-bold">3</span>
-                                    <h5 class="h6 fw-bold">Order your treatment</h5>
-                                    <p class="small mb-0 text-muted">Shop approved options and checkout securely.</p>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-3">
-                                <div class="p-3 p-lg-4 rounded-3 h-100" style="background:#fff;box-shadow:0 4px 20px rgba(0,0,0,0.06);">
-                                    <span class="d-inline-block mb-3 rounded-circle bg-primary bg-opacity-10 text-primary px-3 py-2 fw-bold">4</span>
-                                    <h5 class="h6 fw-bold">Discreet delivery</h5>
-                                    <p class="small mb-0 text-muted">Shipped to your door in discreet packaging.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="assessment.html" class="btn btn-two mt-5">Get started now</a>
-                    </div>
-                </div>
+        <!-- ===== Final CTA band ===== -->
+        <section class="lp-cta-band">
+            <div class="lp-container">
+                <h2>Ready to see if you qualify?</h2>
+                <p>Take the 90-second eligibility check. No insurance required.</p>
+                <a class="lp-btn lp-btn--accent lp-btn--lg" href="assessment.html" data-track="cta_click_band">Start my assessment</a>
             </div>
         </section>
+
     </main>
 
-    <footer class="footer-area">
-        <div class="footer-top-wrap">
-            <div class="container">
-                <div class="footer-widgets-wrap">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-6">
-                            <div class="footer-widget">
-                                <div class="footer-about">
-                                    <div class="footer-logo logo"><a href="index.html"><img src="assets/img/logo/white_logo.svg" alt="nume-health.com" onerror="this.src='assets/img/logo/white_logo.png'; this.onerror=null;"></a></div>
-                                    <p>DTC Telehealth – patient journey from landing to order fulfillment.</p>
-                                </div>
+    <!-- Unified footer for nume-health.com -->
+<footer class="footer-area">
+    <div class="footer-top-wrap">
+        <div class="container">
+            <div class="footer-widgets-wrap">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-widget">
+                            <div class="footer-about">
+                                <div class="footer-logo logo"><a href="index.html"><img src="assets/img/logo/white_logo.svg" alt="Nume Health" onerror="this.src='assets/img/logo/white_logo.png'; this.onerror=null;"></a></div>
+                                <p>Clinician-guided weight-care, online. Cash-pay options. No insurance required.</p>
                             </div>
                         </div>
-                        <div class="col-lg-2 col-md-6 col-6">
-                            <div class="footer-widget">
-                                <h4 class="fw-title">Site</h4>
-                                <ul class="list-wrap">
-                                    <li><a href="index.html">Home</a></li>
-                                    <li><a href="assessment.html">Assessment</a></li>
-                                    <li><a href="shop.html">Shop</a></li>
-                                    <li><a href="contact.html">Contact</a></li>
-                                    <li><a href="recommendations.html">Recommendations</a></li>
-                                </ul>
-                            </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-6">
+                        <div class="footer-widget">
+                            <h4 class="fw-title">Care</h4>
+                            <ul class="list-wrap">
+                                <li><a href="index.html">Home</a></li>
+                                <li><a href="shop.html">Plans</a></li>
+                                <li><a href="glp1-pricing.html">Pricing</a></li>
+                                <li><a href="assessment.html">Eligibility</a></li>
+                                <li><a href="glp1-faq.html">FAQ</a></li>
+                            </ul>
                         </div>
-                        <div class="col-lg-2 col-md-6 col-6">
-                            <div class="footer-widget">
-                                <h4 class="fw-title">Account</h4>
-                                <ul class="list-wrap">
-                                    <li><a href="login.html">Login</a></li>
-                                    <li><a href="register.html">Register</a></li>
-                                    <li><a href="cart.html">Cart</a></li>
-                                    <li><a href="checkout.html">Checkout</a></li>
-                                </ul>
-                            </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-6">
+                        <div class="footer-widget">
+                            <h4 class="fw-title">Account</h4>
+                            <ul class="list-wrap">
+                                <li><a href="login.html">Login</a></li>
+                                <li><a href="register.html">Register</a></li>
+                                <li><a href="reset-password.html">Reset password</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
                         </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="footer-widget">
-                                <h4 class="fw-title">Contact</h4>
-                                <p>nume-health.com</p>
-                                <ul class="list-wrap">
-                                    <li><a href="contact.html">Contact form</a></li>
-                                </ul>
-                            </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-widget">
+                            <h4 class="fw-title">Legal</h4>
+                            <ul class="list-wrap">
+                                <li><a href="/privacy.html">Privacy Policy</a></li>
+                                <li><a href="/terms.html">Terms of Service</a></li>
+                                <li><a href="/telehealth-consent.html">Telehealth Consent</a></li>
+                                <li><a href="/consumer-health-data.html">Consumer Health Data</a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="copyright-wrap">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-12">
-                        <p class="copyright-text mb-0">Copyright Â© 2025 nume-health.com. All rights reserved.</p>
-                    </div>
+    </div>
+    <div class="copyright-wrap">
+        <div class="container">
+            <div class="row align-items-start g-3">
+                <div class="col-lg-9">
+                    <p class="copyright-text mb-2 small" style="opacity:.8">
+                        Nume Health is a marketing brand. Medical services are provided by independent licensed clinicians.
+                        GLP-1 medications are prescription treatments and are not appropriate for everyone.
+                        Compounded medications, if prescribed, are not FDA-approved and are not reviewed by FDA for safety, effectiveness, or quality.
+                        Prescription is not guaranteed; a licensed provider determines whether treatment is appropriate.
+                    </p>
+                    <p class="copyright-text mb-0 small" style="opacity:.6">© 2026 Nume Health. All rights reserved.</p>
                 </div>
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
 
     <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
@@ -244,5 +338,7 @@
     <script src="assets/js/main.js"></script>
     <script src="assets/js/site-config.js"></script>
     <script src="assets/js/site-nav.js"></script>
+    <script src="assets/js/landing-config.js"></script>
+    <script src="assets/js/landing-render.js"></script>
 </body>
 </html>

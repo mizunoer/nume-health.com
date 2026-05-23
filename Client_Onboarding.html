@@ -171,6 +171,79 @@
     padding: 4px 10px; background: var(--nume-mint); color: var(--nume-navy);
     border-radius: 999px; font-size: .8rem; font-weight: 600;
   }
+
+  /* ===== Save panel (server) ===== */
+  .ob-save-panel {
+    background: linear-gradient(180deg, #eaf6fd 0%, #fff 100%);
+    border: 1px solid var(--nume-border);
+    border-radius: var(--nume-radius-lg);
+    padding: 18px 20px;
+    margin-bottom: 22px;
+  }
+  .ob-save-panel h2 {
+    color: var(--nume-navy); font-size: 1.05rem; margin: 0 0 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .ob-save-panel h2 .ob-save-panel__icon {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--nume-gradient); color: #fff;
+    font-weight: 800; font-size: .8rem;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .ob-save-panel__row {
+    display: grid; gap: 10px;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 720px) {
+    .ob-save-panel__row { grid-template-columns: 1.1fr 1fr 1fr auto; align-items: end; }
+  }
+  .ob-save-panel__current {
+    margin-top: 10px; font-size: .82rem; color: var(--nume-slate-gray);
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .ob-save-panel__current b { color: var(--nume-navy); }
+  .ob-save-panel select {
+    width: 100%; padding: 10px 12px;
+    border-radius: var(--nume-radius);
+    border: 1px solid var(--nume-border);
+    background: #fff; font: inherit; font-size: .92rem;
+  }
+  .ob-save-panel input {
+    width: 100%; padding: 10px 12px;
+    border-radius: var(--nume-radius);
+    border: 1px solid var(--nume-border);
+    font: inherit; font-size: .92rem;
+  }
+  .ob-save-panel input:focus, .ob-save-panel select:focus {
+    outline: none;
+    border-color: var(--nume-primary);
+    box-shadow: 0 0 0 3px rgba(0,119,182,.18);
+  }
+  .ob-save-panel label { font-weight: 600; color: var(--nume-navy); font-size: .85rem; display: block; margin-bottom: 4px; }
+  .ob-status-pill {
+    display: inline-block; padding: 2px 10px; border-radius: 999px;
+    font-size: .72rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase;
+  }
+  .ob-status-pill--published { background: #DCFCE7; color: #166534; }
+  .ob-status-pill--unsaved   { background: #FEF3C7; color: #92400E; }
+
+  /* ===== Toast ===== */
+  .ob-toast {
+    position: fixed;
+    bottom: 28px; right: 28px;
+    background: var(--nume-navy); color: #fff;
+    padding: 14px 20px;
+    border-radius: var(--nume-radius);
+    box-shadow: 0 16px 40px rgba(0,0,0,.25);
+    font-weight: 600; font-size: .92rem;
+    transform: translateY(20px); opacity: 0;
+    transition: transform .25s ease, opacity .25s ease;
+    pointer-events: none;
+    z-index: 1000; max-width: 360px;
+  }
+  .ob-toast.is-on { transform: translateY(0); opacity: 1; pointer-events: auto; }
+  .ob-toast--success { background: #166534; }
+  .ob-toast--error   { background: #991B1B; }
 </style>
 </head>
 <body>
@@ -190,6 +263,37 @@
     <div class="ob-progress__bar"><div class="ob-progress__fill" id="obFill"></div></div>
     <span class="ob-progress__text"><span id="obDone">0</span> / <span id="obTotal">0</span> required fields complete</span>
   </div>
+
+  <!-- ============= Save & versions ============= -->
+  <section class="ob-save-panel" id="sec-save">
+    <h2><span class="ob-save-panel__icon">⤴</span>Save &amp; versions</h2>
+    <p style="color:var(--nume-slate-gray); font-size:.88rem; margin: 0 0 12px">
+      Each save creates a new versioned copy on the server, attributed to whoever saved it. The most recent save is what every landing page reads.
+      <strong>Pro tip:</strong> include a short summary of what changed.
+    </p>
+    <div class="ob-save-panel__row">
+      <div>
+        <label for="ob_savedBy">Your name <span style="color:#dc2626">*</span></label>
+        <input id="ob_savedBy" type="text" placeholder="e.g. Jane Smith" autocomplete="name">
+      </div>
+      <div>
+        <label for="ob_summary">Change note (optional)</label>
+        <input id="ob_summary" type="text" placeholder="e.g. Confirmed monthly price + states" maxlength="120">
+      </div>
+      <div>
+        <label for="ob_versionPicker">Load a saved version</label>
+        <select id="ob_versionPicker">
+          <option value="">— Most recent —</option>
+        </select>
+      </div>
+      <div>
+        <button type="button" class="ob-btn ob-btn--primary" id="ob_saveServer" style="white-space:nowrap">Save to server</button>
+      </div>
+    </div>
+    <div class="ob-save-panel__current" id="ob_currentMeta">
+      <span class="ob-status-pill ob-status-pill--unsaved" id="ob_status">No saved version loaded</span>
+    </div>
+  </section>
 
   <div class="ob-callout">
     <strong>Heads up:</strong> nothing here goes live automatically. After you submit, healthcare counsel and clinical leadership must review every claim, disclosure, and pricing element before any ad turns on.
@@ -446,15 +550,21 @@
   </form>
 
   <div class="ob-actions">
-    <span class="ob-actions__hint">When all required fields are filled, click <strong>Export config</strong>. Save the result as <code>assets/js/landing-config.js</code>.</span>
-    <button type="button" class="ob-btn ob-btn--ghost" id="obSave">Save draft</button>
+    <span class="ob-actions__hint">
+      Saves go to the server and become the live config that every landing page reads.
+      Older versions stay around — load any of them from the picker above.
+      <strong>Export JS file</strong> is a fallback that downloads the same content if the server is unreachable.
+    </span>
+    <button type="button" class="ob-btn ob-btn--ghost" id="obSave">Save draft (browser)</button>
     <button type="button" class="ob-btn ob-btn--ghost" id="obReset">Reset</button>
-    <button type="button" class="ob-btn ob-btn--primary" id="obExport">Export config</button>
+    <button type="button" class="ob-btn ob-btn--ghost" id="obExport">Export JS file</button>
+    <button type="button" class="ob-btn ob-btn--primary" id="ob_saveServer2">Save to server</button>
   </div>
 
   <pre class="ob-output" id="obOutput"></pre>
 
 </main>
+<div class="ob-toast" id="ob_toast" role="status" aria-live="polite"></div>
 
 <script>
 (function(){
@@ -649,10 +759,198 @@
     return header + "window.NUME_CONFIG = " + JSON.stringify(cfg, null, 2) + ";\n";
   }
 
+  /* ------- Toast ------- */
+  var toastEl = document.getElementById("ob_toast");
+  var toastTimer = null;
+  function toast(msg, kind){
+    if (!toastEl) return;
+    toastEl.textContent = msg;
+    toastEl.classList.remove("ob-toast--success", "ob-toast--error");
+    if (kind === "success") toastEl.classList.add("ob-toast--success");
+    if (kind === "error")   toastEl.classList.add("ob-toast--error");
+    toastEl.classList.add("is-on");
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove("is-on"); }, 3500);
+  }
+
+  /* ------- Server (api/landing-config.php) ------- */
+  var API = "api/landing-config.php";
+  var loadedVersionId = null;
+  var BY_KEY = "nume.onboarding.savedBy";
+
+  function fmtDate(iso){
+    if (!iso) return "";
+    try { return new Date(iso).toLocaleString(); } catch(e){ return iso; }
+  }
+
+  function setStatus(html, kind){
+    var el = document.getElementById("ob_status");
+    el.textContent = html;
+    el.className = "ob-status-pill " + (kind === "published" ? "ob-status-pill--published" : "ob-status-pill--unsaved");
+  }
+
+  function fetchVersions(){
+    return fetch(API + "?action=list", { credentials: "same-origin" })
+      .then(function(r){ if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      .then(function(j){ return (j && j.ok && Array.isArray(j.versions)) ? j.versions : []; })
+      .catch(function(err){ console.warn("Version list failed", err); return []; });
+  }
+
+  function renderVersionPicker(versions){
+    var sel = document.getElementById("ob_versionPicker");
+    var keep = sel.value;
+    sel.innerHTML = '<option value="">— Most recent —</option>';
+    versions.forEach(function(v){
+      var opt = document.createElement("option");
+      opt.value = v.id;
+      var label = (v.savedBy || "anon") + " · " + fmtDate(v.savedAt);
+      if (v.summary) label += " · " + v.summary;
+      opt.textContent = label;
+      sel.appendChild(opt);
+    });
+    if (keep) sel.value = keep;
+  }
+
+  function applyConfigToForm(cfg){
+    if (!cfg) return;
+    /* brand */
+    if (cfg.brand) {
+      ["name","domain","supportEmail","supportPhone","supportHours"].forEach(function(k){
+        var el = form.querySelector('[name="brand.'+k+'"]');
+        if (el && cfg.brand[k] != null) el.value = cfg.brand[k];
+      });
+    }
+    /* product */
+    if (cfg.product) {
+      ["publicName","medication","monthlyPrice","annualMonthlyPrice","firstMonthPrice","refillCadence","cancellation","refund"].forEach(function(k){
+        var el = form.querySelector('[name="product.'+k+'"]');
+        if (el && cfg.product[k] != null) el.value = cfg.product[k];
+      });
+      var includedBox = document.querySelector('.ob-multi[data-multi="product.included"]');
+      if (includedBox && Array.isArray(cfg.product.included) && cfg.product.included.length) {
+        var add = includedBox.querySelector(".ob-multi__add");
+        includedBox.querySelectorAll(".ob-multi__row").forEach(function(r){r.remove();});
+        cfg.product.included.forEach(function(item){
+          var row = document.createElement("div");
+          row.className = "ob-multi__row";
+          row.innerHTML = '<input value="'+String(item).replace(/"/g,'&quot;')+'"><button type="button" class="ob-multi__remove">Remove</button>';
+          includedBox.insertBefore(row, add);
+          bindRemove(row.querySelector(".ob-multi__remove"));
+        });
+      }
+    }
+    /* states */
+    if (cfg.states && Array.isArray(cfg.states.served)) {
+      states = cfg.states.served.filter(function(s){ return s && s.indexOf("[CLIENT") === -1; });
+      renderStates();
+    }
+    /* clinical */
+    if (cfg.clinical) {
+      Object.keys(cfg.clinical).forEach(function(k){
+        var el = form.querySelector('[name="clinical.'+k+'"]');
+        if (el && cfg.clinical[k] != null) el.value = cfg.clinical[k];
+      });
+    }
+    /* trust */
+    if (cfg.trust && Array.isArray(cfg.trust.badges) && cfg.trust.badges.length) {
+      var badgesBox = document.querySelector('.ob-multi[data-multi="trust.badges"]');
+      if (badgesBox) {
+        var add2 = badgesBox.querySelector(".ob-multi__add");
+        badgesBox.querySelectorAll(".ob-multi__row").forEach(function(r){r.remove();});
+        cfg.trust.badges.forEach(function(item){
+          var row = document.createElement("div");
+          row.className = "ob-multi__row";
+          row.innerHTML = '<input value="'+String(item).replace(/"/g,'&quot;')+'"><button type="button" class="ob-multi__remove">Remove</button>';
+          badgesBox.insertBefore(row, add2);
+          bindRemove(row.querySelector(".ob-multi__remove"));
+        });
+      }
+    }
+    /* disclosures */
+    if (cfg.disclosures) {
+      Object.keys(cfg.disclosures).forEach(function(k){
+        var el = form.querySelector('[name="disclosures.'+k+'"]');
+        if (el && cfg.disclosures[k] != null) el.value = cfg.disclosures[k];
+      });
+    }
+    save();
+    recalcProgress();
+  }
+
+  function loadVersion(id){
+    var url = id ? (API + "?action=load&id=" + encodeURIComponent(id)) : (API + "?action=current");
+    return fetch(url, { credentials: "same-origin" })
+      .then(function(r){ if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      .then(function(j){
+        if (!j || !j.ok) throw new Error(j && j.error || "Load failed");
+        var v = j.version;
+        if (!v) {
+          setStatus("No saved version yet", "unsaved");
+          loadedVersionId = null;
+          return;
+        }
+        loadedVersionId = v.id;
+        applyConfigToForm(v.config);
+        setStatus("Loaded: " + (v.savedBy || "anon") + " · " + fmtDate(v.savedAt), "published");
+        if (v.summary) {
+          document.getElementById("ob_summary").value = "";
+        }
+      })
+      .catch(function(err){
+        console.warn(err);
+        toast("Couldn't load version: " + err.message, "error");
+      });
+  }
+
+  function saveToServer(){
+    var savedBy = (document.getElementById("ob_savedBy").value || "").trim();
+    if (!savedBy) {
+      toast("Add your name before saving.", "error");
+      document.getElementById("ob_savedBy").focus();
+      return;
+    }
+    var summary = (document.getElementById("ob_summary").value || "").trim();
+    localStorage.setItem(BY_KEY, savedBy);
+
+    var cfg = buildConfig();
+    var btn1 = document.getElementById("ob_saveServer");
+    var btn2 = document.getElementById("ob_saveServer2");
+    [btn1, btn2].forEach(function(b){ if (b){ b.disabled = true; b.dataset._label = b.textContent; b.textContent = "Saving…"; } });
+
+    fetch(API + "?action=save", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ savedBy: savedBy, summary: summary, config: cfg })
+    })
+    .then(function(r){
+      return r.json().then(function(j){ return { ok: r.ok, body: j }; });
+    })
+    .then(function(res){
+      if (!res.ok || !res.body || !res.body.ok) {
+        var err = (res.body && res.body.error) || ("HTTP " + (res.ok ? "?" : "error"));
+        throw new Error(err);
+      }
+      var v = res.body.version;
+      loadedVersionId = v.id;
+      setStatus("Published · " + (v.savedBy || "anon") + " · " + fmtDate(v.savedAt), "published");
+      toast("Saved. Live config updated.", "success");
+      document.getElementById("ob_summary").value = "";
+      return fetchVersions().then(renderVersionPicker);
+    })
+    .catch(function(err){
+      console.warn("Save failed", err);
+      toast("Save failed: " + err.message + ". Try Export JS file instead.", "error");
+    })
+    .finally(function(){
+      [btn1, btn2].forEach(function(b){ if (b){ b.disabled = false; b.textContent = b.dataset._label || "Save to server"; } });
+    });
+  }
+
   /* ------- Buttons ------- */
-  document.getElementById("obSave").addEventListener("click", function(){ save(); alert("Draft saved in your browser."); });
+  document.getElementById("obSave").addEventListener("click", function(){ save(); toast("Draft saved in your browser.", "success"); });
   document.getElementById("obReset").addEventListener("click", function(){
-    if (!confirm("Clear all answers?")) return;
+    if (!confirm("Clear all answers in this browser? (Server-saved versions are not affected.)")) return;
     localStorage.removeItem(STORAGE_KEY);
     location.reload();
   });
@@ -663,7 +961,6 @@
     out.textContent = text;
     out.style.display = "block";
     out.scrollIntoView({behavior:"smooth", block:"start"});
-    /* Try to copy + offer download */
     try { navigator.clipboard.writeText(text); } catch(e) {}
     var blob = new Blob([text], {type:"application/javascript"});
     var url = URL.createObjectURL(blob);
@@ -672,6 +969,12 @@
     document.body.appendChild(a); a.click();
     setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); }, 500);
   });
+  document.getElementById("ob_saveServer").addEventListener("click", saveToServer);
+  document.getElementById("ob_saveServer2").addEventListener("click", saveToServer);
+  document.getElementById("ob_versionPicker").addEventListener("change", function(e){
+    var id = e.target.value;
+    loadVersion(id || null);
+  });
 
   /* ------- Init ------- */
   form.addEventListener("input", save);
@@ -679,6 +982,20 @@
   bindMultis();
   renderStates();
   load();
+
+  /* Pre-fill the saved-by field from prior sessions. */
+  var prevName = localStorage.getItem(BY_KEY);
+  if (prevName) document.getElementById("ob_savedBy").value = prevName;
+
+  /* Pull version list and the current published version on first load. */
+  fetchVersions().then(function(versions){
+    renderVersionPicker(versions);
+    if (versions.length === 0) {
+      setStatus("No saved version yet · this will be the first save", "unsaved");
+    } else {
+      loadVersion(null);
+    }
+  });
 })();
 </script>
 

@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Checkout – nume-health.com</title>
+    <title>Checkout — Nume Health</title>
+    <meta name="description" content="Payment is collected after a licensed provider confirms eligibility. Start with the assessment.">
     <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png">
@@ -42,15 +43,26 @@
                                 <div class="navbar-wrap main-menu d-none d-xl-flex">
                                     <ul class="navigation">
                                         <li><a href="index.html">Home</a></li>
-                                        <li class="menu-item-has-children"><a href="#">Page</a><ul class="sub-menu" id="nav-pages-dropdown"></ul></li>
-                                        <li><a href="assessment.html">Assessment</a></li>
-                                        <li class="active menu-item-has-children"><a href="shop.html">Shop</a><ul class="sub-menu"><li><a href="shop.html">Shop</a></li><li><a href="shop-details.html">Product details</a></li><li><a href="cart.html">Cart</a></li><li><a href="checkout.html">Checkout</a></li></ul></li>
-                                        <li class="menu-item-has-children"><a href="login.html">Account</a><ul class="sub-menu"><li><a href="login.html">Login</a></li><li><a href="register.html">Register</a></li><li><a href="reset-password.html">Reset password</a></li></ul></li>
+                                        <li><a href="shop.html">Plans</a></li>
+                                        <li><a href="glp1-pricing.html">Pricing</a></li>
+                                        <li><a href="assessment.html">Eligibility</a></li>
+                                        <li><a href="glp1-faq.html">FAQ</a></li>
+                                        <li class="menu-item-has-children"><a href="login.html">Account</a>
+                                            <ul class="sub-menu">
+                                                <li><a href="login.html">Login</a></li>
+                                                <li><a href="register.html">Register</a></li>
+                                                <li><a href="reset-password.html">Reset password</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="menu-item-has-children"><a href="#">More</a>
+                                            <ul class="sub-menu" id="nav-pages-dropdown"></ul>
+                                        </li>
                                         <li><a href="contact.html">Contact</a></li>
-                                        <li><a href="recommendations.html">Recommendations</a></li>
                                     </ul>
                                 </div>
-                                <div class="header-action d-none d-sm-block"><ul><li class="header-shop-cart"><a href="cart.html" class="cart-count"><i class="flaticon-shopping-cart"></i><span class="mini-cart-count">0</span></a></li></ul></div>
+                                <div class="header-action d-none d-sm-block">
+                                    <a href="assessment.html" class="btn btn-two btn-primary-style" style="padding:10px 22px;">See if I qualify</a>
+                                </div>
                             </nav>
                         </div>
                     </div>
@@ -65,11 +77,10 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-8 text-center">
-                        <h1>Checkout</h1>
+                        <h1>Checkout happens after provider review</h1>
                         <nav aria-label="Breadcrumb" class="mt-2">
                             <ol class="breadcrumb mb-0 justify-content-center">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item"><a href="cart.html">Cart</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Checkout</li>
                             </ol>
                         </nav>
@@ -77,78 +88,87 @@
                 </div>
             </div>
         </section>
-        <div class="section-padding">
-            <div class="container">
-                <form action="thank-you.html" method="get">
-                    <div class="row">
-                        <div class="col-lg-7">
-                            <div class="p-4 rounded-3 bg-light mb-4">
-                                <h3 class="h5 mb-4">Billing details</h3>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label">First name *</label>
-                                        <input type="text" class="form-control" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Last name *</label>
-                                        <input type="text" class="form-control" required>
-                                    </div>
-                                    <div class="col-12">
-                                        <label class="form-label">Email *</label>
-                                        <input type="email" class="form-control" required>
-                                    </div>
-                                    <div class="col-12">
-                                        <label class="form-label">Phone *</label>
-                                        <input type="tel" class="form-control" required>
-                                    </div>
-                                    <div class="col-12">
-                                        <label class="form-label">Address *</label>
-                                        <input type="text" class="form-control" placeholder="Street address" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">City *</label>
-                                        <input type="text" class="form-control" required>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="form-label">State</label>
-                                        <input type="text" class="form-control">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="form-label">ZIP *</label>
-                                        <input type="text" class="form-control" required>
-                                    </div>
-                                    <div class="col-12">
-                                        <label class="form-label">Order notes (optional)</label>
-                                        <textarea class="form-control" rows="2" placeholder="Delivery instructions"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-5">
-                            <div class="p-4 rounded-3 bg-light">
-                                <h3 class="h5 mb-4">Your order</h3>
-                                <ul class="list-unstyled">
-                                    <li class="d-flex justify-content-between py-2 border-bottom"><span>Multivitamin Complex Ã— 1</span><span>$49.99</span></li>
-                                    <li class="d-flex justify-content-between py-3 fw-bold"><span>Total</span><span class="text-primary">$49.99</span></li>
-                                </ul>
-                                <p class="small text-muted mt-3">Complete your order below. You'll receive a confirmation email after checkout.</p>
-                                <button type="submit" class="btn btn-two w-100 mt-3">Place order</button>
+        <section class="section-padding">
+            <div class="container" style="max-width:720px">
+                <div class="card border-0 shadow-sm p-4 p-md-5 text-center" style="border-radius:20px">
+                    <p class="lead">Payment is collected only after a licensed provider confirms you qualify.</p>
+                    <p>This isn't a retail checkout. Once your eligibility assessment is complete and a clinician approves your plan, you'll receive a secure payment link with the all-in monthly price. Compounded medications, if prescribed, are not FDA-approved.</p>
+                    <div class="d-flex flex-wrap gap-2 justify-content-center mt-3">
+                        <a href="assessment.html" class="btn btn-two btn-primary-style">Start eligibility check</a>
+                        <a href="glp1-pricing.html" class="btn btn-two">View pricing</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Unified footer for nume-health.com -->
+<footer class="footer-area">
+    <div class="footer-top-wrap">
+        <div class="container">
+            <div class="footer-widgets-wrap">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-widget">
+                            <div class="footer-about">
+                                <div class="footer-logo logo"><a href="index.html"><img src="assets/img/logo/white_logo.svg" alt="Nume Health" onerror="this.src='assets/img/logo/white_logo.png'; this.onerror=null;"></a></div>
+                                <p>Clinician-guided weight-care, online. Cash-pay options. No insurance required.</p>
                             </div>
                         </div>
                     </div>
-                </form>
+                    <div class="col-lg-2 col-md-6 col-6">
+                        <div class="footer-widget">
+                            <h4 class="fw-title">Care</h4>
+                            <ul class="list-wrap">
+                                <li><a href="index.html">Home</a></li>
+                                <li><a href="shop.html">Plans</a></li>
+                                <li><a href="glp1-pricing.html">Pricing</a></li>
+                                <li><a href="assessment.html">Eligibility</a></li>
+                                <li><a href="glp1-faq.html">FAQ</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-6">
+                        <div class="footer-widget">
+                            <h4 class="fw-title">Account</h4>
+                            <ul class="list-wrap">
+                                <li><a href="login.html">Login</a></li>
+                                <li><a href="register.html">Register</a></li>
+                                <li><a href="reset-password.html">Reset password</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-widget">
+                            <h4 class="fw-title">Legal</h4>
+                            <ul class="list-wrap">
+                                <li><a href="/privacy.html">Privacy Policy</a></li>
+                                <li><a href="/terms.html">Terms of Service</a></li>
+                                <li><a href="/telehealth-consent.html">Telehealth Consent</a></li>
+                                <li><a href="/consumer-health-data.html">Consumer Health Data</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </main>
-    <footer class="footer-area">
-        <div class="footer-top-wrap"><div class="container"><div class="footer-widgets-wrap"><div class="row">
-            <div class="col-lg-4 col-md-6"><div class="footer-widget"><div class="footer-about"><div class="footer-logo logo"><a href="index.html"><img src="assets/img/logo/white_logo.svg" alt="nume-health.com" onerror="this.src='assets/img/logo/white_logo.png'; this.onerror=null;"></a></div><p>DTC Telehealth – patient journey from landing to order fulfillment.</p></div></div></div>
-            <div class="col-lg-2 col-md-6 col-6"><div class="footer-widget"><h4 class="fw-title">Site</h4><ul class="list-wrap"><li><a href="index.html">Home</a></li><li><a href="assessment.html">Assessment</a></li><li><a href="shop.html">Shop</a></li><li><a href="contact.html">Contact</a></li><li><a href="recommendations.html">Recommendations</a></li></ul></div></div>
-            <div class="col-lg-2 col-md-6 col-6"><div class="footer-widget"><h4 class="fw-title">Account</h4><ul class="list-wrap"><li><a href="login.html">Login</a></li><li><a href="register.html">Register</a></li><li><a href="cart.html">Cart</a></li><li><a href="checkout.html">Checkout</a></li></ul></div></div>
-            <div class="col-lg-4 col-md-6"><div class="footer-widget"><h4 class="fw-title">Contact</h4><p>nume-health.com</p><ul class="list-wrap"><li><a href="contact.html">Contact form</a></li></ul></div></div>
-        </div></div></div></div>
-        <div class="copyright-wrap"><div class="container"><div class="row align-items-center"><div class="col-12"><p class="copyright-text mb-0">Copyright Â© 2025 nume-health.com. All rights reserved.</p></div></div></div>
-    </footer>
+    </div>
+    <div class="copyright-wrap">
+        <div class="container">
+            <div class="row align-items-start g-3">
+                <div class="col-lg-9">
+                    <p class="copyright-text mb-2 small" style="opacity:.8">
+                        Nume Health is a marketing brand. Medical services are provided by independent licensed clinicians.
+                        GLP-1 medications are prescription treatments and are not appropriate for everyone.
+                        Compounded medications, if prescribed, are not FDA-approved and are not reviewed by FDA for safety, effectiveness, or quality.
+                        Prescription is not guaranteed; a licensed provider determines whether treatment is appropriate.
+                    </p>
+                    <p class="copyright-text mb-0 small" style="opacity:.6">© 2026 Nume Health. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
     <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="assets/js/main.js"></script>

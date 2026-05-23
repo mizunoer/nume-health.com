@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Assessment – nume-health.com</title>
-    <meta name="description" content="Quick telehealth assessment – get personalized treatment recommendations.">
+    <title>Eligibility Assessment - Nume Health</title>
+    <meta name="description" content="Take a 90-second eligibility check for clinician-guided cash-pay GLP-1 care. No insurance required.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
@@ -44,15 +44,26 @@
                                 <div class="navbar-wrap main-menu d-none d-xl-flex">
                                     <ul class="navigation">
                                         <li><a href="index.html">Home</a></li>
-                                        <li class="menu-item-has-children"><a href="#">Page</a><ul class="sub-menu" id="nav-pages-dropdown"></ul></li>
-                                        <li class="active"><a href="assessment.html">Assessment</a></li>
-                                        <li class="menu-item-has-children"><a href="shop.html">Shop</a><ul class="sub-menu"><li><a href="shop.html">Shop</a></li><li><a href="shop-details.html">Product details</a></li><li><a href="cart.html">Cart</a></li><li><a href="checkout.html">Checkout</a></li></ul></li>
-                                        <li class="menu-item-has-children"><a href="login.html">Account</a><ul class="sub-menu"><li><a href="login.html">Login</a></li><li><a href="register.html">Register</a></li><li><a href="reset-password.html">Reset password</a></li></ul></li>
+                                        <li><a href="shop.html">Plans</a></li>
+                                        <li><a href="glp1-pricing.html">Pricing</a></li>
+                                        <li><a href="assessment.html">Eligibility</a></li>
+                                        <li><a href="glp1-faq.html">FAQ</a></li>
+                                        <li class="menu-item-has-children"><a href="login.html">Account</a>
+                                            <ul class="sub-menu">
+                                                <li><a href="login.html">Login</a></li>
+                                                <li><a href="register.html">Register</a></li>
+                                                <li><a href="reset-password.html">Reset password</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="menu-item-has-children"><a href="#">More</a>
+                                            <ul class="sub-menu" id="nav-pages-dropdown"></ul>
+                                        </li>
                                         <li><a href="contact.html">Contact</a></li>
-                                        <li><a href="recommendations.html">Recommendations</a></li>
                                     </ul>
                                 </div>
-                                <div class="header-action d-none d-sm-block"><ul><li class="header-shop-cart"><a href="cart.html" class="cart-count"><i class="flaticon-shopping-cart"></i><span class="mini-cart-count">0</span></a></li></ul></div>
+                                <div class="header-action d-none d-sm-block">
+                                    <a href="assessment.html" class="btn btn-two btn-primary-style" style="padding:10px 22px;">See if I qualify</a>
+                                </div>
                             </nav>
                         </div>
                     </div>
@@ -67,8 +78,8 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-8 text-center">
-                        <h1>Health assessment</h1>
-                        <p class="mb-0 opacity-90">Takes about 5 minutes. A licensed provider will review your responses.</p>
+                        <h1>Eligibility assessment</h1>
+                        <p class="mb-0 opacity-90">About 90 seconds. A licensed clinician reviews your information and decides whether treatment is appropriate. Prescription is not guaranteed.</p>
                     </div>
                 </div>
             </div>
@@ -78,38 +89,79 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-8">
                         <div class="p-4 p-lg-5 rounded-3 bg-light">
-                            <form action="shop.html" method="get">
+                            <p class="small text-muted mb-3"><strong>Step 1 of 2.</strong> This is a brief eligibility check. If you appear to be a candidate, we'll send you to a secure medical intake for a licensed provider to review.</p>
+                            <form action="thank-you.html" method="get" id="elig-form">
+                                <input type="hidden" name="layer" value="1">
                                 <div class="mb-4">
-                                    <label class="form-label">What are you interested in? *</label>
-                                    <select class="form-select" required>
+                                    <label class="form-label" for="goal">What is your primary goal? <span class="text-danger">*</span></label>
+                                    <select id="goal" class="form-select" required>
                                         <option value="">Select...</option>
-                                        <option value="wellness">General wellness</option>
-                                        <option value="hair">Hair & skin</option>
-                                        <option value="weight">Weight & fitness</option>
-                                        <option value="mens">Men's health</option>
-                                        <option value="other">Other</option>
+                                        <option>Build a clinician-guided weight-care plan</option>
+                                        <option>Reduce appetite / cravings</option>
+                                        <option>Explore prescription options</option>
+                                        <option>Switch from another provider</option>
+                                        <option>Cash-pay / no-insurance option</option>
                                     </select>
                                 </div>
-                                <div class="mb-4">
-                                    <label class="form-label">Have you discussed this with a healthcare provider before? *</label>
-                                    <div class="form-check"><input type="radio" name="discussed" value="yes" id="d1" class="form-check-input" required><label class="form-check-label" for="d1">Yes</label></div>
-                                    <div class="form-check"><input type="radio" name="discussed" value="no" id="d2" class="form-check-input"><label class="form-check-label" for="d2">No</label></div>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="mb-4">
+                                            <label class="form-label" for="state">What state are you in? <span class="text-danger">*</span></label>
+                                            <input id="state" class="form-control" placeholder="e.g. FL" maxlength="2" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-4">
+                                            <label class="form-label" for="age">Age <span class="text-danger">*</span></label>
+                                            <input id="age" type="number" class="form-control" min="18" max="99" placeholder="Must be 18 or older" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="mb-4">
+                                            <label class="form-label" for="height">Height</label>
+                                            <input id="height" class="form-control" placeholder="e.g. 5'8&quot;">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-4">
+                                            <label class="form-label" for="weight">Weight (lbs)</label>
+                                            <input id="weight" type="number" min="50" max="700" class="form-control" placeholder="Approximate is fine">
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="mb-4">
-                                    <label class="form-label">Current medications (optional)</label>
-                                    <textarea class="form-control" rows="2" placeholder="List any medications you're taking"></textarea>
+                                    <label class="form-label">Have you used a GLP-1 medication before?</label>
+                                    <div class="form-check"><input type="radio" name="prior_glp1" value="yes" id="g1" class="form-check-input"><label class="form-check-label" for="g1">Yes — I'm currently or previously on one</label></div>
+                                    <div class="form-check"><input type="radio" name="prior_glp1" value="no" id="g2" class="form-check-input"><label class="form-check-label" for="g2">No — never</label></div>
                                 </div>
                                 <div class="mb-4">
-                                    <label class="form-label">Allergies (optional)</label>
-                                    <input type="text" class="form-control" placeholder="Known allergies">
+                                    <label class="form-label">Are you currently pregnant, breastfeeding, or trying to become pregnant? <span class="text-danger">*</span></label>
+                                    <div class="form-check"><input type="radio" name="pregnant" value="no" id="p1" class="form-check-input" required><label class="form-check-label" for="p1">No</label></div>
+                                    <div class="form-check"><input type="radio" name="pregnant" value="yes" id="p2" class="form-check-input"><label class="form-check-label" for="p2">Yes — I understand GLP-1 treatment may not be appropriate</label></div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Do any of these apply? (a clinician will review further if needed)</label>
+                                    <div class="form-check"><input type="checkbox" class="form-check-input" id="h1"><label class="form-check-label small" for="h1">History of pancreatitis</label></div>
+                                    <div class="form-check"><input type="checkbox" class="form-check-input" id="h2"><label class="form-check-label small" for="h2">Medullary thyroid cancer or MEN2</label></div>
+                                    <div class="form-check"><input type="checkbox" class="form-check-input" id="h3"><label class="form-check-label small" for="h3">Severe GI disease or gallbladder issues</label></div>
+                                    <div class="form-check"><input type="checkbox" class="form-check-input" id="h4"><label class="form-check-label small" for="h4">Eating-disorder history</label></div>
+                                    <div class="form-check"><input type="checkbox" class="form-check-input" id="h5"><label class="form-check-label small" for="h5">Diabetes or insulin use</label></div>
+                                    <div class="form-check"><input type="checkbox" class="form-check-input" id="h6"><label class="form-check-label small" for="h6">None of the above</label></div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label" for="email">Email <span class="text-danger">*</span></label>
+                                    <input id="email" type="email" class="form-control" required>
                                 </div>
                                 <div class="mb-4">
                                     <div class="form-check">
-                                        <input type="checkbox" id="terms" class="form-check-input" required>
-                                        <label class="form-check-label" for="terms">I confirm the information I've provided is accurate and I agree to the terms of service.</label>
+                                        <input type="checkbox" id="consent" class="form-check-input" required>
+                                        <label class="form-check-label small" for="consent">I confirm the information I've provided is accurate and I agree to the <a href="/privacy.html">Privacy Policy</a>, <a href="/terms.html">Terms</a>, and <a href="/telehealth-consent.html">Telehealth Consent</a>.</label>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-two">Continue to shop</button>
+                                <p class="small text-muted">Prescription is not guaranteed. A licensed provider will review your medical history and determine whether treatment is appropriate. Compounded medications, if prescribed, are not FDA-approved.</p>
+                                <button type="submit" class="btn btn-two btn-primary-style">Continue</button>
                             </form>
                         </div>
                     </div>
@@ -117,15 +169,74 @@
             </div>
         </section>
     </main>
-    <footer class="footer-area">
-        <div class="footer-top-wrap"><div class="container"><div class="footer-widgets-wrap"><div class="row">
-            <div class="col-lg-4 col-md-6"><div class="footer-widget"><div class="footer-about"><div class="footer-logo logo"><a href="index.html"><img src="assets/img/logo/white_logo.svg" alt="nume-health.com" onerror="this.src='assets/img/logo/white_logo.png'; this.onerror=null;"></a></div><p>DTC Telehealth – patient journey from landing to order fulfillment.</p></div></div></div>
-            <div class="col-lg-2 col-md-6 col-6"><div class="footer-widget"><h4 class="fw-title">Site</h4><ul class="list-wrap"><li><a href="index.html">Home</a></li><li><a href="assessment.html">Assessment</a></li><li><a href="shop.html">Shop</a></li><li><a href="contact.html">Contact</a></li><li><a href="recommendations.html">Recommendations</a></li></ul></div></div>
-            <div class="col-lg-2 col-md-6 col-6"><div class="footer-widget"><h4 class="fw-title">Account</h4><ul class="list-wrap"><li><a href="login.html">Login</a></li><li><a href="register.html">Register</a></li><li><a href="cart.html">Cart</a></li><li><a href="checkout.html">Checkout</a></li></ul></div></div>
-            <div class="col-lg-4 col-md-6"><div class="footer-widget"><h4 class="fw-title">Contact</h4><p>nume-health.com</p><ul class="list-wrap"><li><a href="contact.html">Contact form</a></li></ul></div></div>
-        </div></div></div></div>
-        <div class="copyright-wrap"><div class="container"><div class="row align-items-center"><div class="col-12"><p class="copyright-text mb-0">Copyright Â© 2025 nume-health.com. All rights reserved.</p></div></div></div>
-    </footer>
+    <!-- Unified footer for nume-health.com -->
+<footer class="footer-area">
+    <div class="footer-top-wrap">
+        <div class="container">
+            <div class="footer-widgets-wrap">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-widget">
+                            <div class="footer-about">
+                                <div class="footer-logo logo"><a href="index.html"><img src="assets/img/logo/white_logo.svg" alt="Nume Health" onerror="this.src='assets/img/logo/white_logo.png'; this.onerror=null;"></a></div>
+                                <p>Clinician-guided weight-care, online. Cash-pay options. No insurance required.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-6">
+                        <div class="footer-widget">
+                            <h4 class="fw-title">Care</h4>
+                            <ul class="list-wrap">
+                                <li><a href="index.html">Home</a></li>
+                                <li><a href="shop.html">Plans</a></li>
+                                <li><a href="glp1-pricing.html">Pricing</a></li>
+                                <li><a href="assessment.html">Eligibility</a></li>
+                                <li><a href="glp1-faq.html">FAQ</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-6">
+                        <div class="footer-widget">
+                            <h4 class="fw-title">Account</h4>
+                            <ul class="list-wrap">
+                                <li><a href="login.html">Login</a></li>
+                                <li><a href="register.html">Register</a></li>
+                                <li><a href="reset-password.html">Reset password</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-widget">
+                            <h4 class="fw-title">Legal</h4>
+                            <ul class="list-wrap">
+                                <li><a href="/privacy.html">Privacy Policy</a></li>
+                                <li><a href="/terms.html">Terms of Service</a></li>
+                                <li><a href="/telehealth-consent.html">Telehealth Consent</a></li>
+                                <li><a href="/consumer-health-data.html">Consumer Health Data</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copyright-wrap">
+        <div class="container">
+            <div class="row align-items-start g-3">
+                <div class="col-lg-9">
+                    <p class="copyright-text mb-2 small" style="opacity:.8">
+                        Nume Health is a marketing brand. Medical services are provided by independent licensed clinicians.
+                        GLP-1 medications are prescription treatments and are not appropriate for everyone.
+                        Compounded medications, if prescribed, are not FDA-approved and are not reviewed by FDA for safety, effectiveness, or quality.
+                        Prescription is not guaranteed; a licensed provider determines whether treatment is appropriate.
+                    </p>
+                    <p class="copyright-text mb-0 small" style="opacity:.6">© 2026 Nume Health. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
     <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="assets/js/main.js"></script>
