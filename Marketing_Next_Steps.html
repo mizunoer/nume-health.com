@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Nume Health — GLP-1 Marketing Launch · Next Steps</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="stylesheet" href="assets/css/nume-health.css">
+<style>
+  body { background: var(--nume-offwhite); font-family: 'Inter',-apple-system,BlinkMacSystemFont,sans-serif; }
+  .ns-hero { background: var(--nume-gradient-dark); color:#fff; padding: 56px 24px 40px; }
+  .ns-hero::after { content:""; display:block; height:5px; background: var(--nume-gradient); margin: 40px -24px -40px; }
+  .ns-hero h1 { color:#fff; font-size: clamp(1.6rem, 3vw, 2.2rem); margin: 0 0 .3em; }
+  .ns-hero p { color: rgba(255,255,255,.85); max-width:800px; margin:0; font-size:1.05rem; }
+  .ns-meta { color: rgba(255,255,255,.6); font-size:.85rem; margin-bottom:8px; }
+  .ns-wrap { max-width: 1180px; margin: 0 auto; padding: 32px 24px 80px; }
+  .ns-cards { display: grid; gap: 18px; grid-template-columns: 1fr; margin-bottom: 24px; }
+  @media (min-width:720px) { .ns-cards { grid-template-columns: repeat(4, 1fr); } }
+  .ns-card {
+    background:#fff; border:1px solid var(--nume-border);
+    border-radius: var(--nume-radius-lg); padding: 18px 20px;
+  }
+  .ns-card__count { font-size: 1.8rem; font-weight: 800; color: var(--nume-navy); line-height: 1; margin-bottom: 6px; }
+  .ns-card__label { font-size: .85rem; color: var(--nume-slate-gray); text-transform: uppercase; letter-spacing: .04em; font-weight: 700; }
+  .ns-card--blocked { border-left: 4px solid #dc2626; }
+  .ns-card--ready   { border-left: 4px solid #16a34a; }
+  .ns-card--client  { border-left: 4px solid #f59e0b; }
+  .ns-card--us      { border-left: 4px solid var(--nume-primary); }
+
+  .ns-section { margin-top: 36px; }
+  .ns-section h2 {
+    color: var(--nume-navy); font-size: 1.4rem; margin: 0 0 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .ns-section__num {
+    width: 30px; height:30px; border-radius:50%;
+    background: var(--nume-gradient); color:#fff;
+    font-size:.9rem; font-weight:800;
+    display:inline-flex; align-items:center; justify-content:center;
+  }
+
+  table { width: 100%; border-collapse: collapse; background:#fff; border-radius: var(--nume-radius); overflow: hidden; box-shadow: var(--nume-shadow); margin-bottom: 18px; }
+  th, td { text-align:left; padding: 12px 14px; border-bottom: 1px solid var(--nume-border); vertical-align: top; font-size: .92rem; }
+  th { background: var(--nume-offwhite); color: var(--nume-navy); font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+  tr:last-child td { border-bottom: 0; }
+
+  .pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: .72rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; }
+  .pill-done    { background: #DCFCE7; color: #166534; }
+  .pill-prog    { background: #DBEAFE; color: #1E3A8A; }
+  .pill-blocked { background: #FEE2E2; color: #991B1B; }
+  .pill-client  { background: #FEF3C7; color: #92400E; }
+  .pill-todo    { background: #E2E8F0; color: #334155; }
+
+  .ns-link-grid { display:grid; gap:12px; grid-template-columns: 1fr; }
+  @media (min-width:720px) { .ns-link-grid { grid-template-columns: repeat(2, 1fr); } }
+  .ns-link {
+    display:flex; flex-direction: column; gap: 4px;
+    padding: 14px 16px;
+    background:#fff; border: 1px solid var(--nume-border);
+    border-radius: var(--nume-radius); text-decoration: none;
+    color: inherit;
+    transition: 0.2s ease;
+  }
+  .ns-link:hover { border-color: var(--nume-primary); transform: translateY(-2px); box-shadow: var(--nume-shadow); }
+  .ns-link strong { color: var(--nume-navy); font-size: 1rem; }
+  .ns-link span { color: var(--nume-slate-gray); font-size: .85rem; }
+  .ns-link code { background: var(--nume-mint); color: var(--nume-navy); padding: 1px 6px; border-radius: 4px; font-size: .75rem; }
+
+  .ns-callout {
+    background: var(--nume-mint); color: var(--nume-navy);
+    border-left: 4px solid var(--nume-primary);
+    padding: 14px 18px; border-radius: var(--nume-radius);
+    margin-bottom: 18px;
+  }
+  .ns-callout--warn { background:#fef3c7; border-left-color:#92400e; color:#78350f; }
+  .ns-callout strong { color: var(--nume-navy); }
+  .ns-callout--warn strong { color:#78350f; }
+
+  .ns-week-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
+  @media (min-width:720px) { .ns-week-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width:980px) { .ns-week-grid { grid-template-columns: repeat(4, 1fr); } }
+  .ns-day {
+    background: #fff; border: 1px solid var(--nume-border);
+    border-radius: var(--nume-radius); padding: 16px 18px;
+  }
+  .ns-day h3 { font-size: 1rem; margin:0 0 8px; color: var(--nume-navy); }
+  .ns-day ul { margin: 0; padding-left: 18px; font-size: .9rem; }
+  .ns-day li { margin-bottom: 4px; color: var(--nume-slate); }
+</style>
+</head>
+<body>
+
+<header class="ns-hero">
+  <div style="max-width:1180px; margin:0 auto;">
+    <div class="ns-meta">Internal · Generated from <em>glp1_cash_pay_landing_page_marketing_plan.md</em></div>
+    <h1>GLP-1 Cash-Pay Launch — Next Steps</h1>
+    <p>This is the live action tracker for the GLP-1 launch. The marketing plan covers strategy. This page tells you what is built, what is blocked, and what the client owes us before paid traffic can turn on.</p>
+  </div>
+</header>
+
+<main class="ns-wrap">
+
+  <!-- ============= Stat cards ============= -->
+  <div class="ns-cards">
+    <div class="ns-card ns-card--ready">
+      <div class="ns-card__count">5</div>
+      <div class="ns-card__label">Pages built &amp; ready</div>
+    </div>
+    <div class="ns-card ns-card--client">
+      <div class="ns-card__count">13</div>
+      <div class="ns-card__label">Client values needed</div>
+    </div>
+    <div class="ns-card ns-card--blocked">
+      <div class="ns-card__count">4</div>
+      <div class="ns-card__label">Compliance gates blocking launch</div>
+    </div>
+    <div class="ns-card ns-card--us">
+      <div class="ns-card__count">3</div>
+      <div class="ns-card__label">Open dev tasks (post-config)</div>
+    </div>
+  </div>
+
+  <div class="ns-callout ns-callout--warn">
+    <strong>Hard gate:</strong> nothing here goes live without (1) healthcare counsel review of all on-page claims and disclosures, (2) confirmed Google Healthcare Merchant / LegitScript certification status, and (3) clinical sign-off on the prescribing entity, provider network, and pharmacy partner list. These are all client-side blockers.
+  </div>
+
+  <!-- ============= 1. Tools we built ============= -->
+  <section class="ns-section">
+    <h2><span class="ns-section__num">1</span>What we shipped today</h2>
+    <p style="color: var(--nume-slate); margin-bottom: 18px">Drop-in pages and tooling that work as soon as the client config is filled in.</p>
+    <div class="ns-link-grid">
+      <a class="ns-link" href="Client_Onboarding.html">
+        <strong>Client_Onboarding.html</strong>
+        <span>The intake form the client fills in. Exports <code>landing-config.js</code> directly. Saves progress in browser.</span>
+      </a>
+      <a class="ns-link" href="Update_Colors.html">
+        <strong>Update_Colors.html</strong>
+        <span>Color recommendations (already implemented site-wide via <code>nume-health.css</code>).</span>
+      </a>
+      <a class="ns-link" href="ImageSelection.html">
+        <strong>ImageSelection.html</strong>
+        <span>Logo / favicon / OG-image picker (recommended set already wired in).</span>
+      </a>
+      <a class="ns-link" href="glp1-cash-pay.html">
+        <strong>/glp1-cash-pay</strong>
+        <span>Primary high-intent landing page. Google Search target. <code>data-bind</code> driven.</span>
+      </a>
+      <a class="ns-link" href="glp1-pricing.html">
+        <strong>/glp1-pricing</strong>
+        <span>Price-shopper landing page. One-plan pricing, transparent inclusions.</span>
+      </a>
+      <a class="ns-link" href="weight-care-online.html">
+        <strong>/weight-care-online</strong>
+        <span>Education-first page; safer for Meta &amp; TikTok approval.</span>
+      </a>
+      <a class="ns-link" href="switch-glp1-provider.html">
+        <strong>/switch-glp1-provider</strong>
+        <span>For people already on a GLP-1 — continuity-of-care framing.</span>
+      </a>
+      <a class="ns-link" href="glp1-faq.html">
+        <strong>/glp1-faq</strong>
+        <span>SEO + objection-handling page; eligibility check at the bottom.</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============= 2. Compliance / launch gates ============= -->
+  <section class="ns-section">
+    <h2><span class="ns-section__num">2</span>Launch gates (compliance &amp; ad approvals)</h2>
+    <table>
+      <thead>
+        <tr><th style="width:32%">Gate</th><th>Who owns it</th><th style="width:14%">Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Healthcare counsel review of landing-page claims</td><td>Client / counsel</td><td><span class="pill pill-blocked">Blocking</span></td></tr>
+        <tr><td>LegitScript / Google Healthcare Merchant Certification</td><td>Client</td><td><span class="pill pill-blocked">Blocking</span></td></tr>
+        <tr><td>Compounded-medication disclosure approved</td><td>Client / counsel</td><td><span class="pill pill-blocked">Blocking</span></td></tr>
+        <tr><td>Prescribing entity, network, pharmacy partners confirmed</td><td>Client</td><td><span class="pill pill-blocked">Blocking</span></td></tr>
+        <tr><td>State availability list confirmed</td><td>Client</td><td><span class="pill pill-client">Awaiting client</span></td></tr>
+        <tr><td>Privacy policy / consumer health data policy / TOS / telehealth consent live</td><td>Client / counsel</td><td><span class="pill pill-client">Awaiting client</span></td></tr>
+        <tr><td>Refund &amp; cancellation policy documented</td><td>Client</td><td><span class="pill pill-client">Awaiting client</span></td></tr>
+        <tr><td>Tracking events confirmed PHI-free with privacy counsel</td><td>Client / counsel</td><td><span class="pill pill-client">Awaiting client</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============= 3. Client deliverables ============= -->
+  <section class="ns-section">
+    <h2><span class="ns-section__num">3</span>What the client owes us</h2>
+    <p style="color: var(--nume-slate); margin-bottom: 12px">All of this is captured in <a href="Client_Onboarding.html"><strong>Client_Onboarding.html</strong></a>. They fill it in once and we drop the exported file into <code>assets/js/landing-config.js</code>. Every landing page picks up the values.</p>
+    <table>
+      <thead>
+        <tr><th>Field</th><th>Why</th><th style="width:14%">Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Public product name + active ingredient</td><td>Pricing card title; FAQ anchor; ad copy</td><td><span class="pill pill-client">Pending</span></td></tr>
+        <tr><td>Monthly price</td><td>Headline number on pricing page + cards</td><td><span class="pill pill-client">Pending</span></td></tr>
+        <tr><td>Annual prepay equivalent (optional)</td><td>If yes, becomes a savings ribbon on the card</td><td><span class="pill pill-client">Pending</span></td></tr>
+        <tr><td>First-month promo (optional)</td><td>Hero callout if used; needs substantiation</td><td><span class="pill pill-client">Pending</span></td></tr>
+        <tr><td>What's included list</td><td>Renders as ✓ list under each price</td><td><span class="pill pill-client">Pending</span></td></tr>
+        <tr><td>Refund &amp; cancellation copy</td><td>Pricing card note + FAQ</td><td><span class="pill pill-client">Pending</span></td></tr>
+        <tr><td>Refill cadence</td><td>"How it works" step 5</td><td><span class="pill pill-client">Pending</span></td></tr>
+        <tr><td>Service states (2-letter list)</td><td>Drives ad geo; quiz pre-screen</td><td><span class="pill pill-client">Pending</span></td></tr>
+        <tr><td>Prescribing entity legal name</td><td>Required in footer disclosures</td><td><span class="pill pill-client">Pending</span></td></tr>
+        <tr><td>Provider network description</td><td>Trust block + footer</td><td><span class="pill pill-client">Pending</span></td></tr>
+        <tr><td>Pharmacy partner description</td><td>FDA-mandated source clarity</td><td><span class="pill pill-client">Pending</span></td></tr>
+        <tr><td>Provider-review SLA + shipping SLA</td><td>"How it works" reassurance</td><td><span class="pill pill-client">Pending</span></td></tr>
+        <tr><td>Support email, phone, hours</td><td>Header CTA, footer, ad disclaimer</td><td><span class="pill pill-client">Pending</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============= 4. 7-day plan ============= -->
+  <section class="ns-section">
+    <h2><span class="ns-section__num">4</span>7-day launch sequence (after gates clear)</h2>
+    <p style="color: var(--nume-slate); margin-bottom: 18px">Pulled directly from §11 of the marketing plan. Begin Day 1 only after every blocking gate above is closed.</p>
+    <div class="ns-week-grid">
+      <div class="ns-day">
+        <h3>Pre-launch (this week)</h3>
+        <ul>
+          <li>Client fills <code>Client_Onboarding.html</code></li>
+          <li>Engineering drops in <code>landing-config.js</code></li>
+          <li>QA every page on mobile + desktop</li>
+          <li>Set up Search Console, GA4, server logs</li>
+        </ul>
+      </div>
+      <div class="ns-day">
+        <h3>Mon — Foundation</h3>
+        <ul>
+          <li>Landing pages live</li>
+          <li>Submit Google Search ads for review</li>
+          <li>Launch educational organic posts</li>
+          <li>Support team scripts ready</li>
+        </ul>
+      </div>
+      <div class="ns-day">
+        <h3>Tue — Google Search</h3>
+        <ul>
+          <li>Turn on high-intent campaigns</li>
+          <li>Conservative budget ($250–$500/day total)</li>
+          <li>Hourly disapproval / policy check</li>
+          <li>Live negative-keyword updates</li>
+        </ul>
+      </div>
+      <div class="ns-day">
+        <h3>Wed — Meta test</h3>
+        <ul>
+          <li>3 educational creatives only</li>
+          <li>$50–$150/day initial</li>
+          <li>18+ targeting; broad geo within served states</li>
+          <li>No before/after, no body-shame copy</li>
+        </ul>
+      </div>
+      <div class="ns-day">
+        <h3>Thu — Conversion review</h3>
+        <ul>
+          <li>CPC, quiz-start rate, qualified-lead rate</li>
+          <li>Fix friction (mobile form, CTA visibility)</li>
+          <li>Pull approval reasons</li>
+        </ul>
+      </div>
+      <div class="ns-day">
+        <h3>Fri — Expand winners</h3>
+        <ul>
+          <li>Increase budget on qualified-lead ad groups</li>
+          <li>Pause low-intent / expensive broad terms</li>
+          <li>Add real chat/call FAQs to /glp1-faq</li>
+        </ul>
+      </div>
+      <div class="ns-day">
+        <h3>Weekend — Trust</h3>
+        <ul>
+          <li>Publish 3–5 SEO articles</li>
+          <li>Record clinician explainer videos</li>
+          <li>Spin up "switching providers" segment</li>
+        </ul>
+      </div>
+      <div class="ns-day">
+        <h3>Week 2 — Scale</h3>
+        <ul>
+          <li>Add Brand-name pricing page if approvals allow</li>
+          <li>Test TikTok organic + Spark</li>
+          <li>Begin remarketing IF privacy counsel approves</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============= 5. Open dev tasks ============= -->
+  <section class="ns-section">
+    <h2><span class="ns-section__num">5</span>Open dev tasks (after config lands)</h2>
+    <table>
+      <thead><tr><th>Task</th><th>Notes</th><th style="width:14%">Status</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Build the multi-step assessment quiz (Layer 1)</td>
+          <td>From §5 of the plan: 9-question public marketing qualifier. Save state on each step. Hand off to clinical intake (Layer 2) only after qualifier completes.</td>
+          <td><span class="pill pill-todo">Open</span></td>
+        </tr>
+        <tr>
+          <td>Wire <code>numeTrack</code> events to GA4 + (optionally) Meta CAPI</td>
+          <td>Generic events only: <code>page_view</code>, <code>cta_click</code>, <code>quiz_started</code>, <code>quiz_completed</code>. <strong>Never</strong> pass BMI, condition, medication, or pregnancy data.</td>
+          <td><span class="pill pill-todo">Open</span></td>
+        </tr>
+        <tr>
+          <td>State eligibility gate in quiz</td>
+          <td>Use <code>NUME_CONFIG.states.served</code> to short-circuit ineligible visitors with a soft "we'll let you know when we serve your state" capture.</td>
+          <td><span class="pill pill-todo">Open</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============= 6. Channel guardrails ============= -->
+  <section class="ns-section">
+    <h2><span class="ns-section__num">6</span>Channel guardrails (quick reference)</h2>
+    <table>
+      <thead><tr><th>Channel</th><th>Do</th><th>Don't</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Google Search</strong></td>
+          <td>LegitScript-cert first, exact + phrase match, conservative budget, generic conversion events.</td>
+          <td>Remarketing, Customer Match, audience segments built from quiz data, "generic Ozempic" claims.</td>
+        </tr>
+        <tr>
+          <td><strong>Meta / Instagram</strong></td>
+          <td>Education content, process explainers, 18+ only, served-state geo only.</td>
+          <td>Before/after imagery, body-shame hooks, "you" copy that implies obesity/disease, retargeting from health intake.</td>
+        </tr>
+        <tr>
+          <td><strong>TikTok</strong></td>
+          <td>Organic + Spark testing first, verified medical voices, "what to ask before starting GLP-1 care" themes.</td>
+          <td>Drug-name-heavy direct-response ads pre-approval; transformation/challenge montages.</td>
+        </tr>
+        <tr>
+          <td><strong>Affiliate / creator</strong></td>
+          <td>Manual approval, required disclaimer copy, FTC disclosure language, post-monitoring.</td>
+          <td>Fake/AI doctors, borrowed credentials, drug-equivalency claims (MEDVi-pattern).</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+</body>
+</html>

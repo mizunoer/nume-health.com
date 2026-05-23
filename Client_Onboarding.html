@@ -1,0 +1,686 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Nume Health — Client Onboarding (GLP-1 Launch)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="stylesheet" href="assets/css/nume-health.css">
+<style>
+  body { background: var(--nume-offwhite); font-family: 'Inter',-apple-system,BlinkMacSystemFont,sans-serif; }
+  .ob-hero { background: var(--nume-gradient-dark); color: #fff; padding: 56px 24px 40px; }
+  .ob-hero::after { content:""; display:block; height: 5px; background: var(--nume-gradient); margin: 40px -24px -40px; }
+  .ob-hero h1 { color: #fff; font-size: clamp(1.6rem, 3vw, 2.2rem); margin: 0 0 .3em; }
+  .ob-hero p { color: rgba(255,255,255,.85); max-width: 800px; margin: 0; font-size: 1.05rem; }
+  .ob-meta { color: rgba(255,255,255,.6); font-size: .85rem; margin-bottom: 8px; }
+  .ob-wrap { max-width: 980px; margin: 0 auto; padding: 32px 24px 80px; }
+  .ob-progress {
+    position: sticky; top: 0; z-index: 50;
+    background: #fff; border: 1px solid var(--nume-border);
+    border-radius: var(--nume-radius); padding: 14px 18px;
+    margin-bottom: 24px;
+    display:flex; align-items:center; gap: 14px; flex-wrap: wrap;
+    box-shadow: 0 4px 16px rgba(0,119,182,.06);
+  }
+  .ob-progress__bar {
+    flex: 1 1 220px; height: 8px; background: var(--nume-border);
+    border-radius: 999px; overflow: hidden; min-width: 200px;
+  }
+  .ob-progress__fill {
+    height: 100%; background: var(--nume-gradient); width: 0%;
+    transition: width .3s ease;
+  }
+  .ob-progress__text { font-size: .9rem; color: var(--nume-slate); font-weight: 600; }
+  .ob-section {
+    background: #fff;
+    border: 1px solid var(--nume-border);
+    border-radius: var(--nume-radius-lg);
+    padding: 28px;
+    margin-bottom: 22px;
+  }
+  .ob-section h2 {
+    font-size: 1.25rem; margin: 0 0 4px; color: var(--nume-navy);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .ob-section__num {
+    width: 30px; height: 30px;
+    border-radius: 50%; background: var(--nume-gradient); color: #fff;
+    font-size: .9rem; font-weight: 800;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex: 0 0 30px;
+  }
+  .ob-section__hint { color: var(--nume-slate-gray); font-size: .92rem; margin: 0 0 18px 40px; }
+  .ob-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
+  @media (min-width: 720px) { .ob-grid--2 { grid-template-columns: 1fr 1fr; } }
+  .ob-field { display: flex; flex-direction: column; gap: 6px; }
+  .ob-field label { font-weight: 600; color: var(--nume-navy); font-size: .92rem; }
+  .ob-field .ob-help { color: var(--nume-slate-gray); font-size: .8rem; line-height: 1.45; }
+  .ob-field input,
+  .ob-field textarea,
+  .ob-field select {
+    width: 100%;
+    padding: 10px 12px;
+    font: inherit; font-size: .95rem;
+    border-radius: var(--nume-radius);
+    border: 1px solid var(--nume-border);
+    background: #fff;
+  }
+  .ob-field input:focus, .ob-field textarea:focus, .ob-field select:focus {
+    outline: none;
+    border-color: var(--nume-primary);
+    box-shadow: 0 0 0 3px rgba(0,119,182,.18);
+  }
+  .ob-field textarea { resize: vertical; min-height: 84px; }
+  .ob-required::after { content: " *"; color: #dc2626; }
+  .ob-checkbox-list {
+    display: grid; gap: 6px;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    margin-top: 6px;
+  }
+  .ob-check {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 10px;
+    border: 1px solid var(--nume-border); border-radius: 8px;
+    background: #fff; cursor: pointer;
+    font-size: .85rem;
+  }
+  .ob-check input { accent-color: var(--nume-primary); }
+  .ob-check.is-checked { background: var(--nume-mint); border-color: var(--nume-primary); color: var(--nume-navy); font-weight: 600; }
+
+  .ob-multi {
+    display: flex; flex-direction: column; gap: 8px;
+    border: 1px dashed var(--nume-border);
+    padding: 12px; border-radius: var(--nume-radius);
+  }
+  .ob-multi__row { display: flex; gap: 8px; align-items: center; }
+  .ob-multi__row input { flex: 1; }
+  .ob-multi__remove {
+    background: transparent; border: 1px solid var(--nume-border);
+    border-radius: 8px; padding: 6px 10px; cursor: pointer; color: var(--nume-slate);
+  }
+  .ob-multi__remove:hover { background: #fee2e2; border-color: #fca5a5; color: #991b1b; }
+  .ob-multi__add {
+    align-self: flex-start;
+    background: transparent; border: 2px solid var(--nume-primary);
+    border-radius: 8px; padding: 6px 14px;
+    color: var(--nume-primary); font-weight: 600; font-size: .85rem;
+    cursor: pointer;
+  }
+  .ob-multi__add:hover { background: var(--nume-primary); color: #fff; }
+
+  .ob-actions {
+    position: sticky; bottom: 0;
+    background: #fff;
+    border: 1px solid var(--nume-border);
+    border-radius: var(--nume-radius);
+    padding: 14px 18px;
+    margin-top: 24px;
+    display: flex; gap: 12px; flex-wrap: wrap; align-items: center;
+    box-shadow: 0 -4px 18px rgba(0,0,0,.06);
+  }
+  .ob-actions__hint { flex: 1 1 200px; font-size: .88rem; color: var(--nume-slate); }
+  .ob-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 18px; border-radius: var(--nume-radius);
+    font: inherit; font-weight: 700;
+    border: 2px solid transparent; cursor: pointer;
+    text-decoration: none;
+  }
+  .ob-btn--primary { background: var(--nume-primary); color: #fff; border-color: var(--nume-primary); }
+  .ob-btn--primary:hover { background: var(--nume-primary-dark); border-color: var(--nume-primary-dark); }
+  .ob-btn--ghost { background: transparent; border-color: var(--nume-border); color: var(--nume-navy); }
+  .ob-btn--ghost:hover { background: var(--nume-offwhite); }
+
+  .ob-output {
+    background: var(--nume-navy); color: #dbe7f1;
+    border-radius: var(--nume-radius-lg);
+    padding: 18px 20px; margin-top: 20px;
+    overflow: auto; max-height: 480px;
+    font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    white-space: pre-wrap; word-break: break-word;
+    display: none;
+  }
+  .ob-callout {
+    background: var(--nume-mint); color: var(--nume-navy);
+    border-left: 4px solid var(--nume-primary);
+    padding: 14px 18px; border-radius: var(--nume-radius);
+    margin-bottom: 18px; font-size: .92rem;
+  }
+  .ob-callout--warn { background: #fef3c7; border-left-color: #92400e; color: #78350f; }
+  .ob-callout strong { color: var(--nume-navy); }
+  .ob-callout--warn strong { color: #78350f; }
+
+  .ob-toc {
+    background: #fff; border: 1px solid var(--nume-border);
+    border-radius: var(--nume-radius); padding: 14px 18px; margin-bottom: 24px;
+  }
+  .ob-toc ol { margin: 8px 0 0; padding-left: 20px; column-count: 2; column-gap: 24px; }
+  .ob-toc a { text-decoration: none; color: var(--nume-link); }
+  .ob-toc a:hover { color: var(--nume-link-hover); }
+  @media (max-width: 600px) { .ob-toc ol { column-count: 1; } }
+
+  .ob-states-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: 6px;
+  }
+
+  .ob-tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .ob-tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 4px 10px; background: var(--nume-mint); color: var(--nume-navy);
+    border-radius: 999px; font-size: .8rem; font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<header class="ob-hero">
+  <div style="max-width: 980px; margin: 0 auto;">
+    <div class="ob-meta">Internal · v1 · Required for paid-traffic launch</div>
+    <h1>Client Onboarding — GLP-1 Cash-Pay Launch</h1>
+    <p>Fill in the values below. They feed the landing pages, pricing, disclosures, and ad copy. When you're done, click <strong>Export config</strong> to generate the JavaScript file engineering will drop in. Your progress is saved in this browser.</p>
+  </div>
+</header>
+
+<main class="ob-wrap">
+
+  <div class="ob-progress" id="obProgress">
+    <strong style="color:var(--nume-navy)">Progress</strong>
+    <div class="ob-progress__bar"><div class="ob-progress__fill" id="obFill"></div></div>
+    <span class="ob-progress__text"><span id="obDone">0</span> / <span id="obTotal">0</span> required fields complete</span>
+  </div>
+
+  <div class="ob-callout">
+    <strong>Heads up:</strong> nothing here goes live automatically. After you submit, healthcare counsel and clinical leadership must review every claim, disclosure, and pricing element before any ad turns on.
+  </div>
+
+  <nav class="ob-toc">
+    <strong style="color:var(--nume-navy)">Sections</strong>
+    <ol>
+      <li><a href="#sec-brand">Brand &amp; contacts</a></li>
+      <li><a href="#sec-product">Base GLP-1 product</a></li>
+      <li><a href="#sec-pricing">Pricing &amp; what's included</a></li>
+      <li><a href="#sec-states">Service states</a></li>
+      <li><a href="#sec-clinical">Clinical &amp; operations</a></li>
+      <li><a href="#sec-trust">Trust &amp; testimonials</a></li>
+      <li><a href="#sec-disclosures">Disclosures &amp; legal URLs</a></li>
+      <li><a href="#sec-voice">Brand voice (do/don't)</a></li>
+    </ol>
+  </nav>
+
+  <form id="obForm" autocomplete="off" novalidate>
+
+    <!-- ============= 1. Brand ============= -->
+    <section class="ob-section" id="sec-brand">
+      <h2><span class="ob-section__num">1</span>Brand &amp; contacts</h2>
+      <p class="ob-section__hint">These values appear in the header, footer, and email templates of every landing page.</p>
+      <div class="ob-grid ob-grid--2">
+        <div class="ob-field">
+          <label class="ob-required" for="brand_name">Public brand name</label>
+          <input id="brand_name" name="brand.name" data-required value="Nume Health">
+          <span class="ob-help">Shown in header, footer, og:site_name.</span>
+        </div>
+        <div class="ob-field">
+          <label class="ob-required" for="brand_domain">Production domain</label>
+          <input id="brand_domain" name="brand.domain" data-required value="nume-health.com">
+          <span class="ob-help">Used for canonical links and OG image absolute URLs.</span>
+        </div>
+        <div class="ob-field">
+          <label class="ob-required" for="brand_email">Support email</label>
+          <input id="brand_email" name="brand.supportEmail" type="email" data-required placeholder="support@nume-health.com">
+          <span class="ob-help">Shown publicly. Should be monitored daily.</span>
+        </div>
+        <div class="ob-field">
+          <label for="brand_phone">Support phone</label>
+          <input id="brand_phone" name="brand.supportPhone" placeholder="(555) 123-4567">
+          <span class="ob-help">Optional. Strongly recommended; raises lead quality and trust.</span>
+        </div>
+        <div class="ob-field" style="grid-column:1/-1">
+          <label class="ob-required" for="brand_hours">Support hours</label>
+          <input id="brand_hours" name="brand.supportHours" data-required placeholder="Mon–Fri, 9am–6pm ET">
+        </div>
+      </div>
+    </section>
+
+    <!-- ============= 2. Product ============= -->
+    <section class="ob-section" id="sec-product">
+      <h2><span class="ob-section__num">2</span>Base GLP-1 product</h2>
+      <p class="ob-section__hint">Start with one product. We can add a second plan later (config has a placeholder for <code>product2</code>).</p>
+      <div class="ob-grid ob-grid--2">
+        <div class="ob-field">
+          <label class="ob-required" for="prod_pubname">Public product name</label>
+          <input id="prod_pubname" name="product.publicName" data-required value="Compounded semaglutide plan">
+          <span class="ob-help">Avoid “generic Ozempic” / brand equivalency. FDA warning territory.</span>
+        </div>
+        <div class="ob-field">
+          <label class="ob-required" for="prod_med">Active ingredient</label>
+          <select id="prod_med" name="product.medication" data-required>
+            <option value="compounded semaglutide">Compounded semaglutide</option>
+            <option value="compounded tirzepatide">Compounded tirzepatide</option>
+            <option value="brand-name semaglutide">Brand-name semaglutide</option>
+            <option value="brand-name tirzepatide">Brand-name tirzepatide</option>
+          </select>
+        </div>
+        <div class="ob-field" style="grid-column:1/-1">
+          <label class="ob-required">What's included in price?</label>
+          <span class="ob-help">Each item appears as a checkmark on the pricing card.</span>
+          <div class="ob-multi" data-multi="product.included">
+            <div class="ob-multi__row"><input value="Licensed clinician review" placeholder="e.g. Provider review"><button type="button" class="ob-multi__remove">Remove</button></div>
+            <div class="ob-multi__row"><input value="Medication, if prescribed" placeholder="..."><button type="button" class="ob-multi__remove">Remove</button></div>
+            <div class="ob-multi__row"><input value="Injection supplies" placeholder="..."><button type="button" class="ob-multi__remove">Remove</button></div>
+            <div class="ob-multi__row"><input value="Shipping" placeholder="..."><button type="button" class="ob-multi__remove">Remove</button></div>
+            <div class="ob-multi__row"><input value="Refill review" placeholder="..."><button type="button" class="ob-multi__remove">Remove</button></div>
+            <div class="ob-multi__row"><input value="Ongoing support" placeholder="..."><button type="button" class="ob-multi__remove">Remove</button></div>
+            <button type="button" class="ob-multi__add">+ Add item</button>
+          </div>
+        </div>
+        <div class="ob-field">
+          <label class="ob-required" for="prod_refill">Refill cadence</label>
+          <input id="prod_refill" name="product.refillCadence" data-required value="Every 28 days, after provider check-in">
+        </div>
+        <div class="ob-field">
+          <label class="ob-required" for="prod_cancel">Cancellation policy (short)</label>
+          <input id="prod_cancel" name="product.cancellation" data-required value="Cancel before your next refill — no long-term commitment.">
+        </div>
+        <div class="ob-field" style="grid-column:1/-1">
+          <label class="ob-required" for="prod_refund">Refund policy</label>
+          <textarea id="prod_refund" name="product.refund" data-required placeholder="e.g. Full refund if a clinician determines you do not qualify for treatment."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============= 3. Pricing ============= -->
+    <section class="ob-section" id="sec-pricing">
+      <h2><span class="ob-section__num">3</span>Pricing</h2>
+      <p class="ob-section__hint">Cash-pay only. Transparent total cost is the strongest single conversion lever in the audit.</p>
+      <div class="ob-grid ob-grid--2">
+        <div class="ob-field">
+          <label class="ob-required" for="price_monthly">Monthly price</label>
+          <input id="price_monthly" name="product.monthlyPrice" data-required placeholder="$199">
+          <span class="ob-help">Format with $ symbol. This is the headline number.</span>
+        </div>
+        <div class="ob-field">
+          <label for="price_annual">Annual prepay equivalent (optional)</label>
+          <input id="price_annual" name="product.annualMonthlyPrice" placeholder="$149">
+          <span class="ob-help">Effective monthly price if patients prepay 12 months. Leave blank if not offered.</span>
+        </div>
+        <div class="ob-field">
+          <label for="price_first">First-month promo price (optional)</label>
+          <input id="price_first" name="product.firstMonthPrice" placeholder="$99">
+          <span class="ob-help">Must be substantiated. Avoid if it leads to bait-and-switch perception.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============= 4. States ============= -->
+    <section class="ob-section" id="sec-states">
+      <h2><span class="ob-section__num">4</span>Service states</h2>
+      <p class="ob-section__hint">Click each state where the prescribing entity is licensed to operate. The set drives ad geo-targeting and quiz pre-screen.</p>
+      <div class="ob-states-grid" id="obStatesGrid"></div>
+      <div class="ob-tag-list" id="obStatesTags" style="margin-top:14px"></div>
+    </section>
+
+    <!-- ============= 5. Clinical ============= -->
+    <section class="ob-section" id="sec-clinical">
+      <h2><span class="ob-section__num">5</span>Clinical &amp; operations</h2>
+      <p class="ob-section__hint">Required for footer disclosures and consumer trust. Be specific — vague language reads as a red flag.</p>
+      <div class="ob-grid ob-grid--2">
+        <div class="ob-field">
+          <label class="ob-required" for="clin_entity">Prescribing entity</label>
+          <input id="clin_entity" name="clinical.prescribingEntity" data-required placeholder="e.g. Nume Medical PC">
+          <span class="ob-help">The legal entity employing or contracting clinicians. Required by most states' telehealth laws.</span>
+        </div>
+        <div class="ob-field">
+          <label class="ob-required" for="clin_network">Provider network description</label>
+          <input id="clin_network" name="clinical.providerNetwork" data-required placeholder="e.g. Independent licensed clinicians">
+        </div>
+        <div class="ob-field">
+          <label class="ob-required" for="clin_pharm">Pharmacy partners</label>
+          <input id="clin_pharm" name="clinical.pharmacyPartners" data-required placeholder="e.g. U.S.-licensed compounding pharmacies">
+          <span class="ob-help">Don't obscure source — FDA's compounded GLP-1 warning specifically calls this out.</span>
+        </div>
+        <div class="ob-field">
+          <label for="clin_lab">Lab requirement</label>
+          <input id="clin_lab" name="clinical.labRequirement" placeholder="e.g. A1c, CMP, lipids may be required">
+        </div>
+        <div class="ob-field">
+          <label class="ob-required" for="clin_intake">Provider review SLA</label>
+          <input id="clin_intake" name="clinical.intakeSLA" data-required placeholder="e.g. Most reviews completed within 24–48 hours">
+        </div>
+        <div class="ob-field">
+          <label class="ob-required" for="clin_ship">Shipping SLA</label>
+          <input id="clin_ship" name="clinical.shippingSLA" data-required placeholder="e.g. Most orders ship within 2–3 business days after approval">
+        </div>
+      </div>
+    </section>
+
+    <!-- ============= 6. Trust ============= -->
+    <section class="ob-section" id="sec-trust">
+      <h2><span class="ob-section__num">6</span>Trust &amp; testimonials</h2>
+      <p class="ob-section__hint">Trust badges show under every hero. Testimonials are <strong>off by default</strong> until written consent + compensation disclosure are on file. Leave testimonials empty until then.</p>
+
+      <div class="ob-field">
+        <label class="ob-required">Trust badges (4 short phrases)</label>
+        <span class="ob-help">Single-line claims that ride above the fold.</span>
+        <div class="ob-multi" data-multi="trust.badges">
+          <div class="ob-multi__row"><input value="Licensed U.S. providers" placeholder="..."><button type="button" class="ob-multi__remove">Remove</button></div>
+          <div class="ob-multi__row"><input value="U.S.-licensed pharmacy partners" placeholder="..."><button type="button" class="ob-multi__remove">Remove</button></div>
+          <div class="ob-multi__row"><input value="Secure &amp; private intake" placeholder="..."><button type="button" class="ob-multi__remove">Remove</button></div>
+          <div class="ob-multi__row"><input value="No insurance required" placeholder="..."><button type="button" class="ob-multi__remove">Remove</button></div>
+          <button type="button" class="ob-multi__add">+ Add badge</button>
+        </div>
+      </div>
+
+      <div class="ob-callout ob-callout--warn">
+        <strong>Don't add testimonials without:</strong> written consent on file, compensation disclosure, and "results vary / typicality" language. The audit calls out testimonial misuse as a primary regulatory and platform-policy risk.
+      </div>
+    </section>
+
+    <!-- ============= 7. Disclosures ============= -->
+    <section class="ob-section" id="sec-disclosures">
+      <h2><span class="ob-section__num">7</span>Disclosures &amp; legal URLs</h2>
+      <p class="ob-section__hint">Defaults are pre-written from the audit. Edit only if your healthcare counsel provides alternate language.</p>
+      <div class="ob-grid">
+        <div class="ob-field">
+          <label class="ob-required" for="disc_compounded">Compounded medication disclosure</label>
+          <textarea id="disc_compounded" name="disclosures.compoundedMedication" data-required>Compounded medications, if prescribed, are not FDA-approved and are not reviewed by FDA for safety, effectiveness, or quality. They are prepared by a state-licensed pharmacy.</textarea>
+        </div>
+        <div class="ob-field">
+          <label class="ob-required" for="disc_rx">Prescription-not-guaranteed disclosure</label>
+          <textarea id="disc_rx" name="disclosures.prescriptionNotGuaranteed" data-required>Prescription is not guaranteed. A licensed provider will review your medical history and determine whether treatment is appropriate.</textarea>
+        </div>
+        <div class="ob-field">
+          <label class="ob-required" for="disc_safety">Short safety disclosure</label>
+          <textarea id="disc_safety" name="disclosures.safetyShort" data-required>GLP-1 medications are prescription treatments and are not appropriate for everyone. Tell your provider about any history of pancreatitis, medullary thyroid cancer, MEN2, severe GI disease, gallbladder or kidney disease, eating disorders, or pregnancy/breastfeeding.</textarea>
+        </div>
+      </div>
+      <div class="ob-grid ob-grid--2" style="margin-top:14px">
+        <div class="ob-field">
+          <label for="disc_priv">Privacy Policy URL</label>
+          <input id="disc_priv" name="disclosures.privacyPolicyUrl" value="/privacy.html">
+        </div>
+        <div class="ob-field">
+          <label for="disc_terms">Terms of Service URL</label>
+          <input id="disc_terms" name="disclosures.termsUrl" value="/terms.html">
+        </div>
+        <div class="ob-field">
+          <label for="disc_tele">Telehealth Consent URL</label>
+          <input id="disc_tele" name="disclosures.telehealthConsentUrl" value="/telehealth-consent.html">
+        </div>
+        <div class="ob-field">
+          <label for="disc_chd">Consumer Health Data URL</label>
+          <input id="disc_chd" name="disclosures.consumerHealthDataUrl" value="/consumer-health-data.html">
+        </div>
+      </div>
+    </section>
+
+    <!-- ============= 8. Voice ============= -->
+    <section class="ob-section" id="sec-voice">
+      <h2><span class="ob-section__num">8</span>Brand voice (do / don't)</h2>
+      <p class="ob-section__hint">These are reference notes captured from the audit. Tweak if you have specific brand-voice strictures we should respect.</p>
+      <div class="ob-grid ob-grid--2">
+        <div class="ob-field">
+          <label>Voice — DO</label>
+          <textarea readonly>• Calm, clinical, supportive
+• Lead with clarity and support
+• Plain language; define clinical terms
+• Evidence-forward: "may", "can help", "results vary"
+• Process clarity: "after a licensed provider review"
+• Cash-pay transparency, "no insurance required"
+• "Cancel before next refill"</textarea>
+        </div>
+        <div class="ob-field">
+          <label>Voice — DON'T</label>
+          <textarea readonly>• "Generic Ozempic / Wegovy / Mounjaro / Zepbound"
+• "FDA-approved compounded"
+• "Guaranteed approval / no doctor needed"
+• "Lose 20 lbs fast", "Get skinny", "Drop pant sizes"
+• Body-shaming or negative-self-perception hooks
+• Fake / AI / stock-photo "doctors" presented as real
+• Affiliate copy without manual review</textarea>
+        </div>
+      </div>
+    </section>
+
+  </form>
+
+  <div class="ob-actions">
+    <span class="ob-actions__hint">When all required fields are filled, click <strong>Export config</strong>. Save the result as <code>assets/js/landing-config.js</code>.</span>
+    <button type="button" class="ob-btn ob-btn--ghost" id="obSave">Save draft</button>
+    <button type="button" class="ob-btn ob-btn--ghost" id="obReset">Reset</button>
+    <button type="button" class="ob-btn ob-btn--primary" id="obExport">Export config</button>
+  </div>
+
+  <pre class="ob-output" id="obOutput"></pre>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+  var STORAGE_KEY = "nume.onboarding.v1";
+  var form = document.getElementById("obForm");
+  var states = [];
+  var STATE_LIST = ["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY","DC"];
+
+  /* ------- States picker ------- */
+  function renderStates(){
+    var grid = document.getElementById("obStatesGrid");
+    grid.innerHTML = STATE_LIST.map(function(s){
+      var checked = states.indexOf(s) !== -1;
+      return '<label class="ob-check'+(checked?' is-checked':'')+'"><input type="checkbox" value="'+s+'"'+(checked?' checked':'')+'>'+s+'</label>';
+    }).join("");
+    grid.querySelectorAll("input[type=checkbox]").forEach(function(cb){
+      cb.addEventListener("change", function(){
+        if (cb.checked) {
+          if (states.indexOf(cb.value)===-1) states.push(cb.value);
+        } else {
+          states = states.filter(function(s){return s!==cb.value;});
+        }
+        renderStateTags();
+        cb.parentNode.classList.toggle("is-checked", cb.checked);
+        save();
+        recalcProgress();
+      });
+    });
+    renderStateTags();
+  }
+  function renderStateTags(){
+    var t = document.getElementById("obStatesTags");
+    if (!states.length) { t.innerHTML = '<span style="color:var(--nume-slate-gray);font-size:.85rem">No states selected — at least one is required.</span>'; return; }
+    t.innerHTML = states.sort().map(function(s){return '<span class="ob-tag">'+s+'</span>';}).join("");
+  }
+
+  /* ------- Multi-input lists ------- */
+  function bindMultis(){
+    document.querySelectorAll(".ob-multi").forEach(function(box){
+      box.querySelectorAll(".ob-multi__remove").forEach(bindRemove);
+      var add = box.querySelector(".ob-multi__add");
+      if (add) add.addEventListener("click", function(){
+        var row = document.createElement("div");
+        row.className = "ob-multi__row";
+        row.innerHTML = '<input placeholder="..."><button type="button" class="ob-multi__remove">Remove</button>';
+        box.insertBefore(row, add);
+        bindRemove(row.querySelector(".ob-multi__remove"));
+        row.querySelector("input").focus();
+        save();
+      });
+      box.addEventListener("input", save);
+    });
+  }
+  function bindRemove(btn){
+    btn.addEventListener("click", function(){
+      var row = btn.closest(".ob-multi__row");
+      if (!row) return;
+      row.remove();
+      save();
+    });
+  }
+  function readMulti(box){
+    return Array.from(box.querySelectorAll(".ob-multi__row input"))
+      .map(function(i){return i.value.trim();})
+      .filter(Boolean);
+  }
+
+  /* ------- Save/load draft ------- */
+  function snapshot(){
+    var data = {};
+    form.querySelectorAll("[name]").forEach(function(el){
+      var path = el.getAttribute("name");
+      var v = el.value;
+      setPath(data, path, v);
+    });
+    document.querySelectorAll(".ob-multi[data-multi]").forEach(function(box){
+      setPath(data, box.getAttribute("data-multi"), readMulti(box));
+    });
+    setPath(data, "states.served", states);
+    return data;
+  }
+  function setPath(obj, path, value){
+    var parts = path.split(".");
+    var cur = obj;
+    for (var i = 0; i < parts.length - 1; i++){
+      cur[parts[i]] = cur[parts[i]] || {};
+      cur = cur[parts[i]];
+    }
+    cur[parts[parts.length-1]] = value;
+  }
+  function getPath(obj, path){
+    return path.split(".").reduce(function(a,k){return a==null?a:a[k];}, obj);
+  }
+  function save(){
+    var d = snapshot();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
+    recalcProgress();
+  }
+  function load(){
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) { recalcProgress(); return; }
+    try {
+      var d = JSON.parse(raw);
+      form.querySelectorAll("[name]").forEach(function(el){
+        var v = getPath(d, el.getAttribute("name"));
+        if (v != null) el.value = v;
+      });
+      document.querySelectorAll(".ob-multi[data-multi]").forEach(function(box){
+        var v = getPath(d, box.getAttribute("data-multi"));
+        if (Array.isArray(v) && v.length) {
+          var add = box.querySelector(".ob-multi__add");
+          box.querySelectorAll(".ob-multi__row").forEach(function(r){r.remove();});
+          v.forEach(function(item){
+            var row = document.createElement("div");
+            row.className = "ob-multi__row";
+            row.innerHTML = '<input value="'+item.replace(/"/g,'&quot;')+'"><button type="button" class="ob-multi__remove">Remove</button>';
+            box.insertBefore(row, add);
+            bindRemove(row.querySelector(".ob-multi__remove"));
+          });
+        }
+      });
+      states = (d.states && Array.isArray(d.states.served)) ? d.states.served.slice() : [];
+      renderStates();
+    } catch (e) { console.warn("Failed to load draft", e); }
+    recalcProgress();
+  }
+
+  /* ------- Progress ------- */
+  function recalcProgress(){
+    var required = Array.from(form.querySelectorAll("[data-required]"));
+    var done = required.filter(function(el){return el.value && el.value.trim().length > 2;}).length;
+    var total = required.length + 1; // +1 for at least 1 state
+    if (states.length > 0) done += 1;
+    document.getElementById("obDone").textContent = done;
+    document.getElementById("obTotal").textContent = total;
+    var pct = Math.round(done/total*100);
+    document.getElementById("obFill").style.width = pct + "%";
+  }
+
+  /* ------- Export ------- */
+  function buildConfig(){
+    var d = snapshot();
+    var product = d.product || {};
+    /* Pull included list from multi */
+    var includedBox = document.querySelector('.ob-multi[data-multi="product.included"]');
+    if (includedBox) product.included = readMulti(includedBox);
+    var badgesBox = document.querySelector('.ob-multi[data-multi="trust.badges"]');
+    var badges = badgesBox ? readMulti(badgesBox) : [];
+
+    var cfg = {
+      brand: d.brand || {},
+      product: {
+        label: "Base plan",
+        publicName: product.publicName || "[CLIENT TO CONFIRM]",
+        medication: product.medication || "compounded semaglutide",
+        monthlyPrice: product.monthlyPrice || "[CLIENT TO CONFIRM]",
+        annualMonthlyPrice: product.annualMonthlyPrice || null,
+        firstMonthPrice: product.firstMonthPrice || null,
+        included: product.included && product.included.length ? product.included : ["[CLIENT TO CONFIRM]"],
+        refillCadence: product.refillCadence || "[CLIENT TO CONFIRM]",
+        cancellation: product.cancellation || "[CLIENT TO CONFIRM]",
+        refund: product.refund || "[CLIENT TO CONFIRM]"
+      },
+      product2: null,
+      states: {
+        served: states.length ? states : ["[CLIENT TO CONFIRM]"],
+        notServedNote: "If your state isn't currently supported, we'll let you know before charging anything."
+      },
+      clinical: d.clinical || {},
+      trust: { badges: badges, testimonials: [] },
+      disclosures: d.disclosures || {},
+      pages: {
+        cashPay: { eyebrow: "Cash-pay GLP-1", h1: "Clinician-guided weight-care, online.", subhead: "Start with a private eligibility assessment. Cash-pay prescription treatment options may be available after licensed provider review. No insurance required.", ctaPrimary: "See if I qualify", ctaSecondary: "View pricing" },
+        pricing: { eyebrow: "Transparent pricing", h1: "One simple cash-pay plan.", subhead: "Provider review, medication if prescribed, supplies, shipping, and ongoing support — bundled into one monthly price." },
+        weightCareOnline: { eyebrow: "Online weight-care", h1: "Online weight-care, reviewed by a licensed clinician.", subhead: "An education-first program. We help you understand options, confirm eligibility, and connect you to a provider who will determine whether treatment is appropriate." },
+        switchProvider: { eyebrow: "Switching providers", h1: "Continue your GLP-1 plan with a new provider.", subhead: "Already on a GLP-1? Share your dose history and we'll have a licensed clinician review your continuation plan." },
+        faq: { eyebrow: "FAQs", h1: "Common questions about cash-pay GLP-1 care." }
+      }
+    };
+    return cfg;
+  }
+
+  function configToFile(cfg){
+    var header =
+"/**\n" +
+" * Nume Health — Landing Page configuration\n" +
+" * Generated " + new Date().toISOString() + "\n" +
+" * Source: Client_Onboarding.html\n" +
+" * Save as: assets/js/landing-config.js\n" +
+" */\n";
+    return header + "window.NUME_CONFIG = " + JSON.stringify(cfg, null, 2) + ";\n";
+  }
+
+  /* ------- Buttons ------- */
+  document.getElementById("obSave").addEventListener("click", function(){ save(); alert("Draft saved in your browser."); });
+  document.getElementById("obReset").addEventListener("click", function(){
+    if (!confirm("Clear all answers?")) return;
+    localStorage.removeItem(STORAGE_KEY);
+    location.reload();
+  });
+  document.getElementById("obExport").addEventListener("click", function(){
+    var cfg = buildConfig();
+    var text = configToFile(cfg);
+    var out = document.getElementById("obOutput");
+    out.textContent = text;
+    out.style.display = "block";
+    out.scrollIntoView({behavior:"smooth", block:"start"});
+    /* Try to copy + offer download */
+    try { navigator.clipboard.writeText(text); } catch(e) {}
+    var blob = new Blob([text], {type:"application/javascript"});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = "landing-config.js";
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); }, 500);
+  });
+
+  /* ------- Init ------- */
+  form.addEventListener("input", save);
+  form.addEventListener("change", save);
+  bindMultis();
+  renderStates();
+  load();
+})();
+</script>
+
+</body>
+</html>

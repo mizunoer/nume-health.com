@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>GLP-1 Pricing — Transparent Cash-Pay | Nume Health</title>
+  <meta name="description" content="One simple cash-pay plan. Provider review, medication if prescribed, supplies, shipping, and ongoing support — bundled into one monthly price.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://nume-health.com/glp1-pricing.html">
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
+  <link rel="alternate icon" href="assets/img/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#0077B6">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="GLP-1 Pricing — Transparent Cash-Pay | Nume Health">
+  <meta property="og:description" content="One simple cash-pay plan. No insurance required.">
+  <meta property="og:image" content="assets/img/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="assets/css/nume-health.css">
+  <link rel="stylesheet" href="assets/css/landing.css">
+</head>
+<body class="lp-page">
+
+  <header class="lp-header">
+    <div class="lp-header__inner">
+      <a class="lp-header__logo" href="index.html"><img src="assets/img/logo/logo.svg" alt="Nume Health" onerror="this.src='assets/img/logo/logo.png'; this.onerror=null;"></a>
+      <div class="lp-header__cta">
+        <a class="lp-header__phone" href="tel:" data-bind-attr="href:brand.supportPhone" data-bind="brand.supportPhone">[CLIENT TO CONFIRM]</a>
+        <a class="lp-btn lp-btn--primary" href="assessment.html" data-track="cta_click_header">See if I qualify</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="lp-hero lp-hero--light">
+    <div class="lp-container lp-hero__inner">
+      <div>
+        <span class="lp-hero__eyebrow" data-bind="pages.pricing.eyebrow">Transparent pricing</span>
+        <h1 data-bind="pages.pricing.h1">One simple cash-pay plan.</h1>
+        <p class="lp-hero__subhead" data-bind="pages.pricing.subhead">Provider review, medication if prescribed, supplies, shipping, and ongoing support — bundled into one monthly price.</p>
+        <div class="lp-hero__ctas">
+          <a class="lp-btn lp-btn--primary lp-btn--lg" href="assessment.html" data-track="cta_click_hero">See if I qualify</a>
+          <a class="lp-btn lp-btn--outline lp-btn--lg" href="#what-included">What's included</a>
+        </div>
+        <p class="lp-hero__micro" data-bind="disclosures.prescriptionNotGuaranteed">Prescription is not guaranteed. A licensed provider determines whether treatment is appropriate.</p>
+      </div>
+      <div class="lp-hero__visual" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <section class="lp-trust">
+    <div class="lp-container">
+      <div class="lp-trust__row">
+        <div class="lp-trust__item"><span class="lp-trust__icon">$</span><span>No insurance required</span></div>
+        <div class="lp-trust__item"><span class="lp-trust__icon">∎</span><span>No hidden fees</span></div>
+        <div class="lp-trust__item"><span class="lp-trust__icon">↻</span><span>Cancel anytime before refill</span></div>
+        <div class="lp-trust__item"><span class="lp-trust__icon">⏵</span><span>Same price across doses</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="lp-section" id="what-included">
+    <div class="lp-container">
+      <div class="lp-section__head">
+        <h2>One plan, one price</h2>
+        <p>We don't change the price when your dose changes, and we don't bill insurance behind the scenes.</p>
+      </div>
+      <div class="lp-price-grid" style="max-width:520px">
+        <article class="lp-price-card lp-price-card--featured">
+          <h3 data-bind="product.publicName">Compounded semaglutide plan</h3>
+          <p class="lp-price-card__sub">Provider-reviewed, cash-pay</p>
+          <div class="lp-price-card__price" data-bind="product.monthlyPrice">[CLIENT TO CONFIRM]</div>
+          <div class="lp-price-card__period">per month, all-in</div>
+          <ul class="lp-price-card__list" data-bind-list="product.included" data-bind-list-tpl="<li>{value}</li>">
+            <li>Licensed clinician review</li>
+            <li>Medication, if prescribed</li>
+            <li>Injection supplies</li>
+            <li>Shipping</li>
+            <li>Refill review</li>
+            <li>Ongoing support</li>
+          </ul>
+          <a class="lp-btn lp-btn--primary" href="assessment.html" data-track="cta_click_pricing_card">See if I qualify</a>
+          <p class="lp-price-card__note" data-bind="disclosures.prescriptionNotGuaranteed">Prescription not guaranteed. Provider determines appropriateness.</p>
+        </article>
+      </div>
+
+      <div class="lp-callout" style="margin-top:24px" data-bind-show="product.firstMonthPrice">
+        <strong>First-month offer:</strong> <span data-bind="product.firstMonthPrice">[CLIENT TO CONFIRM]</span> after provider approval. Standard pricing applies on the next refill.
+      </div>
+      <div class="lp-callout" style="margin-top:8px" data-bind-show="product.annualMonthlyPrice">
+        <strong>Annual prepay:</strong> as low as <span data-bind="product.annualMonthlyPrice">[CLIENT TO CONFIRM]</span> per month with annual prepay.
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison row (vs hidden cost competitors) -->
+  <section class="lp-section lp-section--alt">
+    <div class="lp-container">
+      <div class="lp-section__head">
+        <h2>What you actually pay vs. what other models charge</h2>
+        <p>Many programs separate "membership" from "medication," which makes the real all-in cost hard to find. Here's how this plan compares.</p>
+      </div>
+      <div class="lp-price-grid lp-price-grid--3">
+        <article class="lp-price-card">
+          <h3 style="color: var(--nume-slate-gray)">Membership + medication models</h3>
+          <p class="lp-price-card__sub">Common with national brands</p>
+          <ul class="lp-price-card__list">
+            <li>$39–$149/mo membership</li>
+            <li>+ medication cost added on top</li>
+            <li>Total often $250–$400/mo</li>
+            <li>Some plans add shipping fees</li>
+          </ul>
+        </article>
+        <article class="lp-price-card lp-price-card--featured">
+          <h3 data-bind="product.publicName">Compounded semaglutide plan</h3>
+          <p class="lp-price-card__sub">All-in, cash-pay, no add-ons</p>
+          <div class="lp-price-card__price" data-bind="product.monthlyPrice">[CLIENT TO CONFIRM]</div>
+          <div class="lp-price-card__period">per month, all-in</div>
+          <ul class="lp-price-card__list">
+            <li>Provider review included</li>
+            <li>Medication, if prescribed</li>
+            <li>Supplies + shipping included</li>
+            <li>No surprise dose-up fees</li>
+          </ul>
+          <a class="lp-btn lp-btn--primary" href="assessment.html" data-track="cta_click_compare_card">Start eligibility</a>
+        </article>
+        <article class="lp-price-card">
+          <h3 style="color: var(--nume-slate-gray)">Brand-name retail pricing</h3>
+          <p class="lp-price-card__sub">Without manufacturer savings</p>
+          <ul class="lp-price-card__list">
+            <li>$900–$1,300+/mo cash</li>
+            <li>Coupon eligibility varies</li>
+            <li>May require labs &amp; PA</li>
+            <li>Shipped from external pharmacy</li>
+          </ul>
+        </article>
+      </div>
+      <p style="text-align:center; color:var(--nume-slate-gray); font-size:.82rem; margin-top:18px">Comparison reflects publicly published pricing patterns across major U.S. cash-pay programs as of 2026. Pricing changes frequently — always verify before you commit.</p>
+    </div>
+  </section>
+
+  <!-- What's included -->
+  <section class="lp-section">
+    <div class="lp-container lp-container--narrow">
+      <div class="lp-section__head">
+        <h2>What's actually included</h2>
+        <p>If you've ever signed up for a "low-priced" program and ended up paying for shipping, supplies, refill reviews, or extra labs — that's not how this plan works.</p>
+      </div>
+      <ul class="lp-price-card__list" data-bind-list="product.included" data-bind-list-tpl="<li>{value}</li>">
+        <li>Licensed clinician review</li>
+        <li>Medication, if prescribed</li>
+        <li>Injection supplies</li>
+        <li>Shipping</li>
+        <li>Refill review</li>
+        <li>Ongoing support</li>
+      </ul>
+      <div class="lp-disclosure" data-bind="disclosures.compoundedMedication">Compounded medications, if prescribed, are not FDA-approved and are not reviewed by FDA for safety, effectiveness, or quality. They are prepared by a state-licensed pharmacy.</div>
+    </div>
+  </section>
+
+  <section class="lp-cta-band">
+    <div class="lp-container">
+      <h2>See if a clinician-guided GLP-1 plan is right for you</h2>
+      <p>Cash-pay only. No insurance required. Roughly 90 seconds to find out.</p>
+      <a class="lp-btn lp-btn--accent lp-btn--lg" href="assessment.html" data-track="cta_click_band">Start eligibility</a>
+    </div>
+  </section>
+
+  <footer class="lp-footer">
+    <div class="lp-container">
+      <div class="lp-footer__cols">
+        <div>
+          <div class="lp-footer__brand"><img src="assets/img/logo/white_logo.svg" alt="Nume Health" onerror="this.src='assets/img/logo/white_logo.png'; this.onerror=null;"></div>
+          <p data-bind="disclosures.compoundedMedication" style="font-size:.82rem">Compounded medications, if prescribed, are not FDA-approved.</p>
+        </div>
+        <div>
+          <h4>Care</h4>
+          <ul>
+            <li><a href="assessment.html">Eligibility</a></li>
+            <li><a href="glp1-cash-pay.html">Cash-pay GLP-1</a></li>
+            <li><a href="glp1-faq.html">FAQ</a></li>
+            <li><a href="switch-glp1-provider.html">Switching providers</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <ul>
+            <li><a data-bind-attr="href:disclosures.privacyPolicyUrl" href="/privacy.html">Privacy</a></li>
+            <li><a data-bind-attr="href:disclosures.termsUrl" href="/terms.html">Terms</a></li>
+            <li><a data-bind-attr="href:disclosures.telehealthConsentUrl" href="/telehealth-consent.html">Telehealth Consent</a></li>
+            <li><a data-bind-attr="href:disclosures.consumerHealthDataUrl" href="/consumer-health-data.html">Consumer Health Data</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="lp-footer__legal">
+        <p><strong data-bind="brand.name">Nume Health</strong> is a marketing brand. Medical services are provided by <span data-bind="clinical.prescribingEntity">[CLIENT TO CONFIRM]</span> and independent licensed clinicians. Medications dispensed by <span data-bind="clinical.pharmacyPartners">[CLIENT TO CONFIRM]</span>.</p>
+        <p data-bind="disclosures.safetyShort">GLP-1 medications are prescription treatments and are not appropriate for everyone.</p>
+        <p>© <span id="lp-year"></span> <span data-bind="brand.name">Nume Health</span>. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="lp-sticky-cta"><a class="lp-btn lp-btn--primary lp-btn--block" href="assessment.html" data-track="cta_click_sticky">See if I qualify</a></div>
+
+  <script>document.getElementById("lp-year").textContent = new Date().getFullYear();</script>
+  <script src="assets/js/landing-config.js"></script>
+  <script src="assets/js/landing-render.js"></script>
+</body>
+</html>
