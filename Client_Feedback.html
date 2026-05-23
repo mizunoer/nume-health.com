@@ -1,0 +1,831 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Client Feedback &amp; Requests — Nume Health</title>
+    <meta name="description" content="Internal feedback board: submit suggestions, bug reports, and copy edits. Track and update dev tasks.">
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png">
+    <link rel="alternate icon" href="assets/img/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#0077B6">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/css/flaticon.css">
+    <link rel="stylesheet" href="assets/css/default.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="assets/css/nume-health.css">
+    <style>
+        body { background: var(--nume-offwhite); }
+        .fb-hero { background: var(--nume-gradient-dark); color: #fff; padding: 56px 0 36px; position: relative; }
+        .fb-hero::after { content:""; display:block; height:5px; background: var(--nume-gradient); position:absolute; left:0; right:0; bottom:0; }
+        .fb-hero h1 { color:#fff; font-size: clamp(1.6rem,3vw,2.2rem); margin: 0 0 .25em; }
+        .fb-hero p { color: rgba(255,255,255,.85); max-width: 800px; margin: 0; }
+        .fb-meta { color: rgba(255,255,255,.6); font-size:.85rem; margin-bottom:8px; }
+
+        .fb-stats { display: grid; gap: 14px; grid-template-columns: 1fr; margin: 22px 0; }
+        @media (min-width: 720px) { .fb-stats { grid-template-columns: repeat(5, 1fr); } }
+        .fb-stat {
+            background:#fff; border:1px solid var(--nume-border);
+            border-radius: var(--nume-radius); padding: 14px 16px;
+            cursor: pointer; transition: 0.2s ease;
+        }
+        .fb-stat:hover { border-color: var(--nume-primary); transform: translateY(-2px); }
+        .fb-stat.is-active { border-color: var(--nume-primary); box-shadow: 0 0 0 3px rgba(0,119,182,.18); }
+        .fb-stat__count { font-size: 1.5rem; font-weight: 800; color: var(--nume-navy); line-height: 1; margin-bottom: 4px; }
+        .fb-stat__label { font-size: .75rem; color: var(--nume-slate-gray); text-transform: uppercase; letter-spacing: .05em; font-weight: 700; }
+        .fb-stat--new       { border-left: 4px solid var(--nume-primary); }
+        .fb-stat--review    { border-left: 4px solid #1E3A8A; }
+        .fb-stat--progress  { border-left: 4px solid #f59e0b; }
+        .fb-stat--done      { border-left: 4px solid #16a34a; }
+        .fb-stat--all       { border-left: 4px solid var(--nume-slate-gray); }
+
+        .fb-toolbar {
+            background:#fff; border:1px solid var(--nume-border);
+            border-radius: var(--nume-radius); padding: 14px 18px;
+            display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+            margin-bottom: 18px;
+        }
+        .fb-toolbar__hint { flex: 1 1 220px; font-size: .9rem; color: var(--nume-slate); }
+        .fb-toolbar__hint b { color: var(--nume-navy); }
+        .fb-btn {
+            display: inline-flex; align-items:center; gap:6px;
+            padding: 8px 14px; border-radius: var(--nume-radius);
+            border: 2px solid transparent; cursor: pointer; font: inherit;
+            font-weight: 700; font-size: .88rem;
+            background: transparent; color: var(--nume-navy);
+        }
+        .fb-btn--primary { background: var(--nume-primary); color:#fff; border-color: var(--nume-primary); }
+        .fb-btn--primary:hover { background: var(--nume-primary-dark); border-color: var(--nume-primary-dark); }
+        .fb-btn--ghost { border-color: var(--nume-border); }
+        .fb-btn--ghost:hover { background: var(--nume-offwhite); }
+        .fb-btn--accent { background: var(--nume-accent); color: var(--nume-navy); border-color: var(--nume-accent); }
+
+        /* New-item form */
+        .fb-form {
+            background:#fff; border:1px solid var(--nume-border);
+            border-radius: var(--nume-radius-lg); padding: 22px 24px;
+            margin-bottom: 24px;
+        }
+        .fb-form h2 { color: var(--nume-navy); font-size: 1.1rem; margin: 0 0 14px; display:flex; align-items:center; gap:8px; }
+        .fb-form h2 .fb-form__icon {
+            width: 28px; height:28px; border-radius:50%;
+            background: var(--nume-gradient); color:#fff;
+            font-weight:800; font-size:.85rem;
+            display:inline-flex; align-items:center; justify-content:center;
+        }
+        .fb-form .row > * { margin-bottom: 12px; }
+        .fb-form label { font-weight: 600; color: var(--nume-navy); font-size: .85rem; display:block; margin-bottom:4px; }
+        .fb-form input, .fb-form select, .fb-form textarea {
+            width: 100%; padding: 9px 12px;
+            border-radius: var(--nume-radius);
+            border: 1px solid var(--nume-border);
+            background: #fff; font: inherit; font-size: .95rem;
+        }
+        .fb-form input:focus, .fb-form select:focus, .fb-form textarea:focus {
+            outline: none;
+            border-color: var(--nume-primary);
+            box-shadow: 0 0 0 3px rgba(0,119,182,.18);
+        }
+        .fb-form textarea { min-height: 90px; resize: vertical; }
+        .fb-form .text-muted { color: var(--nume-slate-gray); font-size: .8rem; }
+
+        /* Item card */
+        .fb-list { display: grid; gap: 14px; grid-template-columns: 1fr; }
+        .fb-card {
+            background:#fff; border:1px solid var(--nume-border);
+            border-radius: var(--nume-radius-lg); padding: 18px 20px;
+            transition: 0.2s ease;
+        }
+        .fb-card:hover { border-color: var(--nume-primary); box-shadow: 0 4px 18px rgba(0,119,182,.08); }
+        .fb-card__head { display:flex; flex-wrap:wrap; gap:8px; align-items:flex-start; margin-bottom: 10px; }
+        .fb-card__title { color: var(--nume-navy); font-size: 1.05rem; font-weight: 700; flex: 1 1 200px; line-height: 1.3; margin: 0; }
+        .fb-card__meta { color: var(--nume-slate-gray); font-size: .82rem; margin-bottom: 8px; }
+        .fb-card__details { color: var(--nume-slate); font-size: .92rem; white-space: pre-wrap; word-break: break-word; }
+        .fb-card__notes {
+            margin-top: 12px; padding: 10px 14px;
+            background: var(--nume-mint); color: var(--nume-navy);
+            border-left: 3px solid var(--nume-primary);
+            border-radius: 6px;
+            font-size: .88rem; white-space: pre-wrap;
+        }
+        .fb-card__notes strong { display:block; font-size:.75rem; text-transform:uppercase; letter-spacing:.04em; margin-bottom:4px; }
+        .fb-card__comments { margin-top: 10px; }
+        .fb-card__comment {
+            font-size: .85rem; color: var(--nume-slate);
+            padding: 8px 12px; background: #f5f9fd; border-radius: 6px; margin-bottom: 6px;
+            border-left: 2px solid var(--nume-primary);
+        }
+        .fb-card__comment b { color: var(--nume-navy); }
+        .fb-card__comment .fb-card__comment-meta { color: var(--nume-slate-gray); font-size:.75rem; }
+
+        .fb-pill { display:inline-block; padding: 2px 9px; border-radius: 999px; font-size: .7rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; }
+        .fb-pill--type     { background: #DBEAFE; color: #1E3A8A; }
+        .fb-pill--page     { background: #E2E8F0; color: #334155; }
+        .fb-pill-priority-low  { background: #E2E8F0; color: #334155; }
+        .fb-pill-priority-med  { background: #FEF3C7; color: #92400E; }
+        .fb-pill-priority-high { background: #FEE2E2; color: #991B1B; }
+        .fb-pill-status-new         { background: #DBEAFE; color: #1E3A8A; cursor:pointer; }
+        .fb-pill-status-in-review   { background: #DBEAFE; color: #1E3A8A; cursor:pointer; }
+        .fb-pill-status-in-progress { background: #FEF3C7; color: #92400E; cursor:pointer; }
+        .fb-pill-status-done        { background: #DCFCE7; color: #166534; cursor:pointer; }
+        .fb-pill-status-wont-do     { background: #FEE2E2; color: #991B1B; cursor:pointer; }
+
+        .fb-card__actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; align-items:center; }
+        .fb-card__action {
+            background: transparent; border: 1px solid var(--nume-border);
+            padding: 4px 10px; border-radius: 6px;
+            font-size: .8rem; cursor: pointer; color: var(--nume-slate);
+            font: inherit; font-size: .8rem;
+        }
+        .fb-card__action:hover { background: var(--nume-offwhite); border-color: var(--nume-slate-gray); }
+        .fb-card__action--danger { color: #991B1B; border-color: #fecaca; }
+        .fb-card__action--danger:hover { background: #fee2e2; }
+
+        .fb-empty {
+            text-align: center; padding: 40px 20px;
+            color: var(--nume-slate-gray);
+            background:#fff; border: 1px dashed var(--nume-border);
+            border-radius: var(--nume-radius-lg);
+        }
+
+        .fb-toast {
+            position: fixed; bottom: 28px; right: 28px;
+            background: var(--nume-navy); color:#fff;
+            padding: 12px 18px; border-radius: var(--nume-radius);
+            box-shadow: 0 14px 36px rgba(0,0,0,.25);
+            font-weight:600; font-size:.9rem;
+            transform: translateY(20px); opacity: 0;
+            transition: transform .25s ease, opacity .25s ease;
+            pointer-events: none; z-index: 1000; max-width: 360px;
+        }
+        .fb-toast.is-on { transform: translateY(0); opacity: 1; pointer-events: auto; }
+        .fb-toast--success { background: #166534; }
+        .fb-toast--error   { background: #991B1B; }
+
+        .fb-output {
+            background: var(--nume-navy); color:#dbe7f1;
+            border-radius: var(--nume-radius-lg);
+            padding: 16px 18px; margin-top: 16px;
+            overflow:auto; max-height: 480px;
+            font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            white-space: pre-wrap; word-break: break-word;
+            display: none;
+        }
+        .fb-output.is-on { display: block; }
+
+        .fb-filters {
+            display:flex; flex-wrap:wrap; gap:8px; margin-bottom: 14px; align-items:center;
+            font-size: .85rem; color: var(--nume-slate);
+        }
+        .fb-filters select {
+            padding: 6px 10px; border-radius: 6px; border: 1px solid var(--nume-border);
+            background:#fff; font: inherit; font-size: .85rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="preloader"><div class="tg-cube-grid"><div class="tg-cube tg-cube1"></div><div class="tg-cube tg-cube2"></div><div class="tg-cube tg-cube3"></div><div class="tg-cube tg-cube4"></div><div class="tg-cube tg-cube5"></div><div class="tg-cube tg-cube6"></div><div class="tg-cube tg-cube7"></div><div class="tg-cube tg-cube8"></div><div class="tg-cube tg-cube9"></div></div></div>
+    <button class="scroll-top scroll-to-target" data-target="html"><i class="fas fa-angle-up"></i></button>
+
+    <header id="home">
+        <div id="header-top-fixed"></div>
+        <div id="sticky-header" class="menu-area">
+            <div class="container custom-container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="mobile-nav-toggler"><i class="flaticon-layout"></i></div>
+                        <div class="menu-wrap">
+                            <nav class="menu-nav">
+                                <div class="logo"><a href="index.html"><img src="assets/img/logo/logo.svg" alt="Nume Health" onerror="this.src='assets/img/logo/logo.png'; this.onerror=null;"></a></div>
+                                <div class="navbar-wrap main-menu d-none d-xl-flex">
+                                    <ul class="navigation">
+                                        <li><a href="index.html">Home</a></li>
+                                        <li><a href="shop.html">Plans</a></li>
+                                        <li><a href="glp1-pricing.html">Pricing</a></li>
+                                        <li><a href="assessment.html">Eligibility</a></li>
+                                        <li><a href="glp1-faq.html">FAQ</a></li>
+                                        <li class="menu-item-has-children"><a href="login.html">Account</a>
+                                            <ul class="sub-menu">
+                                                <li><a href="login.html">Login</a></li>
+                                                <li><a href="register.html">Register</a></li>
+                                                <li><a href="reset-password.html">Reset password</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="menu-item-has-children"><a href="#">More</a>
+                                            <ul class="sub-menu" id="nav-pages-dropdown"></ul>
+                                        </li>
+                                        <li><a href="contact.html">Contact</a></li>
+                                    </ul>
+                                </div>
+                                <div class="header-action d-none d-sm-block">
+                                    <a href="assessment.html" class="btn btn-two btn-primary-style" style="padding:10px 22px;">See if I qualify</a>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mobile-menu"><nav class="menu-box"><div class="close-btn"><i class="fas fa-times"></i></div><div class="nav-logo"><a href="index.html"><img src="assets/img/logo/logo.svg" alt="Nume Health" onerror="this.src='assets/img/logo/logo.png'; this.onerror=null;"></a></div><div class="menu-outer"></div></nav></div>
+        <div class="menu-backdrop"></div>
+    </header>
+
+    <main class="main-area fix">
+
+        <section class="fb-hero">
+            <div class="container">
+                <div class="fb-meta">Internal · Client feedback board</div>
+                <h1>Submit suggestions, bug reports, copy edits, and dev-task updates.</h1>
+                <p>Drop in anything you want changed, fixed, added, or asked. Items show up below for the team to triage. Each item has a status and notes that engineering updates as work progresses. <strong>Prefer plain English over tickets</strong> — describe what you'd like, and we'll handle the rest.</p>
+            </div>
+        </section>
+
+        <div class="container" style="max-width: 1140px; padding: 28px 24px 80px">
+
+            <!-- ===== Stats / filters ===== -->
+            <div class="fb-stats" id="fbStats">
+                <button type="button" class="fb-stat fb-stat--all is-active" data-filter="all">
+                    <div class="fb-stat__count" id="fbCountAll">0</div>
+                    <div class="fb-stat__label">Total</div>
+                </button>
+                <button type="button" class="fb-stat fb-stat--new" data-filter="new">
+                    <div class="fb-stat__count" id="fbCountNew">0</div>
+                    <div class="fb-stat__label">New</div>
+                </button>
+                <button type="button" class="fb-stat fb-stat--review" data-filter="in-review">
+                    <div class="fb-stat__count" id="fbCountReview">0</div>
+                    <div class="fb-stat__label">In review</div>
+                </button>
+                <button type="button" class="fb-stat fb-stat--progress" data-filter="in-progress">
+                    <div class="fb-stat__count" id="fbCountProgress">0</div>
+                    <div class="fb-stat__label">In progress</div>
+                </button>
+                <button type="button" class="fb-stat fb-stat--done" data-filter="done">
+                    <div class="fb-stat__count" id="fbCountDone">0</div>
+                    <div class="fb-stat__label">Done</div>
+                </button>
+            </div>
+
+            <!-- ===== New item form ===== -->
+            <section class="fb-form">
+                <h2><span class="fb-form__icon">+</span>Add a new item</h2>
+                <p class="text-muted" style="margin: 0 0 14px">Title is required. The more detail you give, the faster we can act.</p>
+                <div class="row g-2">
+                    <div class="col-md-7">
+                        <label for="fb_title">Title <span style="color:#dc2626">*</span></label>
+                        <input id="fb_title" type="text" placeholder="e.g. Pricing card should show first-month promo" maxlength="200">
+                    </div>
+                    <div class="col-md-5">
+                        <label for="fb_by">Your name <span style="color:#dc2626">*</span></label>
+                        <input id="fb_by" type="text" placeholder="e.g. Jane Smith" autocomplete="name" maxlength="80">
+                    </div>
+                </div>
+                <div class="row g-2">
+                    <div class="col-md-3">
+                        <label for="fb_type">Type</label>
+                        <select id="fb_type">
+                            <option value="suggestion">Suggestion</option>
+                            <option value="bug">Bug</option>
+                            <option value="copy-edit">Copy edit</option>
+                            <option value="dev-task-update">Dev-task update</option>
+                            <option value="feature">Feature</option>
+                            <option value="question">Question</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="fb_priority">Priority</label>
+                        <select id="fb_priority">
+                            <option value="low">Low</option>
+                            <option value="med" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="fb_page">Related page (optional)</label>
+                        <select id="fb_page">
+                            <option value="">— General / no specific page —</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row g-2">
+                    <div class="col-12">
+                        <label for="fb_details">Details</label>
+                        <textarea id="fb_details" placeholder="What you'd like changed, why, and any links/screenshots." maxlength="4000"></textarea>
+                    </div>
+                </div>
+                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top: 8px;">
+                    <button type="button" class="fb-btn fb-btn--primary" id="fb_submit">Submit</button>
+                    <button type="button" class="fb-btn fb-btn--ghost" id="fb_clear">Clear</button>
+                </div>
+            </section>
+
+            <!-- ===== Toolbar ===== -->
+            <div class="fb-toolbar">
+                <div class="fb-toolbar__hint">
+                    <b id="fbVisibleCount">0</b> shown ·
+                    Click any status pill on a card to advance it (<em>new → in-review → in-progress → done → won't do</em>).
+                </div>
+                <button type="button" class="fb-btn fb-btn--accent" id="fb_copyMd">Copy as Markdown</button>
+                <button type="button" class="fb-btn fb-btn--ghost" id="fb_refresh">Refresh</button>
+            </div>
+
+            <div class="fb-filters">
+                <span>Filter by:</span>
+                <select id="fb_filterType">
+                    <option value="">All types</option>
+                    <option value="suggestion">Suggestion</option>
+                    <option value="bug">Bug</option>
+                    <option value="copy-edit">Copy edit</option>
+                    <option value="dev-task-update">Dev-task update</option>
+                    <option value="feature">Feature</option>
+                    <option value="question">Question</option>
+                </select>
+                <select id="fb_filterPriority">
+                    <option value="">Any priority</option>
+                    <option value="high">High</option>
+                    <option value="med">Medium</option>
+                    <option value="low">Low</option>
+                </select>
+            </div>
+
+            <pre class="fb-output" id="fb_output"></pre>
+
+            <!-- ===== List ===== -->
+            <div class="fb-list" id="fbList"></div>
+            <div class="fb-empty" id="fbEmpty" style="display:none">
+                Nothing here yet. Add the first item above.
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Unified footer for nume-health.com -->
+<footer class="footer-area">
+    <div class="footer-top-wrap">
+        <div class="container">
+            <div class="footer-widgets-wrap">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-widget">
+                            <div class="footer-about">
+                                <div class="footer-logo logo"><a href="index.html"><img src="assets/img/logo/white_logo.svg" alt="Nume Health" onerror="this.src='assets/img/logo/white_logo.png'; this.onerror=null;"></a></div>
+                                <p>Clinician-guided weight-care, online. Cash-pay options. No insurance required.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-6">
+                        <div class="footer-widget">
+                            <h4 class="fw-title">Care</h4>
+                            <ul class="list-wrap">
+                                <li><a href="index.html">Home</a></li>
+                                <li><a href="shop.html">Plans</a></li>
+                                <li><a href="glp1-pricing.html">Pricing</a></li>
+                                <li><a href="assessment.html">Eligibility</a></li>
+                                <li><a href="glp1-faq.html">FAQ</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-6">
+                        <div class="footer-widget">
+                            <h4 class="fw-title">Account</h4>
+                            <ul class="list-wrap">
+                                <li><a href="login.html">Login</a></li>
+                                <li><a href="register.html">Register</a></li>
+                                <li><a href="reset-password.html">Reset password</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-widget">
+                            <h4 class="fw-title">Legal</h4>
+                            <ul class="list-wrap">
+                                <li><a href="/privacy.html">Privacy Policy</a></li>
+                                <li><a href="/terms.html">Terms of Service</a></li>
+                                <li><a href="/telehealth-consent.html">Telehealth Consent</a></li>
+                                <li><a href="/consumer-health-data.html">Consumer Health Data</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copyright-wrap">
+        <div class="container">
+            <div class="row align-items-start g-3">
+                <div class="col-lg-9">
+                    <p class="copyright-text mb-2 small" style="opacity:.8">
+                        Nume Health is a marketing brand. Medical services are provided by independent licensed clinicians.
+                        GLP-1 medications are prescription treatments and are not appropriate for everyone.
+                        Compounded medications, if prescribed, are not FDA-approved and are not reviewed by FDA for safety, effectiveness, or quality.
+                        Prescription is not guaranteed; a licensed provider determines whether treatment is appropriate.
+                    </p>
+                    <p class="copyright-text mb-0 small" style="opacity:.6">© 2026 Nume Health. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <div class="fb-toast" id="fb_toast" role="status" aria-live="polite"></div>
+
+    <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/site-config.js"></script>
+    <script src="assets/js/site-nav.js"></script>
+
+    <script>
+    (function(){
+        "use strict";
+        var API = "api/feedback.php";
+        var BY_KEY = "nume.feedback.by";
+        var FILTER_KEY = "nume.feedback.filter";
+
+        var state = { items: [] };
+        var ui = { status: "all", type: "", priority: "" };
+
+        var TYPE_LABEL = {
+            "suggestion": "Suggestion",
+            "bug": "Bug",
+            "copy-edit": "Copy edit",
+            "dev-task-update": "Dev-task update",
+            "feature": "Feature",
+            "question": "Question"
+        };
+        var STATUS_ORDER = ["new", "in-review", "in-progress", "done", "wont-do"];
+        var STATUS_LABEL = {
+            "new": "New",
+            "in-review": "In review",
+            "in-progress": "In progress",
+            "done": "Done",
+            "wont-do": "Won't do"
+        };
+        var PRIORITY_LABEL = { "low": "Low", "med": "Medium", "high": "High" };
+
+        /* ---------- Toast ---------- */
+        var toastEl = document.getElementById("fb_toast");
+        var toastTimer = null;
+        function toast(msg, kind) {
+            toastEl.textContent = msg;
+            toastEl.classList.remove("fb-toast--success", "fb-toast--error");
+            if (kind === "success") toastEl.classList.add("fb-toast--success");
+            if (kind === "error")   toastEl.classList.add("fb-toast--error");
+            toastEl.classList.add("is-on");
+            if (toastTimer) clearTimeout(toastTimer);
+            toastTimer = setTimeout(function(){ toastEl.classList.remove("is-on"); }, 3500);
+        }
+
+        /* ---------- HTML helpers ---------- */
+        function escHtml(s){
+            return String(s == null ? "" : s)
+              .replace(/&/g,"&amp;")
+              .replace(/</g,"&lt;")
+              .replace(/>/g,"&gt;")
+              .replace(/"/g,"&quot;");
+        }
+        function fmtTime(iso){
+            if (!iso) return "";
+            try { return new Date(iso).toLocaleString(); } catch(e){ return iso; }
+        }
+
+        /* ---------- Page picker ---------- */
+        function fillPagePicker(){
+            var sel = document.getElementById("fb_page");
+            var pages = (window.SITE_PAGES || []).slice();
+            pages.forEach(function(p){
+                var o = document.createElement("option");
+                o.value = p.url;
+                o.textContent = p.label + " (" + p.url + ")";
+                sel.appendChild(o);
+            });
+        }
+
+        /* ---------- API ---------- */
+        function api(action, opts) {
+            opts = opts || {};
+            var url = API + "?action=" + encodeURIComponent(action);
+            return fetch(url, {
+                method: opts.body ? "POST" : "GET",
+                credentials: "same-origin",
+                headers: opts.body ? { "Content-Type": "application/json" } : undefined,
+                body: opts.body ? JSON.stringify(opts.body) : undefined
+            }).then(function(r){
+                return r.json().then(function(j){ return { ok: r.ok, body: j }; });
+            }).then(function(res){
+                if (!res.ok || !res.body || !res.body.ok) {
+                    var err = (res.body && res.body.error) || ("HTTP error");
+                    throw new Error(err);
+                }
+                return res.body;
+            });
+        }
+
+        function refresh(){
+            return api("list").then(function(j){
+                state.items = j.items || [];
+                render();
+            }).catch(function(err){
+                console.warn(err);
+                toast("Couldn't load: " + err.message, "error");
+            });
+        }
+
+        /* ---------- Render ---------- */
+        function recountStats(){
+            var counts = { all: state.items.length, "new": 0, "in-review": 0, "in-progress": 0, "done": 0 };
+            state.items.forEach(function(it){
+                if (counts[it.status] != null) counts[it.status]++;
+            });
+            document.getElementById("fbCountAll").textContent      = counts.all;
+            document.getElementById("fbCountNew").textContent      = counts["new"];
+            document.getElementById("fbCountReview").textContent   = counts["in-review"];
+            document.getElementById("fbCountProgress").textContent = counts["in-progress"];
+            document.getElementById("fbCountDone").textContent     = counts.done;
+        }
+
+        function applyFilters(){
+            return state.items.filter(function(it){
+                if (ui.status !== "all" && it.status !== ui.status) return false;
+                if (ui.type && it.type !== ui.type) return false;
+                if (ui.priority && it.priority !== ui.priority) return false;
+                return true;
+            });
+        }
+
+        function renderCard(it){
+            var typ = TYPE_LABEL[it.type] || it.type;
+            var status = it.status || "new";
+            var priority = it.priority || "med";
+
+            var commentsHtml = "";
+            if (Array.isArray(it.comments) && it.comments.length) {
+                commentsHtml = '<div class="fb-card__comments">' +
+                    it.comments.map(function(c){
+                        return '<div class="fb-card__comment">' +
+                          '<b>' + escHtml(c.by) + '</b> <span class="fb-card__comment-meta">· ' + escHtml(fmtTime(c.at)) + '</span><br>' +
+                          escHtml(c.text) +
+                          '</div>';
+                    }).join("") +
+                    '</div>';
+            }
+
+            var notesHtml = "";
+            if (it.agentNotes && it.agentNotes.trim()) {
+                notesHtml = '<div class="fb-card__notes"><strong>Engineering notes</strong>' + escHtml(it.agentNotes) + '</div>';
+            }
+
+            var pageHtml = it.page ? '<span class="fb-pill fb-pill--page">' + escHtml(it.page) + '</span>' : '';
+
+            return ''
+              + '<article class="fb-card" data-id="' + escHtml(it.id) + '">'
+              +   '<div class="fb-card__head">'
+              +     '<h3 class="fb-card__title">' + escHtml(it.title) + '</h3>'
+              +     '<span class="fb-pill fb-pill--type">' + escHtml(typ) + '</span>'
+              +     '<span class="fb-pill fb-pill-priority-' + priority + '">' + escHtml(PRIORITY_LABEL[priority] || priority) + '</span>'
+              +     '<span class="fb-pill fb-pill-status-' + status + '" data-action="cycle-status" title="Click to change status">' + escHtml(STATUS_LABEL[status] || status) + '</span>'
+              +   '</div>'
+              +   '<div class="fb-card__meta">'
+              +     'By <b>' + escHtml(it.submittedBy) + '</b> · ' + escHtml(fmtTime(it.submittedAt))
+              +     (pageHtml ? ' · ' + pageHtml : '')
+              +     (it.updatedAt && it.updatedAt !== it.submittedAt ? ' · updated ' + escHtml(fmtTime(it.updatedAt)) : '')
+              +   '</div>'
+              + (it.details ? '<div class="fb-card__details">' + escHtml(it.details) + '</div>' : '')
+              + notesHtml
+              + commentsHtml
+              +   '<div class="fb-card__actions">'
+              +     '<button class="fb-card__action" data-action="add-comment">+ Comment</button>'
+              +     '<button class="fb-card__action" data-action="edit-notes">Engineering notes</button>'
+              +     '<button class="fb-card__action fb-card__action--danger" data-action="delete">Delete</button>'
+              +   '</div>'
+              + '</article>';
+        }
+
+        function render(){
+            recountStats();
+            var visible = applyFilters();
+            document.getElementById("fbVisibleCount").textContent = visible.length;
+            var listEl = document.getElementById("fbList");
+            var emptyEl = document.getElementById("fbEmpty");
+            if (!visible.length) {
+                listEl.innerHTML = "";
+                emptyEl.style.display = "block";
+                if (state.items.length === 0) {
+                    emptyEl.textContent = "Nothing here yet. Add the first item above.";
+                } else {
+                    emptyEl.textContent = "No items match the current filters.";
+                }
+                return;
+            }
+            emptyEl.style.display = "none";
+            listEl.innerHTML = visible.map(renderCard).join("");
+        }
+
+        /* ---------- Submit / update / delete ---------- */
+        function submitNew(){
+            var title    = document.getElementById("fb_title").value.trim();
+            var by       = document.getElementById("fb_by").value.trim();
+            var type     = document.getElementById("fb_type").value;
+            var priority = document.getElementById("fb_priority").value;
+            var page     = document.getElementById("fb_page").value;
+            var details  = document.getElementById("fb_details").value;
+
+            if (!title) { toast("Title is required.", "error"); document.getElementById("fb_title").focus(); return; }
+            if (!by)    { toast("Add your name before submitting.", "error"); document.getElementById("fb_by").focus(); return; }
+
+            localStorage.setItem(BY_KEY, by);
+
+            var btn = document.getElementById("fb_submit");
+            btn.disabled = true; btn.textContent = "Submitting…";
+
+            api("add", { body: { title: title, submittedBy: by, type: type, priority: priority, page: page, details: details } })
+                .then(function(j){
+                    state.items.unshift(j.item);
+                    render();
+                    document.getElementById("fb_title").value = "";
+                    document.getElementById("fb_details").value = "";
+                    document.getElementById("fb_priority").value = "med";
+                    document.getElementById("fb_page").value = "";
+                    toast("Submitted. Thanks!", "success");
+                })
+                .catch(function(err){
+                    toast("Submit failed: " + err.message, "error");
+                })
+                .finally(function(){
+                    btn.disabled = false; btn.textContent = "Submit";
+                });
+        }
+
+        function findItem(id) {
+            return state.items.find(function(x){ return x.id === id; });
+        }
+
+        function cycleStatus(item) {
+            var i = STATUS_ORDER.indexOf(item.status);
+            var next = STATUS_ORDER[(i + 1) % STATUS_ORDER.length];
+            return api("update", { body: { id: item.id, status: next } })
+              .then(function(j){
+                  Object.assign(item, j.item);
+                  render();
+              })
+              .catch(function(err){ toast("Update failed: " + err.message, "error"); });
+        }
+
+        function addComment(item) {
+            var by = localStorage.getItem(BY_KEY) || prompt("Your name:") || "anon";
+            localStorage.setItem(BY_KEY, by);
+            var text = prompt("Comment:");
+            if (!text) return;
+            return api("update", { body: { id: item.id, comment: text, commentBy: by } })
+              .then(function(j){
+                  Object.assign(item, j.item);
+                  render();
+                  toast("Comment added.", "success");
+              })
+              .catch(function(err){ toast("Comment failed: " + err.message, "error"); });
+        }
+
+        function editNotes(item) {
+            var current = item.agentNotes || "";
+            var notes = prompt("Engineering / agent notes for this item:", current);
+            if (notes === null) return;
+            return api("update", { body: { id: item.id, agentNotes: notes } })
+              .then(function(j){
+                  Object.assign(item, j.item);
+                  render();
+                  toast("Notes saved.", "success");
+              })
+              .catch(function(err){ toast("Save failed: " + err.message, "error"); });
+        }
+
+        function deleteItem(item) {
+            if (!confirm("Delete \"" + item.title + "\"? This can't be undone.")) return;
+            return api("delete", { body: { id: item.id } })
+              .then(function(){
+                  state.items = state.items.filter(function(x){ return x.id !== item.id; });
+                  render();
+                  toast("Deleted.", "success");
+              })
+              .catch(function(err){ toast("Delete failed: " + err.message, "error"); });
+        }
+
+        /* ---------- Markdown export ---------- */
+        function copyAsMarkdown(){
+            var visible = applyFilters();
+            if (!visible.length) { toast("Nothing visible to copy.", "error"); return; }
+            var lines = ["# Nume Health — feedback items", "_" + new Date().toISOString() + "_", ""];
+            visible.forEach(function(it, i){
+                lines.push("## " + (i+1) + ". " + it.title);
+                lines.push("- **Type:** " + (TYPE_LABEL[it.type] || it.type));
+                lines.push("- **Priority:** " + (PRIORITY_LABEL[it.priority] || it.priority));
+                lines.push("- **Status:** " + (STATUS_LABEL[it.status] || it.status));
+                lines.push("- **By:** " + it.submittedBy + " · " + fmtTime(it.submittedAt));
+                if (it.page) lines.push("- **Page:** `" + it.page + "`");
+                if (it.details) {
+                    lines.push("");
+                    lines.push(it.details);
+                }
+                if (it.agentNotes) {
+                    lines.push("");
+                    lines.push("> _Engineering notes:_ " + it.agentNotes);
+                }
+                if (Array.isArray(it.comments) && it.comments.length) {
+                    lines.push("");
+                    lines.push("**Comments:**");
+                    it.comments.forEach(function(c){
+                        lines.push("- " + c.by + " · " + fmtTime(c.at) + " — " + c.text);
+                    });
+                }
+                lines.push("");
+            });
+            var text = lines.join("\n");
+            var out = document.getElementById("fb_output");
+            out.textContent = text;
+            out.classList.add("is-on");
+            try { navigator.clipboard.writeText(text); toast("Copied " + visible.length + " items to clipboard.", "success"); }
+            catch (e) { toast("Copy failed; text shown below.", "error"); }
+        }
+
+        /* ---------- Wiring ---------- */
+        document.getElementById("fb_submit").addEventListener("click", submitNew);
+        document.getElementById("fb_clear").addEventListener("click", function(){
+            document.getElementById("fb_title").value = "";
+            document.getElementById("fb_details").value = "";
+            document.getElementById("fb_priority").value = "med";
+            document.getElementById("fb_page").value = "";
+        });
+        document.getElementById("fb_refresh").addEventListener("click", refresh);
+        document.getElementById("fb_copyMd").addEventListener("click", copyAsMarkdown);
+
+        document.getElementById("fbStats").addEventListener("click", function(e){
+            var btn = e.target.closest(".fb-stat");
+            if (!btn) return;
+            ui.status = btn.getAttribute("data-filter");
+            document.querySelectorAll(".fb-stat").forEach(function(b){ b.classList.toggle("is-active", b === btn); });
+            saveFilter();
+            render();
+        });
+
+        document.getElementById("fb_filterType").addEventListener("change", function(e){
+            ui.type = e.target.value; saveFilter(); render();
+        });
+        document.getElementById("fb_filterPriority").addEventListener("change", function(e){
+            ui.priority = e.target.value; saveFilter(); render();
+        });
+
+        document.getElementById("fbList").addEventListener("click", function(e){
+            var card = e.target.closest(".fb-card");
+            if (!card) return;
+            var id = card.getAttribute("data-id");
+            var item = findItem(id);
+            if (!item) return;
+            var t = e.target.closest("[data-action]");
+            if (!t) return;
+            var action = t.getAttribute("data-action");
+            if (action === "cycle-status") cycleStatus(item);
+            if (action === "add-comment")  addComment(item);
+            if (action === "edit-notes")   editNotes(item);
+            if (action === "delete")       deleteItem(item);
+        });
+
+        function saveFilter(){
+            try { localStorage.setItem(FILTER_KEY, JSON.stringify(ui)); } catch(e){}
+        }
+        function loadFilter(){
+            try {
+                var raw = localStorage.getItem(FILTER_KEY);
+                if (!raw) return;
+                var u = JSON.parse(raw);
+                if (u && typeof u === "object") {
+                    ui.status = u.status || "all";
+                    ui.type = u.type || "";
+                    ui.priority = u.priority || "";
+                    document.getElementById("fb_filterType").value = ui.type;
+                    document.getElementById("fb_filterPriority").value = ui.priority;
+                    document.querySelectorAll(".fb-stat").forEach(function(b){
+                        b.classList.toggle("is-active", b.getAttribute("data-filter") === ui.status);
+                    });
+                }
+            } catch(e){}
+        }
+
+        /* ---------- Boot ---------- */
+        var prevName = localStorage.getItem(BY_KEY);
+        if (prevName) document.getElementById("fb_by").value = prevName;
+        fillPagePicker();
+        loadFilter();
+        refresh();
+    })();
+    </script>
+
+</body>
+</html>

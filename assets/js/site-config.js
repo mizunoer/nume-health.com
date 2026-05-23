@@ -32,9 +32,10 @@ window.SITE_PAGES = [
   { label: 'Plan detail',                 url: 'shop-details.html'            },
 
   /* --- Internal tooling (not for public nav) --- */
-  { label: 'Recommendations (internal)',  url: 'recommendations.html'         },
+  { label: 'Client feedback (internal)',  url: 'Client_Feedback.html'         },
   { label: 'Client onboarding (internal)',url: 'Client_Onboarding.html'       },
   { label: 'Marketing tracker (internal)',url: 'Marketing_Next_Steps.html'    },
   { label: 'Color recs (internal)',       url: 'Update_Colors.html'           },
-  { label: 'Image picker (internal)',     url: 'ImageSelection.html'          }
+  { label: 'Image picker (internal)',     url: 'ImageSelection.html'          },
+  { label: 'Recommendations (internal)',  url: 'recommendations.html'         }
 ];
