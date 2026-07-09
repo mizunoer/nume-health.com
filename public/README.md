@@ -1,7 +1,5 @@
-# Site files moved to repo root
+# Site files moved to `sites/nume-health.com/`
 
-The deployable site (index.html, assets/, inc/, etc.) now lives at the **repository root**, not in this folder.
+The deployable Nume site now lives at **`sites/nume-health.com/`**, not the repo root.
 
-**Deploy:** Point your domain’s document root at the repo root so it serves `index.html`, `assets/`, and the rest from there.
-
-See the root [README.md](../README.md) and [docs/DEPLOY-LITESPEED.md](../docs/DEPLOY-LITESPEED.md).
+See [docs/MONOREPO.md](../docs/MONOREPO.md) and the root [README.md](../README.md).

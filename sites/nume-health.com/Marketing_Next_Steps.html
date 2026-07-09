@@ -216,7 +216,7 @@
   <!-- ============= Stat cards ============= -->
   <div class="ns-cards">
     <div class="ns-card ns-card--ready">
-      <div class="ns-card__count">5</div>
+      <div class="ns-card__count">7</div>
       <div class="ns-card__label">Pages built &amp; ready</div>
     </div>
     <div class="ns-card ns-card--client">
@@ -228,7 +228,7 @@
       <div class="ns-card__label">Compliance gates blocking launch</div>
     </div>
     <div class="ns-card ns-card--us">
-      <div class="ns-card__count" id="nsCountDev">3</div>
+      <div class="ns-card__count" id="nsCountDev">5</div>
       <div class="ns-card__label">Open dev tasks (post-config)</div>
     </div>
   </div>
@@ -277,6 +277,18 @@
       <a class="ns-link" href="glp1-faq.html">
         <strong>/glp1-faq</strong>
         <span>SEO + objection-handling page; eligibility check at the bottom.</span>
+      </a>
+      <a class="ns-link" href="glp1-no-insurance.html">
+        <strong>/glp1-no-insurance</strong>
+        <span>Search + social: no-insurance-required angle (plan §7).</span>
+      </a>
+      <a class="ns-link" href="provider-reviewed-weight-care.html">
+        <strong>/provider-reviewed-weight-care</strong>
+        <span>Compliance-safe social bio page; education-first, minimal drug naming.</span>
+      </a>
+      <a class="ns-link" href="assessment.html">
+        <strong>/assessment</strong>
+        <span>Layer 1 marketing qualifier (single-page MVP). Hand off to Layer 2 clinical intake post-gates.</span>
       </a>
     </div>
   </section>
@@ -410,27 +422,78 @@
       <thead><tr><th>Task</th><th>Notes</th><th style="width:14%">Status</th></tr></thead>
       <tbody>
         <tr>
-          <td>Build the multi-step assessment quiz (Layer 1)</td>
-          <td>From §5 of the plan: 9-question public marketing qualifier. Save state on each step. Hand off to clinical intake (Layer 2) only after qualifier completes.</td>
-          <td><span class="pill" data-item-key="dev.quiz-layer1" data-default-status="todo"></span></td>
+          <td>Layer 1 assessment (marketing qualifier)</td>
+          <td>§5: 9-question public qualifier on <code>assessment.html</code>. Single-page MVP shipped with state gate, pregnancy stop, payment preference, and PHI-free <code>quiz_*</code> events. Remaining: multi-step UX, Layer 2 clinical intake handoff, backend persistence.</td>
+          <td><span class="pill" data-item-key="dev.quiz-layer1" data-default-status="in-progress"></span></td>
         </tr>
         <tr>
-          <td>Wire <code>numeTrack</code> events to GA4 + (optionally) Meta CAPI</td>
-          <td>Generic events only: <code>page_view</code>, <code>cta_click</code>, <code>quiz_started</code>, <code>quiz_completed</code>. <strong>Never</strong> pass BMI, condition, medication, or pregnancy data.</td>
-          <td><span class="pill" data-item-key="dev.tracking-wire" data-default-status="todo"></span></td>
+          <td>Wire <code>siteTrack</code> events to GA4 + (optionally) Meta CAPI</td>
+          <td>Generic events only per <code>sister-sites-shared/.../ANALYTICS_EVENTS.md</code>: <code>page_view</code>, <code>cta_click_*</code>, <code>quiz_started</code>, <code>quiz_completed</code>, <code>eligibility_submitted</code>. Landing pages emit via <code>landing-render.js</code>; assessment emits on focus/submit. GA4/Meta admin wiring still client-side.</td>
+          <td><span class="pill" data-item-key="dev.tracking-wire" data-default-status="in-progress"></span></td>
         </tr>
         <tr>
           <td>State eligibility gate in quiz</td>
-          <td>Use <code>NUME_CONFIG.states.served</code> to short-circuit ineligible visitors with a soft "we'll let you know when we serve your state" capture.</td>
-          <td><span class="pill" data-item-key="dev.state-gate" data-default-status="todo"></span></td>
+          <td>Uses <code>NUME_CONFIG.states.served</code> once client confirms list; soft block + notice until then.</td>
+          <td><span class="pill" data-item-key="dev.state-gate" data-default-status="in-progress"></span></td>
+        </tr>
+        <tr>
+          <td>Layer 2 secure clinical intake</td>
+          <td>§5: full medical history, meds, labs, consents — separate from ad pixels. Requires EMR/intake vendor or custom build.</td>
+          <td><span class="pill" data-item-key="dev.quiz-layer2" data-default-status="todo"></span></td>
+        </tr>
+        <tr>
+          <td>Legal pages live (<code>privacy.html</code>, telehealth consent, consumer health data)</td>
+          <td>Linked from all landing footers; files not yet in repo.</td>
+          <td><span class="pill" data-item-key="dev.legal-pages" data-default-status="blocking"></span></td>
+        </tr>
+        <tr>
+          <td>Second product card (tirzepatide) + brand-name page</td>
+          <td>§6–7: enable <code>product2</code> in config; add <code>/brand-name-weight-loss-medication</code> only after Google healthcare cert allows.</td>
+          <td><span class="pill" data-item-key="dev.product2-brand-page" data-default-status="todo"></span></td>
         </tr>
       </tbody>
     </table>
   </section>
 
-  <!-- ============= 6. Channel guardrails ============= -->
+  <!-- ============= 7. Google Ads structure (plan §8) ============= -->
   <section class="ns-section">
-    <h2><span class="ns-section__num">6</span>Channel guardrails (quick reference)</h2>
+    <h2><span class="ns-section__num">7</span>Google Search campaigns (week one)</h2>
+    <p style="color: var(--nume-slate); margin-bottom: 12px">Start exact + phrase match only. Conversion = <code>quiz_completed</code> / qualified lead — not prescription approval. Budget: $250–$500/day total split per plan.</p>
+    <table>
+      <thead><tr><th>Campaign</th><th>Landing page</th><th>Keyword themes</th></tr></thead>
+      <tbody>
+        <tr><td>Cash-pay GLP-1 / online weight-care (60%)</td><td><code>/glp1-cash-pay</code></td><td>cash pay GLP-1 online, weight loss medication online, no insurance GLP-1</td></tr>
+        <tr><td>No insurance / pricing (20%)</td><td><code>/glp1-no-insurance</code>, <code>/glp1-pricing</code></td><td>GLP-1 cost without insurance, semaglutide online provider</td></tr>
+        <tr><td>Provider switching (10%)</td><td><code>/switch-glp1-provider</code></td><td>switch GLP-1 provider, continue GLP-1 online</td></tr>
+        <tr><td>FAQ / education (10%)</td><td><code>/glp1-faq</code></td><td>how does GLP-1 work, GLP-1 side effects, who qualifies</td></tr>
+        <tr><td>Brand-name seekers (optional)</td><td><code>/brand-name-weight-loss-medication</code> — not built</td><td>Only if healthcare merchant cert + branded access confirmed</td></tr>
+      </tbody>
+    </table>
+    <p style="color: var(--nume-slate); margin-top: 12px; font-size: .9rem"><strong>Negative keywords (add aggressively):</strong> free, buy without prescription, no prescription, teens, minors, miracle, generic ozempic, overseas pharmacy, before and after.</p>
+  </section>
+
+  <!-- ============= 8. Pre-traffic checklist (plan §13) ============= -->
+  <section class="ns-section" data-status-group="preflight">
+    <h2><span class="ns-section__num">8</span>Pre-traffic checklist</h2>
+    <table>
+      <thead><tr><th>Item</th><th>Owner</th><th style="width:14%">Status</th></tr></thead>
+      <tbody>
+        <tr><td>Healthcare counsel reviewed landing claims</td><td>Client / counsel</td><td><span class="pill" data-item-key="pre.counsel" data-default-status="blocking"></span></td></tr>
+        <tr><td>Clinician reviewed safety language</td><td>Client</td><td><span class="pill" data-item-key="pre.clinician" data-default-status="blocking"></span></td></tr>
+        <tr><td>Compounded + prescription-not-guaranteed disclosures visible above fold / footer</td><td>Us + counsel</td><td><span class="pill" data-item-key="pre.disclosures-visible" data-default-status="done"></span></td></tr>
+        <tr><td>No generic Ozempic / FDA-approved compounded claims in copy</td><td>Us + counsel</td><td><span class="pill" data-item-key="pre.no-equiv-claims" data-default-status="done"></span></td></tr>
+        <tr><td>Testimonials empty until consent on file</td><td>Client</td><td><span class="pill" data-item-key="pre.testimonials" data-default-status="done"></span></td></tr>
+        <tr><td>Quiz / clinical intake separated from ad pixels</td><td>Us</td><td><span class="pill" data-item-key="pre.pixel-separation" data-default-status="in-progress"></span></td></tr>
+        <tr><td>Mobile QA on all landing pages + assessment</td><td>Us</td><td><span class="pill" data-item-key="pre.mobile-qa" data-default-status="client"></span></td></tr>
+        <tr><td>Support scripts: pricing, not guaranteed, contraindications</td><td>Client</td><td><span class="pill" data-item-key="pre.support-scripts" data-default-status="client"></span></td></tr>
+        <tr><td>Meta/TikTok age gate 18+; no remarketing from health intake</td><td>Client / media</td><td><span class="pill" data-item-key="pre.social-targeting" data-default-status="client"></span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============= 9. Channel guardrails ============= -->
+  <section class="ns-section">
+    <h2><span class="ns-section__num">9</span>Channel guardrails (quick reference)</h2>
     <table>
       <thead><tr><th>Channel</th><th>Do</th><th>Don't</th></tr></thead>
       <tbody>

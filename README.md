@@ -1,8 +1,8 @@
-# nume-health.com – DTC Telehealth Patient Journey
+# Health sites monorepo (Numi)
 
-Demo site for the **DTC Telehealth** flow: **Social/Landing → Order Fulfillment** (from [Figma board](https://www.figma.com/board/eRdwAlQxhfkuyL7rDViiJ1/DTC-Telehealth-Patient-Journey--Social-Landing-%E2%86%92-Order-Fulfillment)).
+**nume-health.com** (DTC patients) and **mythic-rx.com** (B2B partner physicians) share one launch system in this repo.
 
-- **Dev:** Namecheap cPanel (or local).
+- **Dev:** Namecheap cPanel (or local `npx serve`).
 - **Production (later):** AWS.
 
 ---
@@ -11,35 +11,36 @@ Demo site for the **DTC Telehealth** flow: **Social/Landing → Order Fulfillmen
 
 | Path | Purpose |
 |------|--------|
-| **Repo root** | Deployable site: index.html, index.php, .htaccess, assets/, inc/, and all .html pages. Point your domain document root here. |
-| `docs/` | Project outline, clarifying questions, template evaluation, goals. |
-| `public/` | Empty; site files moved to repo root. See public/README.md. |
-| `Template1/` | Medilo – medical HTML template (reference). |
-| `Template2/` | Clinicom – medical HTML template (reference). |
-| `Template4/` | Suxnix – health supplement template; **base for shop/cart/checkout**. |
+| `sites/nume-health.com/` | **Deploy root** for nume-health.com |
+| `sites/mythic-rx.com/` | **Deploy root** for mythic-rx.com (scaffold until Mythic port) |
+| `shared/` | Canonical renderer, landing CSS, schemas, conventions |
+| `docs/` | Project docs, deploy guide, audience matrix |
+| `per-site/` | Per-brand audience + compliance (not deployed) |
+| `agents/` | Cursor agent kickoff prompts |
+| `Template1–4/` | Reference HTML templates (not deployed) |
+
+See [docs/MONOREPO.md](docs/MONOREPO.md) for the full map.
 
 ---
 
 ## Quick start
 
-1. **Local:** Open `index.html` in a browser, or run `npx serve .` from the repo root.
-2. **Deploy:** Point your domain document root at the repo root (the folder that contains index.html, assets/, and .htaccess).
+**Nume (local):**
 
----
+```powershell
+npx serve sites/nume-health.com
+```
 
-## Deploy
-
-- **cPanel / LiteSpeed:** Set the domain document root to this repo root. See docs/DEPLOY-LITESPEED.md.
-- **GitHub:** Initialize git in the repo root, add remote, push. Use this repo as the “frontend + docs” repo.
-- **AWS (later):** Static: S3 + CloudFront; or app server (EC2/ECS) if you add a backend.
+**Deploy:** Point each domain's document root at its folder under `sites/`. See [docs/DEPLOY-LITESPEED.md](docs/DEPLOY-LITESPEED.md).
 
 ---
 
 ## Docs
 
-- [Project outline & demo rollout](docs/PROJECT_OUTLINE.md)
-- [Clarifying questions (flow & scope)](docs/CLARIFYING_QUESTIONS.md)
-- [Template evaluation (Cursor/VS, best template)](docs/TEMPLATE_EVALUATION.md)
-- [Goals & alignment](docs/GOALS_AND_ALIGNMENT.md)
+- [Monorepo layout](docs/MONOREPO.md)
+- [Audience matrix (DTC vs B2B)](docs/AUDIENCE_MATRIX.md)
+- [Deploy on LiteSpeed / cPanel](docs/DEPLOY-LITESPEED.md)
+- [Adding a page](docs/ADDING_A_PAGE.md)
+- [Project outline](docs/PROJECT_OUTLINE.md)
 
-Answering the clarifying questions will lock the exact flow and copy for implementation.
+**Mythic-RX agent:** paste [agents/MYTHIC_MONOREPO_KICKOFF.md](agents/MYTHIC_MONOREPO_KICKOFF.md) into Cursor.

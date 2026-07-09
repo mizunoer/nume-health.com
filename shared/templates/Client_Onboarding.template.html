@@ -1,0 +1,172 @@
+<!doctype html>
+<!--
+  shared/templates/Client_Onboarding.template.html
+  ------------------------------------------------------------------
+  Canonical structure for the client-onboarding form on every site.
+
+  WHAT TO COPY
+    - Sticky progress bar at the top
+    - Section accordion structure with .ob-section blocks
+    - Field markup with .ob-field, label, .ob-help, required marker (.ob-required)
+    - Footer with "Save draft" + "Export config" buttons
+    - localStorage autosave (key: <site-slug>_onboarding_v1)
+    - Export-config function that emits a drop-in landing-config.js
+      starting with `window.SITE_CONFIG = window.<BRAND_PREFIX> = {`
+    - .ob-* class namespace (do not rename)
+
+  WHAT TO POPULATE PER SITE
+    - Hero copy and intro
+    - Sections + fields matching your landing-config schema:
+        - Nume:        shared/schemas/landing-config.dtc.template.js
+        - Mythic-RX:   shared/schemas/landing-config.b2b.template.js
+    - localStorage key (`nume_onboarding_v1` or `mrx_onboarding_v1`)
+    - Brand prefix in the export file (`NUME_CONFIG` or `MRX_CONFIG`)
+
+  REQUIRED LINKS
+    - assets/img/favicon.svg
+    - assets/css/<site>.css   (defines --site-* aliases)
+
+  This file is structure-only. Each site's live form lives in its own
+  repo, populated for its audience.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>[SITE NAME] — Client Onboarding</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="stylesheet" href="assets/css/[SITE_FILE].css">
+<style>
+  body { background: var(--site-offwhite); font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+
+  .ob-hero { background: var(--site-gradient-dark); color: #fff; padding: 56px 24px 40px; }
+  .ob-hero::after { content:""; display:block; height: 5px; background: var(--site-gradient); margin: 40px -24px -40px; }
+  .ob-hero h1 { color: #fff; font-size: clamp(1.6rem, 3vw, 2.2rem); margin: 0 0 .3em; }
+  .ob-hero p { color: rgba(255,255,255,.85); max-width: 800px; margin: 0; font-size: 1.05rem; }
+  .ob-meta { color: rgba(255,255,255,.6); font-size: .85rem; margin-bottom: 8px; }
+
+  .ob-wrap { max-width: 980px; margin: 0 auto; padding: 32px 24px 80px; }
+  .ob-progress {
+    position: sticky; top: 0; z-index: 50;
+    background: #fff; border: 1px solid var(--site-border);
+    border-radius: var(--site-radius); padding: 14px 18px;
+    margin-bottom: 24px;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+  .ob-progress__bar { flex: 1 1 220px; height: 8px; background: var(--site-border); border-radius: 999px; overflow: hidden; min-width: 200px; }
+  .ob-progress__fill { height: 100%; background: var(--site-gradient); width: 0%; transition: width .3s ease; }
+  .ob-progress__text { font-size: .9rem; color: var(--site-slate); font-weight: 600; }
+
+  .ob-section { background: #fff; border: 1px solid var(--site-border); border-radius: var(--site-radius-lg); padding: 28px; margin-bottom: 22px; }
+  .ob-section h2 { font-size: 1.25rem; margin: 0 0 4px; color: var(--site-navy); display: flex; align-items: center; gap: 10px; }
+  .ob-section__num {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--site-gradient); color: #fff;
+    font-size: .9rem; font-weight: 800;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex: 0 0 30px;
+  }
+  .ob-section__hint { color: var(--site-slate-gray); font-size: .92rem; margin: 0 0 18px 40px; }
+
+  .ob-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
+  @media (min-width: 720px) { .ob-grid--2 { grid-template-columns: 1fr 1fr; } }
+  .ob-field { display: flex; flex-direction: column; gap: 6px; }
+  .ob-field label { font-weight: 600; color: var(--site-navy); font-size: .92rem; }
+  .ob-field .ob-help { color: var(--site-slate-gray); font-size: .8rem; line-height: 1.45; }
+  .ob-field input, .ob-field textarea, .ob-field select {
+    width: 100%;
+    padding: 10px 12px;
+    font: inherit; font-size: .95rem;
+    border-radius: var(--site-radius);
+    border: 1px solid var(--site-border);
+    background: #fff;
+  }
+  .ob-field input:focus, .ob-field textarea:focus, .ob-field select:focus {
+    outline: none;
+    border-color: var(--site-primary);
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.10);
+  }
+  .ob-field textarea { resize: vertical; min-height: 84px; }
+  .ob-required::after { content: " *"; color: #dc2626; }
+
+  .ob-actions { display: flex; gap: 12px; flex-wrap: wrap; padding-top: 8px; }
+  .ob-btn {
+    padding: 12px 22px; font-weight: 700; border-radius: var(--site-radius);
+    border: 2px solid transparent; cursor: pointer; font-size: .95rem;
+    transition: 0.2s ease;
+  }
+  .ob-btn--primary { background: var(--site-primary); color: #fff; border-color: var(--site-primary); }
+  .ob-btn--primary:hover { background: var(--site-primary-dark); border-color: var(--site-primary-dark); }
+  .ob-btn--ghost { background: #fff; color: var(--site-navy); border-color: var(--site-border); }
+  .ob-btn--ghost:hover { border-color: var(--site-primary); color: var(--site-primary); }
+</style>
+</head>
+<body>
+
+<header class="ob-hero">
+  <div style="max-width:980px; margin:0 auto;">
+    <div class="ob-meta">Internal · [SITE NAME]</div>
+    <h1>Client onboarding</h1>
+    <p>[1–2 sentence intro: what this form is, where the export goes, what happens after submission.]</p>
+  </div>
+</header>
+
+<main class="ob-wrap">
+
+  <div class="ob-progress">
+    <span class="ob-progress__text">Progress: <span id="ob-progress-pct">0%</span></span>
+    <div class="ob-progress__bar"><div class="ob-progress__fill" id="ob-progress-fill"></div></div>
+  </div>
+
+  <!-- ====== Sections — populate from your schema ====== -->
+  <!--
+    For each section in your landing-config.js (brand, product, states,
+    clinical, trust, disclosures, pages — or partnership, formulary,
+    integrations, legal, trust, disclosures, pages for the B2B variant),
+    create one .ob-section block with the same key name.
+  -->
+
+  <section class="ob-section" data-config-key="brand">
+    <h2><span class="ob-section__num">1</span>Brand</h2>
+    <p class="ob-section__hint">[hint]</p>
+    <div class="ob-grid ob-grid--2">
+      <div class="ob-field">
+        <label class="ob-required">Brand name</label>
+        <input data-field="brand.name" type="text" placeholder="e.g. [Site name]">
+        <span class="ob-help">[help text]</span>
+      </div>
+      <!-- ...one .ob-field per config field in this section... -->
+    </div>
+  </section>
+
+  <!-- ...repeat .ob-section per top-level config key... -->
+
+  <div class="ob-actions">
+    <button class="ob-btn ob-btn--ghost" id="ob-save">Save draft</button>
+    <button class="ob-btn ob-btn--primary" id="ob-export">Export config</button>
+  </div>
+
+</main>
+
+<script>
+  /*
+    Onboarding form behavior — canonical
+    ------------------------------------------------------------------
+    - Autosaves every change to localStorage at SITE_LOCALSTORAGE_KEY.
+    - Loads existing draft on page open.
+    - Updates the progress bar based on filled-vs-required ratio.
+    - "Export config" downloads a drop-in landing-config.js starting
+      with `window.SITE_CONFIG = window.<SITE_BRAND_PREFIX> = {`.
+    - Empty required fields are exported as `"[CLIENT TO CONFIRM]"`.
+  */
+  var SITE_LOCALSTORAGE_KEY = "[site_slug]_onboarding_v1";   // e.g. "mrx_onboarding_v1"
+  var SITE_BRAND_PREFIX     = "[SITE_BRAND_PREFIX]";          // e.g. "MRX_CONFIG"
+
+  // Implementation lives in the per-site copy. The shape of the config
+  // object emitted by Export must match shared/schemas/<dtc|b2b>.template.js
+  // exactly so the renderer reads it without surprise.
+</script>
+
+</body>
+</html>

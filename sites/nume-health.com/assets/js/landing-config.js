@@ -16,12 +16,14 @@
  *   - weight-care-online.html
  *   - switch-glp1-provider.html
  *   - glp1-faq.html
+ *   - glp1-no-insurance.html
+ *   - provider-reviewed-weight-care.html
  *
  * To submit the configuration to engineering, fill in `Client_Onboarding.html`
  * and use the "Export config" button — it generates this file for you.
  * ========================================================================
  */
-window.NUME_CONFIG = {
+window.SITE_CONFIG = window.NUME_CONFIG = {
 
   /* ---------- Brand ---------- */
   brand: {
@@ -114,7 +116,8 @@ window.NUME_CONFIG = {
       "Licensed U.S. providers",
       "U.S.-licensed pharmacy partners",
       "Secure & private intake",
-      "No insurance required"
+      "No insurance required",
+      "Adults 18+ only"
     ],
 
     /* Approved testimonials only. Each must have written consent on file.
@@ -175,6 +178,22 @@ window.NUME_CONFIG = {
     faq: {
       eyebrow: "FAQs",
       h1: "Common questions about cash-pay GLP-1 care."
+    },
+    noInsurance: {
+      eyebrow: "No insurance required",
+      h1: "Cash-pay weight-care without insurance.",
+      subhead:
+        "Start with a private eligibility assessment. Licensed provider review, transparent pricing, and home delivery if prescribed — no insurance billing.",
+      ctaPrimary: "Check eligibility",
+      ctaSecondary: "View pricing"
+    },
+    providerReviewed: {
+      eyebrow: "Provider-reviewed care",
+      h1: "Clinician-reviewed weight-care options, online.",
+      subhead:
+        "An education-first path to understand cash-pay weight-care. A licensed provider determines whether prescription treatment is appropriate for you.",
+      ctaPrimary: "Take the assessment",
+      ctaSecondary: "How it works"
     }
   }
 };

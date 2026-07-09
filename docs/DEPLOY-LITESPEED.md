@@ -1,58 +1,50 @@
-# Deploying nume-health.com on LiteSpeed / cPanel
+# Deploying on LiteSpeed / cPanel
 
-If you get **404 Not Found**, the server is not seeing your files in the folder it uses as the web root. Use this checklist.
+If you get **404 Not Found**, the server document root is not pointing at the correct **site folder**.
 
 ---
 
 ## 1. Confirm the document root
 
-- In **cPanel** go to **Domains** → select **nume-health.com** → check **Document Root**.
-- Note the full path (e.g. `public_html/nume-health.com` or `home/username/nume-health.com`).
+In **cPanel** → **Domains** → select the domain → check **Document Root**.
+
+| Domain | Document root should be |
+|---|---|
+| nume-health.com | `.../Numi/sites/nume-health.com` |
+| mythic-rx.com | `.../Numi/sites/mythic-rx.com` |
+
+The folder must contain `index.html`, `index.php`, `.htaccess`, `assets/`, and `inc/` **directly** — not nested under another subfolder.
 
 ---
 
 ## 2. Put the site in that folder
 
-The **document root folder** must contain these **directly** (no extra `public` subfolder in the URL):
+After `git pull`, the domain's document root folder should contain:
 
-- `index.html`
-- `index.php`
-- `.htaccess`
-- `assets/` (folder)
-- `inc/` (folder)
-- All other `.html` files (assessment.html, shop.html, etc.)
+- `index.html`, `index.php`, `.htaccess`
+- `assets/`, `inc/`, `api/` (Nume)
+- All `.html` pages for that site
 
-**Ways to get that:**
-
-- **Option A:** Set document root to the **`public`** folder of your repo.  
-  So if the repo is at `/home/user/nume-health.com/`, set document root to `/home/user/nume-health.com/public`.  
-  Then the server’s “web root” is `public/`, and `index.html` is at the root.
-
-- **Option B:** Keep document root as it is (e.g. `public_html/nume-health.com`), and upload/copy **only the contents** of the repo’s `public/` folder into that folder.  
-  So `index.html`, `index.php`, `.htaccess`, `assets/`, `inc/`, and all `.html` files sit **inside** the document root, not in a subfolder called `public`.
+**Do not** point the domain at the repo root (`Numi/`). Site files live under `sites/<domain>/`.
 
 ---
 
-## 3. Test these URLs
+## 3. Test these URLs (Nume example)
 
-1. **https://nume-health.com/index.html**  
-   - If this works: the file is in the right place; the problem is default index (DirectoryIndex). The `.htaccess` and `index.php` we added should help after you deploy them.
-2. **https://nume-health.com/index.php**  
-   - If this works: the server prefers `index.php`; the new `index.php` will serve the homepage.
-3. **https://nume-health.com/**  
-   - Should show the homepage once (1) or (2) works and `.htaccess` / `index.php` are in the document root.
+1. **https://nume-health.com/index.html**
+2. **https://nume-health.com/index.php**
+3. **https://nume-health.com/**
 
-If **both** index.html and index.php return 404, the document root does **not** contain those files — fix step 2 (path or upload).
+If both index files 404, the document root path is wrong — fix step 1.
 
 ---
 
 ## 4. After changing files
 
-- Commit and push from your repo, then pull or sync on the server so the document root (repo root) has the latest `index.html`, `index.php`, `.htaccess`, and `assets/`.
+Commit and push from your machine, then pull on the server so `sites/nume-health.com/` (or `sites/mythic-rx.com/`) has the latest files.
 
 ---
 
-## 5. If it still 404s
+## 5. Migrating from the old layout
 
-- In cPanel **File Manager**, open the **document root** folder and confirm you see `index.html`, `index.php`, and `assets/` there.
-- If you use Git on the server, pull the latest and ensure the document root is the `public` directory (Option A above) or that you copy `public/*` into the domain’s document root (Option B).
+If your domain previously pointed at the **repo root**, update cPanel to `sites/nume-health.com/` and test. The old root-level `index.html` is gone; everything moved into `sites/`.

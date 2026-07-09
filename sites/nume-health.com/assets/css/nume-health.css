@@ -55,6 +55,36 @@
   --nume-radius-lg:     20px;
   --nume-transition:    0.3s ease;
 
+  /* --- Site-neutral aliases (shared/css/landing.css reads these) --- */
+  --site-blue:          var(--nume-blue);
+  --site-cyan:          var(--nume-cyan);
+  --site-teal:          var(--nume-teal);
+  --site-navy:          var(--nume-navy);
+  --site-mint:          var(--nume-mint);
+  --site-offwhite:      var(--nume-offwhite);
+  --site-slate:         var(--nume-slate);
+  --site-slate-gray:    var(--nume-slate-gray);
+  --site-white:         var(--nume-white);
+  --site-border:        var(--nume-border);
+  --site-primary:       var(--nume-primary);
+  --site-primary-dark:  var(--nume-primary-dark);
+  --site-accent:        var(--nume-accent);
+  --site-accent-dark:   var(--nume-accent-dark);
+  --site-link:          var(--nume-link);
+  --site-link-hover:    var(--nume-link-hover);
+  --site-heading:       var(--nume-heading);
+  --site-text:          var(--nume-text);
+  --site-text-muted:    var(--nume-text-muted);
+  --site-light:         var(--nume-light);
+  --site-gradient:      var(--nume-gradient);
+  --site-gradient-dark: var(--nume-gradient-dark);
+  --site-shadow:        var(--nume-shadow);
+  --site-shadow-hover:  var(--nume-shadow-hover);
+  --site-shadow-soft:   var(--nume-shadow-soft);
+  --site-radius:        var(--nume-radius);
+  --site-radius-lg:     var(--nume-radius-lg);
+  --site-transition:    var(--nume-transition);
+
   /* --- Override template (Suxnix) variables to brand --- */
   --tg-primary-color:      var(--nume-blue);
   --tg-secondary-color:    var(--nume-teal);

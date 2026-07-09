@@ -147,12 +147,26 @@
                                     <div class="form-check"><input type="checkbox" class="form-check-input" id="h2"><label class="form-check-label small" for="h2">Medullary thyroid cancer or MEN2</label></div>
                                     <div class="form-check"><input type="checkbox" class="form-check-input" id="h3"><label class="form-check-label small" for="h3">Severe GI disease or gallbladder issues</label></div>
                                     <div class="form-check"><input type="checkbox" class="form-check-input" id="h4"><label class="form-check-label small" for="h4">Eating-disorder history</label></div>
-                                    <div class="form-check"><input type="checkbox" class="form-check-input" id="h5"><label class="form-check-label small" for="h5">Diabetes or insulin use</label></div>
-                                    <div class="form-check"><input type="checkbox" class="form-check-input" id="h6"><label class="form-check-label small" for="h6">None of the above</label></div>
+                                    <div class="form-check"><input type="checkbox" class="form-check-input" id="h5"><label class="form-check-label small" for="h5">Kidney disease</label></div>
+                                    <div class="form-check"><input type="checkbox" class="form-check-input" id="h6"><label class="form-check-label small" for="h6">Diabetes or insulin use</label></div>
+                                    <div class="form-check"><input type="checkbox" class="form-check-input" id="h7"><label class="form-check-label small" for="h7">None of the above</label></div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label" for="pay">How would you prefer to pay?</label>
+                                    <select id="pay" class="form-select">
+                                        <option value="">Select...</option>
+                                        <option>Cash-pay, no insurance</option>
+                                        <option>Use insurance if possible</option>
+                                        <option>Not sure</option>
+                                    </select>
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label" for="email">Email <span class="text-danger">*</span></label>
                                     <input id="email" type="email" class="form-control" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label" for="phone">Phone <span class="text-muted">(optional)</span></label>
+                                    <input id="phone" type="tel" class="form-control" placeholder="For account notifications only">
                                 </div>
                                 <div class="mb-4">
                                     <div class="form-check">
@@ -160,9 +174,11 @@
                                         <label class="form-check-label small" for="consent">I confirm the information I've provided is accurate and I agree to the <a href="/privacy.html">Privacy Policy</a>, <a href="/terms.html">Terms</a>, and <a href="/telehealth-consent.html">Telehealth Consent</a>.</label>
                                     </div>
                                 </div>
-                                <p class="small text-muted">Prescription is not guaranteed. A licensed provider will review your medical history and determine whether treatment is appropriate. Compounded medications, if prescribed, are not FDA-approved.</p>
+                                <p class="small text-muted mb-2">You may be a candidate for a clinician-reviewed weight-care plan. A licensed provider will determine whether treatment is appropriate.</p>
+                                <p class="small text-muted">Prescription is not guaranteed. Compounded medications, if prescribed, are not FDA-approved.</p>
                                 <button type="submit" class="btn btn-two btn-primary-style">Continue</button>
                             </form>
+                            <div id="state-notice" class="alert alert-warning mt-3 d-none" role="alert"></div>
                         </div>
                     </div>
                 </div>
@@ -242,5 +258,51 @@
     <script src="assets/js/main.js"></script>
     <script src="assets/js/site-config.js"></script>
     <script src="assets/js/site-nav.js"></script>
+    <script src="assets/js/landing-config.js"></script>
+    <script>
+    (function () {
+      "use strict";
+      function track(name) {
+        if (typeof window.siteTrack === "function") window.siteTrack(name);
+        else if (typeof window.numeTrack === "function") window.numeTrack(name);
+      }
+      var form = document.getElementById("elig-form");
+      if (!form) return;
+      var quizStarted = false;
+      form.addEventListener("focusin", function () {
+        if (!quizStarted) {
+          quizStarted = true;
+          track("quiz_started");
+        }
+      }, true);
+      form.addEventListener("submit", function (e) {
+        var age = parseInt(document.getElementById("age").value, 10);
+        if (age < 18) {
+          e.preventDefault();
+          alert("You must be 18 or older to continue.");
+          return;
+        }
+        var pregnantYes = document.getElementById("p2").checked;
+        if (pregnantYes) {
+          e.preventDefault();
+          alert("GLP-1 treatment may not be appropriate during pregnancy or breastfeeding. Please speak with your doctor.");
+          return;
+        }
+        var cfg = window.NUME_CONFIG || {};
+        var served = (cfg.states && cfg.states.served) || [];
+        var stateInput = (document.getElementById("state").value || "").trim().toUpperCase();
+        var hasRealStates = served.length && served[0].indexOf("[CLIENT TO CONFIRM]") === -1;
+        if (hasRealStates && stateInput && served.indexOf(stateInput) === -1) {
+          e.preventDefault();
+          var notice = document.getElementById("state-notice");
+          notice.textContent = (cfg.states.notServedNote || "We do not currently serve your state.") + " Leave your email and we will notify you when service expands.";
+          notice.classList.remove("d-none");
+          return;
+        }
+        track("quiz_completed");
+        track("eligibility_submitted");
+      });
+    })();
+    </script>
 </body>
 </html>

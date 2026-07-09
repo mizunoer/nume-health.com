@@ -1,0 +1,203 @@
+<!doctype html>
+<!--
+  shared/templates/Marketing_Next_Steps.template.html
+  ------------------------------------------------------------------
+  Canonical structure for the internal action tracker on every site.
+
+  WHAT TO COPY
+    - Layout: hero → 4 stat cards → 6 numbered sections (1: shipped,
+      2: gates, 3: deliverables, 4: launch sequence, 5: dev tasks,
+      6: channel guardrails)
+    - Status pill grammar (pill-done / pill-prog / pill-blocked /
+      pill-client / pill-todo) — see shared/conventions/STATUS_PILLS.md
+    - .ns-* class namespace (do not rename)
+
+  WHAT TO POPULATE PER SITE
+    - Hero copy and intro
+    - Stat-card counts (compute from your real inventory)
+    - Section 2 gates from per-site/<site>/COMPLIANCE_GATES.md
+    - Section 3 deliverables from your landing-config.js placeholder fields
+    - Section 4 launch sequence (DTC paid-media for Nume; partner rollout for Mythic-RX)
+    - Section 5 dev tasks reflecting your real backlog
+    - Section 6 channel guardrails — DTC channels for Nume, B2B/HCP channels for Mythic-RX
+
+  REQUIRED LINKS
+    - assets/img/favicon.svg (and full favicon set)
+    - assets/css/<site>.css   (defines --site-* aliases)
+    - assets/css/landing.css  (consumes --site-*)
+
+  This file is structure-only. The Nume agent and Mythic-RX agent each
+  populate their own copy in their own repo. Live tracker pages do NOT
+  live in shared/.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>[SITE NAME] — Launch · Next Steps</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="stylesheet" href="assets/css/[SITE_FILE].css">
+<link rel="stylesheet" href="assets/css/landing.css">
+<style>
+  body { background: var(--site-offwhite); font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+
+  .ns-hero { background: var(--site-gradient-dark); color: #fff; padding: 56px 24px 40px; }
+  .ns-hero::after { content:""; display:block; height:5px; background: var(--site-gradient); margin: 40px -24px -40px; }
+  .ns-hero h1 { color:#fff; font-size: clamp(1.6rem, 3vw, 2.2rem); margin: 0 0 .3em; }
+  .ns-hero p { color: rgba(255,255,255,.85); max-width:800px; margin:0; font-size:1.05rem; }
+  .ns-meta { color: rgba(255,255,255,.6); font-size:.85rem; margin-bottom:8px; }
+
+  .ns-wrap { max-width: 1180px; margin: 0 auto; padding: 32px 24px 80px; }
+  .ns-cards { display: grid; gap: 18px; grid-template-columns: 1fr; margin-bottom: 24px; }
+  @media (min-width:720px) { .ns-cards { grid-template-columns: repeat(4, 1fr); } }
+  .ns-card { background:#fff; border:1px solid var(--site-border); border-radius: var(--site-radius-lg); padding: 18px 20px; }
+  .ns-card__count { font-size: 1.8rem; font-weight: 800; color: var(--site-navy); line-height: 1; margin-bottom: 6px; }
+  .ns-card__label { font-size: .85rem; color: var(--site-slate-gray); text-transform: uppercase; letter-spacing: .04em; font-weight: 700; }
+  .ns-card--blocked { border-left: 4px solid #dc2626; }
+  .ns-card--ready   { border-left: 4px solid #16a34a; }
+  .ns-card--client  { border-left: 4px solid #f59e0b; }
+  .ns-card--us      { border-left: 4px solid var(--site-primary); }
+
+  .ns-section { margin-top: 36px; }
+  .ns-section h2 { color: var(--site-navy); font-size: 1.4rem; margin: 0 0 14px; display: flex; align-items: center; gap: 10px; }
+  .ns-section__num {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--site-gradient); color: #fff;
+    font-size: .9rem; font-weight: 800;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: var(--site-radius); overflow: hidden; box-shadow: var(--site-shadow); margin-bottom: 18px; }
+  th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--site-border); vertical-align: top; font-size: .92rem; }
+  th { background: var(--site-offwhite); color: var(--site-navy); font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+  tr:last-child td { border-bottom: 0; }
+
+  /* Canonical pill grammar — see shared/conventions/STATUS_PILLS.md */
+  .pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: .72rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; }
+  .pill-done    { background: #DCFCE7; color: #166534; }
+  .pill-prog    { background: #DBEAFE; color: #1E3A8A; }
+  .pill-blocked { background: #FEE2E2; color: #991B1B; }
+  .pill-client  { background: #FEF3C7; color: #92400E; }
+  .pill-todo    { background: #E2E8F0; color: #334155; }
+
+  .ns-link-grid { display: grid; gap: 12px; grid-template-columns: 1fr; }
+  @media (min-width:720px) { .ns-link-grid { grid-template-columns: repeat(2, 1fr); } }
+  .ns-link {
+    display: flex; flex-direction: column; gap: 4px;
+    padding: 14px 16px;
+    background: #fff; border: 1px solid var(--site-border);
+    border-radius: var(--site-radius); text-decoration: none;
+    color: inherit;
+    transition: 0.2s ease;
+  }
+  .ns-link:hover { border-color: var(--site-primary); transform: translateY(-2px); box-shadow: var(--site-shadow); }
+  .ns-link strong { color: var(--site-navy); font-size: 1rem; }
+  .ns-link span { color: var(--site-slate-gray); font-size: .85rem; }
+  .ns-link code { background: var(--site-mint); color: var(--site-navy); padding: 1px 6px; border-radius: 4px; font-size: .75rem; }
+
+  .ns-callout { background: var(--site-mint); color: var(--site-navy); border-left: 4px solid var(--site-primary); padding: 14px 18px; border-radius: var(--site-radius); margin-bottom: 18px; }
+  .ns-callout--warn { background: #fef3c7; border-left-color: #92400e; color: #78350f; }
+  .ns-callout strong { color: var(--site-navy); }
+  .ns-callout--warn strong { color: #78350f; }
+
+  .ns-week-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
+  @media (min-width:720px) { .ns-week-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width:980px) { .ns-week-grid { grid-template-columns: repeat(4, 1fr); } }
+  .ns-day { background: #fff; border: 1px solid var(--site-border); border-radius: var(--site-radius); padding: 16px 18px; }
+  .ns-day h3 { font-size: 1rem; margin: 0 0 8px; color: var(--site-navy); }
+  .ns-day ul { margin: 0; padding-left: 18px; font-size: .9rem; }
+  .ns-day li { margin-bottom: 4px; color: var(--site-slate); }
+</style>
+</head>
+<body>
+
+<header class="ns-hero">
+  <div style="max-width:1180px; margin:0 auto;">
+    <div class="ns-meta">Internal · [SITE NAME]</div>
+    <h1>[Launch / partner-rollout headline] — Next Steps</h1>
+    <p>[1–2 sentence intro: what this page is, who owns it, what readers should do.]</p>
+  </div>
+</header>
+
+<main class="ns-wrap">
+
+  <!-- ============= Stat cards ============= -->
+  <div class="ns-cards">
+    <div class="ns-card ns-card--ready"><div class="ns-card__count">[N]</div><div class="ns-card__label">Pages built &amp; ready</div></div>
+    <div class="ns-card ns-card--client"><div class="ns-card__count">[N]</div><div class="ns-card__label">Client values needed</div></div>
+    <div class="ns-card ns-card--blocked"><div class="ns-card__count">[N]</div><div class="ns-card__label">Compliance gates blocking launch</div></div>
+    <div class="ns-card ns-card--us"><div class="ns-card__count">[N]</div><div class="ns-card__label">Open dev tasks (post-config)</div></div>
+  </div>
+
+  <div class="ns-callout ns-callout--warn">
+    <strong>Hard gate:</strong> [Site-specific blocker statement. For Nume: counsel review + LegitScript + clinical sign-off. For Mythic-RX: counsel review + BAA template + per-state licensing + medical-director appointment.]
+  </div>
+
+  <!-- ============= 1. Shipped ============= -->
+  <section class="ns-section">
+    <h2><span class="ns-section__num">1</span>What we shipped</h2>
+    <p style="color: var(--site-slate); margin-bottom: 18px">[1-line summary of what was built; e.g. config-driven pages, onboarding form, tracker.]</p>
+    <div class="ns-link-grid">
+      <!-- one .ns-link per shipped artifact -->
+    </div>
+  </section>
+
+  <!-- ============= 2. Compliance gates ============= -->
+  <section class="ns-section">
+    <h2><span class="ns-section__num">2</span>Launch gates (compliance &amp; approvals)</h2>
+    <table>
+      <thead><tr><th style="width:32%">Gate</th><th>Who owns it</th><th style="width:14%">Status</th></tr></thead>
+      <tbody>
+        <!-- One row per gate from per-site/<site>/COMPLIANCE_GATES.md -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============= 3. Client deliverables ============= -->
+  <section class="ns-section">
+    <h2><span class="ns-section__num">3</span>What the client owes us</h2>
+    <p style="color: var(--site-slate); margin-bottom: 12px">All of this is captured in <a href="Client_Onboarding.html"><strong>Client_Onboarding.html</strong></a>. They fill it in once and we drop the exported file into <code>assets/js/landing-config.js</code>.</p>
+    <table>
+      <thead><tr><th>Field</th><th>Why</th><th style="width:14%">Status</th></tr></thead>
+      <tbody>
+        <!-- One row per [CLIENT TO CONFIRM] field in landing-config.js -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============= 4. Launch sequence ============= -->
+  <section class="ns-section">
+    <h2><span class="ns-section__num">4</span>Launch sequence (after gates clear)</h2>
+    <p style="color: var(--site-slate); margin-bottom: 18px">[Site-specific. Nume: 7-day paid-media. Mythic-RX: partner rollout (counsel → outreach → society/KOL → inbound HCP → conversion review → trust assets → scale).]</p>
+    <div class="ns-week-grid">
+      <!-- one .ns-day per phase -->
+    </div>
+  </section>
+
+  <!-- ============= 5. Open dev tasks ============= -->
+  <section class="ns-section">
+    <h2><span class="ns-section__num">5</span>Open dev tasks (after config lands)</h2>
+    <table>
+      <thead><tr><th>Task</th><th>Notes</th><th style="width:14%">Status</th></tr></thead>
+      <tbody>
+        <!-- one row per backlog task -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============= 6. Channel guardrails ============= -->
+  <section class="ns-section">
+    <h2><span class="ns-section__num">6</span>Channel guardrails</h2>
+    <table>
+      <thead><tr><th>Channel</th><th>Do</th><th>Don't</th></tr></thead>
+      <tbody>
+        <!-- DTC site: Google Search / Meta / TikTok / Affiliate
+             B2B site: LinkedIn for HCPs / Direct outreach / Conferences / HCP-intent search / Content & SEO -->
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+</body>
+</html>

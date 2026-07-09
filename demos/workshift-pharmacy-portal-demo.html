@@ -1,0 +1,641 @@
+<meta charset="utf-8">
+<title>Mythic Rx · Workshift Pharmacy Portal — Demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+  /* Mythic-Rx pharmacy-green brand anchor (--mrx-* tokens) */
+  --mrx-blue:#1E6B3A; --mrx-primary-dark:#154D29; --mrx-navy:#072517;
+  --mrx-teal:#0B3A20; --mrx-cyan:#0F4D2E; --mrx-accent-dark:#062012;
+  --mrx-gold:#F8DE70; --mrx-mint:#CFE3CC; --mrx-offwhite:#F6FAF5;
+  --mrx-border:#DADAD3; --mrx-slate:#2E2E2E; --mrx-slate-gray:#4A4A4A; --mrx-white:#fff;
+  --shadow:0 1px 2px rgba(7,37,23,.06),0 4px 16px rgba(7,37,23,.06);
+  --mono:'SF Mono',ui-monospace,'Cascadia Code','Roboto Mono',Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:var(--sans);color:var(--mrx-slate);background:var(--mrx-offwhite);font-size:14px;line-height:1.45}
+button{font-family:inherit;cursor:pointer}
+code,.mono{font-family:var(--mono)}
+
+/* ---- shell ---- */
+.app{display:grid;grid-template-rows:auto 1fr;height:100vh}
+.topbar{display:flex;align-items:center;gap:16px;padding:10px 18px;background:var(--mrx-navy);color:var(--mrx-white);flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.2px}
+.brand .rx{background:var(--mrx-gold);color:var(--mrx-accent-dark);width:26px;height:26px;border-radius:7px;display:grid;place-items:center;font-weight:800}
+.brand small{font-weight:500;opacity:.7;letter-spacing:.3px}
+.appswitch{display:flex;gap:6px;margin-left:6px}
+.appswitch button{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.14);padding:6px 12px;border-radius:8px;font-size:12.5px;display:flex;gap:7px;align-items:center}
+.appswitch button.on{background:var(--mrx-gold);color:var(--mrx-accent-dark);border-color:var(--mrx-gold);font-weight:700}
+.appswitch button.soon{opacity:.55;cursor:not-allowed}
+.topbar .spacer{flex:1}
+.toolbtn{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.14);padding:6px 12px;border-radius:8px;font-size:12.5px}
+.toolbtn.on{background:var(--mrx-blue);border-color:var(--mrx-blue)}
+
+.body{display:grid;grid-template-columns:238px 1fr;min-height:0}
+.body.insp{grid-template-columns:238px 1fr 360px}
+.body.wf{grid-template-columns:238px 1fr}
+
+/* ---- rail ---- */
+.rail{background:var(--mrx-white);border-right:1px solid var(--mrx-border);padding:14px 12px;overflow:auto}
+.rail h4{margin:14px 8px 6px;font-size:10.5px;text-transform:uppercase;letter-spacing:.7px;color:var(--mrx-slate-gray)}
+.rolebtn,.navbtn{width:100%;text-align:left;background:none;border:1px solid transparent;border-radius:9px;padding:9px 11px;display:flex;gap:10px;align-items:center;color:var(--mrx-slate);margin-bottom:2px}
+.rolebtn small{display:block;color:var(--mrx-slate-gray);font-size:11px}
+.rolebtn:hover,.navbtn:hover{background:var(--mrx-offwhite)}
+.rolebtn.on{background:var(--mrx-mint);border-color:var(--mrx-blue)}
+.navbtn.on{background:var(--mrx-mint);border-color:var(--mrx-blue);font-weight:600}
+.navbtn .ic{width:20px;text-align:center}
+.pgnote{margin:10px 8px 2px;font-size:11px;color:var(--mrx-slate-gray);background:var(--mrx-offwhite);border:1px dashed var(--mrx-border);border-radius:8px;padding:8px 9px}
+.pgnote b{color:var(--mrx-primary-dark)}
+
+/* ---- main ---- */
+.main{overflow:auto;padding:20px 26px}
+.crumbs{display:flex;gap:8px;align-items:center;color:var(--mrx-slate-gray);font-size:12.5px;margin-bottom:12px}
+.crumbs a{color:var(--mrx-blue);cursor:pointer;text-decoration:none}
+.pagehead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:14px;flex-wrap:wrap}
+.pagehead h1{font-size:21px;margin:0;color:var(--mrx-navy)}
+.pagehead .sub{color:var(--mrx-slate-gray);font-size:13px;margin-top:3px}
+.lawful{font-size:11.5px;background:var(--mrx-white);border:1px solid var(--mrx-border);border-left:3px solid var(--mrx-blue);border-radius:7px;padding:7px 11px;color:var(--mrx-slate)}
+.lawful b{color:var(--mrx-primary-dark)}
+
+.card{background:var(--mrx-white);border:1px solid var(--mrx-border);border-radius:12px;box-shadow:var(--shadow);overflow:hidden}
+table{width:100%;border-collapse:collapse}
+th{background:var(--mrx-offwhite);text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--mrx-slate-gray);padding:10px 14px;border-bottom:1px solid var(--mrx-border);white-space:nowrap}
+td{padding:11px 14px;border-bottom:1px solid var(--mrx-border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr.rowlink:hover td{background:var(--mrx-offwhite);cursor:pointer}
+.k{font-family:var(--mono);font-size:12px;color:var(--mrx-cyan)}
+
+.detail{display:grid;grid-template-columns:1fr;gap:16px}
+.fieldgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:2px 0}
+.field{padding:10px 14px;border-bottom:1px solid var(--mrx-border)}
+.field .lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--mrx-slate-gray);display:flex;gap:7px;align-items:center;margin-bottom:3px}
+.field .val{font-size:14.5px;color:var(--mrx-slate)}
+.field .val.mono{font-family:var(--mono);font-size:12.5px}
+.sectitle{font-size:13px;font-weight:700;color:var(--mrx-navy);padding:12px 14px 0;display:flex;gap:8px;align-items:center}
+
+.badge{font-size:9.5px;font-family:var(--mono);padding:2px 6px;border-radius:5px;letter-spacing:.3px;text-transform:uppercase;white-space:nowrap}
+.dt{background:#eef4ef;color:var(--mrx-cyan);border:1px solid var(--mrx-mint)}
+.masked{background:#fff4d6;color:#8a6d00;border:1px solid var(--mrx-gold)}
+.phi{background:#fde8ea;color:#a12633;border:1px solid #f5c2c8}
+.tok{background:#e7f0ff;color:#2451b3;border:1px solid #c7dbff}
+.pill{font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px;display:inline-block}
+.pill.status{background:var(--mrx-mint);color:var(--mrx-primary-dark)}
+.pill.txn{background:#fff4d6;color:#8a6d00}
+.pill.ok{background:#dff3e6;color:#1c7a42}
+
+.maskvalue{color:var(--mrx-slate-gray);font-family:var(--mono);font-size:12.5px}
+.locked{color:var(--mrx-slate-gray);font-style:italic;font-size:12.5px}
+
+.notice{background:var(--mrx-white);border:1px solid var(--mrx-border);border-left:3px solid var(--mrx-gold);border-radius:9px;padding:14px 16px;color:var(--mrx-slate);margin-top:4px}
+.notice b{color:var(--mrx-primary-dark)}
+.src{font-family:var(--mono);font-size:11px;color:var(--mrx-slate-gray)}
+
+/* ---- inspector ---- */
+.inspector{background:var(--mrx-accent-dark);color:#cfe3cc;overflow:auto;padding:16px 16px 40px;border-left:1px solid #0a2a18}
+.inspector h3{color:var(--mrx-gold);font-size:12px;text-transform:uppercase;letter-spacing:.8px;margin:2px 0 4px}
+.inspector .lead{color:#9fc3a9;font-size:12px;margin:0 0 14px}
+.obj{background:#0a2a18;border:1px solid #14442a;border-radius:9px;padding:11px 12px;margin-bottom:11px}
+.obj .rpc{font-family:var(--mono);font-size:10.5px;color:var(--mrx-gold);margin-bottom:7px}
+.obj .row{display:flex;justify-content:space-between;gap:10px;font-family:var(--mono);font-size:11.5px;padding:2px 0;border-bottom:1px dotted #14442a}
+.obj .row:last-child{border-bottom:none}
+.obj .row .kk{color:#8fd0a3}.obj .row .vv{color:#e7f5ea;text-align:right}
+.attrline{display:grid;grid-template-columns:1fr auto;gap:6px;align-items:center;font-family:var(--mono);font-size:11px;padding:4px 0;border-bottom:1px dotted #14442a}
+.attrline:last-child{border-bottom:none}
+.attrline .an{color:#e7f5ea}
+.attrline .as{grid-column:1/-1;color:#6f9e7d;font-size:10px}
+.vis-y{color:#8fd0a3}.vis-m{color:var(--mrx-gold)}.vis-n{color:#c77}
+
+/* ---- workflow ---- */
+.wfwrap{padding:20px 26px;overflow:auto}
+.graph{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap;margin:14px 0 22px}
+.node{background:var(--mrx-white);border:1px solid var(--mrx-border);border-radius:11px;padding:11px 13px;min-width:150px;box-shadow:var(--shadow)}
+.node .nt{font-family:var(--mono);font-size:10px;color:var(--mrx-cyan);letter-spacing:.4px}
+.node .nn{font-weight:700;color:var(--mrx-navy);font-size:13px;margin:3px 0}
+.node small{color:var(--mrx-slate-gray);font-size:11px}
+.arrow{align-self:center;color:var(--mrx-blue);font-size:20px}
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:grid;grid-template-columns:150px 1fr;gap:16px;padding:14px 0;border-top:1px solid var(--mrx-border)}
+.step .who{font-weight:700;color:var(--mrx-navy)}
+.step .who small{display:block;font-weight:500;color:var(--mrx-slate-gray);font-size:11px}
+.step .exec{font-family:var(--mono);font-size:11px;margin-top:6px}
+.step .msg{background:var(--mrx-offwhite);border:1px solid var(--mrx-border);border-radius:9px;padding:10px 12px;margin-top:8px}
+.step .msg .ch{font-family:var(--mono);font-size:10.5px;color:var(--mrx-cyan);margin-bottom:3px}
+.mut{font-family:var(--mono);font-size:11.5px;color:var(--mrx-slate)}
+.mut b{color:var(--mrx-primary-dark)}
+.st-COMPLETED{color:#1c7a42}.st-RUNNING{color:#8a6d00}.st-PENDING{color:var(--mrx-slate-gray)}
+
+.tag{font-size:10px;font-family:var(--mono);background:var(--mrx-offwhite);border:1px solid var(--mrx-border);border-radius:5px;padding:1px 6px;color:var(--mrx-slate-gray)}
+.hipaa td,.hipaa th{font-size:12px}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px}
+</style>
+
+<div class="app">
+  <div class="topbar">
+    <div class="brand"><span class="rx">℞</span> Mythic&nbsp;Rx <small id="orgid">org: org_mythicrx · powered by Workshift</small></div>
+    <div class="appswitch" id="appswitch"></div>
+    <div class="spacer"></div>
+    <button class="toolbtn" id="btnWf">⚙ Rx Lifecycle Workflow</button>
+    <button class="toolbtn" id="btnInsp">◧ Config Inspector</button>
+  </div>
+  <div class="body" id="body">
+    <div class="rail" id="rail"></div>
+    <div class="main" id="main"></div>
+    <div class="inspector" id="inspector" style="display:none"></div>
+  </div>
+</div>
+
+<script>
+/* ============================================================================
+   WORKSHIFT ORG CONFIG  —  this object IS the build spec.
+   Every screen below is rendered from it; nothing is hardcoded per role.
+   Maps 1:1 onto real Workshift admin.v1 objects:
+     ResourceType · Attribute(AttributeDataType) · Relationship ·
+     PermissionGroup · ResourceView · App · Workflow(Node)
+   Attribute .src = the PioneerRx API field it syncs from (integration map).
+============================================================================ */
+const ORG = {id:'org_mythicrx', name:'Mythic Rx Pharmacy'};
+
+// AttributeDataType (admin.v1) — the real enum
+const DT = {ASSOCIATION:'ASSOCIATION',DATETIME:'DATETIME',EMAIL:'EMAIL',NUMBER:'NUMBER',
+  PHONE:'PHONE',SELECT:'SELECT',STATUS:'STATUS',STRING:'STRING',TEXTBOX:'TEXTBOX',PASSWORD:'PASSWORD'};
+
+// sensitivity classes drive masking + the HIPAA lens
+// idn=identifier PHI, cln=clinical PHI, fin=financial, con=contact, sys=system, ops=operational
+const RESOURCE_TYPES = {
+  patient:{key:'patient',name:'Patient',plural:'Patients',icon:'👤',
+    attrs:[
+      {key:'fullName',name:'Full name',dt:DT.STRING,sens:'idn',src:'GetPatient.firstName+lastName'},
+      {key:'personID',name:'Person ID',dt:DT.STRING,sens:'sys',src:'GetPatient.personID'},
+      {key:'dob',name:'Date of birth',dt:DT.DATETIME,sens:'idn',src:'GetPatient.dateOfBirth'},
+      {key:'ssn',name:'SSN',dt:DT.STRING,sens:'idn',src:'GetPatient.ssn'},
+      {key:'medicareId',name:'Medicare ID',dt:DT.STRING,sens:'idn',src:'GetPatient.medicareBeneficiaryID'},
+      {key:'phone',name:'Mobile phone',dt:DT.PHONE,sens:'con',src:'GetPatientPhone'},
+      {key:'email',name:'Email',dt:DT.EMAIL,sens:'con',src:'GetPatient.email'},
+      {key:'address',name:'Address',dt:DT.STRING,sens:'con',src:'GetPatientAddress'},
+      {key:'status',name:'Patient status',dt:DT.STATUS,sens:'ops',src:'GetPatient.status'},
+    ]},
+  prescription:{key:'prescription',name:'Prescription',plural:'Prescriptions',icon:'💊',
+    attrs:[
+      {key:'rxNumber',name:'Rx number',dt:DT.STRING,sens:'sys',src:'RxEvent.RxNumber'},
+      {key:'medicationPrescribed',name:'Medication prescribed',dt:DT.STRING,sens:'cln',src:'RxEvent.MedicationPrescribed'},
+      {key:'medicationDispensed',name:'Medication dispensed',dt:DT.STRING,sens:'cln',src:'RxEvent.MedicationDispensed'},
+      {key:'rxStatus',name:'Rx status',dt:DT.STATUS,sens:'ops',src:'RxEvent.CurrentRxStatusText'},
+      {key:'transactionStatus',name:'Transaction status',dt:DT.STATUS,sens:'ops',src:'RxEvent.CurrentRxTransactionStatusText'},
+      {key:'daysSupply',name:'Days supply',dt:DT.NUMBER,sens:'cln',src:'RxEvent.DaysSupply'},
+      {key:'refillNumber',name:'Refill #',dt:DT.NUMBER,sens:'ops',src:'RxEvent.RefillNumber'},
+      {key:'dawCode',name:'DAW code',dt:DT.SELECT,sens:'cln',src:'RxEvent.DawCodeText'},
+      {key:'scriptType',name:'Script type',dt:DT.SELECT,sens:'ops',src:'RxEvent.ScriptType'},
+      {key:'expirationDate',name:'Expiration',dt:DT.DATETIME,sens:'ops',src:'RxEvent.ExpirationDate'},
+    ]},
+  allergy:{key:'allergy',name:'Allergy',plural:'Allergies',icon:'⚠️',
+    attrs:[
+      {key:'substance',name:'Substance',dt:DT.STRING,sens:'cln',src:'GetPatientAllergy.substance'},
+      {key:'reaction',name:'Reaction',dt:DT.STRING,sens:'cln',src:'GetPatientAllergy.reaction'},
+      {key:'severity',name:'Severity',dt:DT.SELECT,sens:'cln',src:'GetPatientAllergy.severity'},
+    ]},
+  condition:{key:'condition',name:'Condition',plural:'Conditions',icon:'🩺',
+    attrs:[
+      {key:'name',name:'Condition',dt:DT.STRING,sens:'cln',src:'GetPatientCondition.name'},
+      {key:'icd10',name:'ICD-10',dt:DT.STRING,sens:'cln',src:'GetPatientCondition.icd10'},
+      {key:'onsetDate',name:'Onset',dt:DT.DATETIME,sens:'cln',src:'GetPatientCondition.onsetDate'},
+    ]},
+  payMethod:{key:'payMethod',name:'Payment method',plural:'Payment methods',icon:'💳',
+    attrs:[
+      {key:'cardBrand',name:'Card brand',dt:DT.SELECT,sens:'fin',src:'GetPatientAutoPayCreditCard.brand'},
+      {key:'panToken',name:'PAN (tokenized)',dt:DT.STRING,sens:'fin',src:'processor token — PAN never stored'},
+      {key:'last4',name:'Last 4',dt:DT.STRING,sens:'fin',src:'GetPatientAutoPayCreditCard.last4'},
+      {key:'expiry',name:'Expiry',dt:DT.STRING,sens:'fin',src:'GetPatientAutoPayCreditCard.expiry'},
+    ]},
+  claim:{key:'claim',name:'Claim',plural:'Claims',icon:'🧾',
+    attrs:[
+      {key:'ndc',name:'NDC',dt:DT.STRING,sens:'ops',src:'RxEvent.NDC'},
+      {key:'daw',name:'DAW',dt:DT.SELECT,sens:'ops',src:'RxEvent.DawCodeText'},
+      {key:'billed',name:'Billed',dt:DT.NUMBER,sens:'fin',src:'AR.billedAmount'},
+      {key:'paid',name:'Paid',dt:DT.NUMBER,sens:'fin',src:'AR.paidAmount'},
+      {key:'arBalance',name:'A/R balance',dt:DT.NUMBER,sens:'fin',src:'GetPatientAccountsReceivable.balance'},
+    ]},
+  consentProfile:{key:'consentProfile',name:'Consent profile',plural:'Consent profiles',icon:'✅',
+    attrs:[
+      {key:'contactRef',name:'Contact ref',dt:DT.STRING,sens:'sys',src:'Workshift contact_id (de-identified)'},
+      {key:'segment',name:'Segment',dt:DT.SELECT,sens:'ops',src:'Workshift segment (no dx / no drug)'},
+      {key:'smsMarketingOptIn',name:'SMS marketing opt-in',dt:DT.SELECT,sens:'ops',src:'Workshift consent flag'},
+      {key:'emailMarketingOptIn',name:'Email marketing opt-in',dt:DT.SELECT,sens:'ops',src:'Workshift consent flag'},
+      {key:'lastConsentAt',name:'Last consent',dt:DT.DATETIME,sens:'ops',src:'Workshift consent event'},
+    ]},
+  message:{key:'message',name:'Message',plural:'Messages',icon:'💬',
+    attrs:[
+      {key:'channel',name:'Channel',dt:DT.SELECT,sens:'ops',src:'Workshift outbound'},
+      {key:'template',name:'Template',dt:DT.STRING,sens:'ops',src:'Workshift template'},
+      {key:'body',name:'Body',dt:DT.TEXTBOX,sens:'ops',src:'Workshift render'},
+      {key:'status',name:'Delivery',dt:DT.STATUS,sens:'ops',src:'Twilio callback'},
+      {key:'sentAt',name:'Sent',dt:DT.DATETIME,sens:'ops',src:'Workshift'},
+    ]},
+};
+
+// Relationships (admin.v1 Relationship, ASSOCIATION_TYPE_MANY/ONE)
+const RELATIONSHIPS = [
+  {from:'patient',to:'prescription',assoc:'MANY'},
+  {from:'patient',to:'allergy',assoc:'MANY'},
+  {from:'patient',to:'condition',assoc:'MANY'},
+  {from:'patient',to:'payMethod',assoc:'MANY'},
+  {from:'patient',to:'claim',assoc:'MANY'},
+  {from:'patient',to:'message',assoc:'MANY'},
+  {from:'prescription',to:'claim',assoc:'ONE'},
+];
+
+/* view: what a role sees of a resource type.
+   show:[keys] visible · mask:{key:'ssn|pan'} shown obfuscated · (anything not listed = hidden) */
+const ROLES = {
+  provider:{name:'Provider',icon:'🧑‍⚕️',role_id:'role_provider',
+    rights:['patients:read','prescriptions:read','conditions:read','allergies:read'],
+    lawful:'Treatment', desc:'Prescribing clinician — full clinical PHI, no card data.',
+    pg:['patient','prescription','condition','allergy'],
+    views:{
+      patient:{show:['fullName','personID','dob','phone','email','address','status'],mask:{}},
+      prescription:{show:['rxNumber','medicationPrescribed','medicationDispensed','rxStatus','daysSupply','dawCode','scriptType','expirationDate'],mask:{}},
+      condition:{show:['name','icd10','onsetDate']},
+      allergy:{show:['substance','reaction','severity']},
+    }},
+  pharmacist:{name:'Pharmacist',icon:'⚗️',role_id:'role_pharmacist',
+    rights:['patients:read','prescriptions:write','allergies:read','conditions:read','claims:read'],
+    lawful:'Treatment', desc:'Verifies + dispenses. Clinical + DUR + dispensing detail.',
+    pg:['patient','prescription','allergy','condition','claim'],
+    views:{
+      patient:{show:['fullName','personID','dob','phone','address','status'],mask:{}},
+      prescription:{show:['rxNumber','medicationPrescribed','medicationDispensed','rxStatus','transactionStatus','daysSupply','refillNumber','dawCode','scriptType','expirationDate'],mask:{}},
+      allergy:{show:['substance','reaction','severity']},
+      condition:{show:['name','icd10','onsetDate']},
+      claim:{show:['ndc','daw','billed','paid']},
+    }},
+  tech:{name:'Pharmacy Tech',icon:'🧑‍🔬',role_id:'role_tech',
+    rights:['patients:read','prescriptions:write','allergies:read'],
+    lawful:'Health-care operations', desc:'Fill workflow + allergies (safety). No SSN, no financials, no dx notes.',
+    pg:['patient','prescription','allergy'],
+    views:{
+      patient:{show:['fullName','personID','dob','phone','address','status','ssn'],mask:{ssn:'ssn'}},
+      prescription:{show:['rxNumber','medicationPrescribed','medicationDispensed','rxStatus','transactionStatus','daysSupply','refillNumber','dawCode','scriptType','expirationDate'],mask:{}},
+      allergy:{show:['substance','reaction','severity']},
+    }},
+  billing:{name:'Billing',icon:'🧾',role_id:'role_billing',
+    rights:['patients:read','claims:write','payMethods:read'],
+    lawful:'Payment', desc:'A/R + claims + masked card. No clinical notes.',
+    pg:['patient','claim','payMethod'],
+    views:{
+      patient:{show:['fullName','personID','dob','address','status'],mask:{}},
+      claim:{show:['ndc','daw','billed','paid','arBalance']},
+      payMethod:{show:['cardBrand','panToken','last4','expiry'],mask:{panToken:'pan'}},
+    }},
+  marketing:{name:'Marketing',icon:'📣',role_id:'role_marketing',
+    rights:['consentProfiles:read','segments:read'],
+    lawful:'No PHI — consent + de-identified segments only', desc:'Cannot resolve a contact to a person, diagnosis, or drug. Consent flags only.',
+    pg:['consentProfile'],
+    views:{
+      consentProfile:{show:['contactRef','segment','smsMarketingOptIn','emailMarketingOptIn','lastConsentAt']},
+    }},
+  patient:{name:'Patient',icon:'👤',role_id:'role_patient',
+    rights:['self:read'],
+    lawful:'Individual right of access', desc:'Sees only their own record.',
+    pg:['prescription','claim','payMethod','message'],
+    views:{
+      prescription:{show:['rxNumber','medicationPrescribed','rxStatus','daysSupply','refillNumber','expirationDate'],mask:{}},
+      claim:{show:['billed','paid','arBalance']},
+      payMethod:{show:['cardBrand','last4','expiry'],mask:{}},
+      message:{show:['channel','template','body','status','sentAt']},
+    }},
+};
+
+// Apps (admin.v1 App.participant_type) — multi-product / linked customer view (items 2 & 6)
+const APPS = [
+  {app_id:'app_staff',name:'Pharmacy Staff',participant_type:'staff',roles:['provider','pharmacist','tech','billing','marketing']},
+  {app_id:'app_patient',name:'Patient Portal',participant_type:'patient',roles:['patient']},
+  {app_id:'app_numi',name:'Numi DTC (product 2)',participant_type:'consumer',roles:[],soon:true},
+];
+
+/* ---- resource instances (data{} Structs) ---- */
+const PT = 'pat_marissa';
+const RESOURCES = {
+  patient:[
+    {id:PT,data:{fullName:'Marissa Chen',personID:'PX-40219',dob:'1989-03-14',ssn:'438-52-9174',medicareId:'—',phone:'+1 385 555 0142',email:'marissa.c@example.com',address:'220 W 900 S, SLC UT 84104',status:'Active'}},
+    {id:'pat_dwyer',data:{fullName:'Theo Dwyer',personID:'PX-40114',dob:'1976-11-02',ssn:'221-40-8830',medicareId:'1EG4-TE5-MK72',phone:'+1 801 555 0199',email:'tdwyer@example.com',address:'88 Center St, Provo UT 84601',status:'Active'}},
+    {id:'pat_ruiz',data:{fullName:'Alina Ruiz',personID:'PX-40877',dob:'1994-06-27',ssn:'559-11-2043',medicareId:'—',phone:'+1 385 555 0170',email:'aruiz@example.com',address:'14 S State St, SLC UT 84111',status:'New'}},
+  ],
+  prescription:[
+    {id:'rx_208841',patient:PT,data:{rxNumber:'RX-208841',medicationPrescribed:'Semaglutide 2.5mg/mL inj',medicationDispensed:'Semaglutide 2.5mg/mL (compounded, 503A)',rxStatus:'Fill in Progress',transactionStatus:'Waiting for Data Entry',daysSupply:28,refillNumber:2,dawCode:'0 — No product selection',scriptType:'Compounded',expirationDate:'2027-01-14'}},
+    {id:'rx_208012',patient:PT,data:{rxNumber:'RX-208012',medicationPrescribed:'Pyridoxine (B6) 50mg cap',medicationDispensed:'Pyridoxine 50mg cap',rxStatus:'Completed',transactionStatus:'Picked up',daysSupply:30,refillNumber:1,dawCode:'0 — No product selection',scriptType:'Legend',expirationDate:'2026-12-01'}},
+    {id:'rx_209930',patient:'pat_dwyer',data:{rxNumber:'RX-209930',medicationPrescribed:'Tirzepatide 5mg inj',medicationDispensed:'—',rxStatus:'Data Review',transactionStatus:'Waiting for Data Entry',daysSupply:28,refillNumber:0,dawCode:'0 — No product selection',scriptType:'Compounded',expirationDate:'2027-02-20'}},
+  ],
+  allergy:[
+    {id:'al_1',patient:PT,data:{substance:'Sulfa drugs',reaction:'Hives',severity:'Moderate'}},
+    {id:'al_2',patient:PT,data:{substance:'Penicillin',reaction:'Anaphylaxis',severity:'Severe'}},
+  ],
+  condition:[
+    {id:'cn_1',patient:PT,data:{name:'Type 2 diabetes mellitus',icd10:'E11.9',onsetDate:'2021-08-01'}},
+    {id:'cn_2',patient:PT,data:{name:'Obesity, BMI 32.4',icd10:'E66.9',onsetDate:'2020-02-15'}},
+  ],
+  payMethod:[
+    {id:'pm_1',patient:PT,data:{cardBrand:'Visa',panToken:'tok_1PmXvA_9174',last4:'4242',expiry:'08/28'}},
+  ],
+  claim:[
+    {id:'cl_1',patient:PT,rx:'rx_208012',data:{ndc:'00169-4181-13',daw:'0',billed:249.00,paid:249.00,arBalance:0.00}},
+    {id:'cl_2',patient:PT,rx:'rx_208841',data:{ndc:'compounded-503A',daw:'0',billed:329.00,paid:0.00,arBalance:329.00}},
+  ],
+  consentProfile:[
+    {id:'cp_1',contact:PT,data:{contactRef:'ct_9f3a…21',segment:'GLP-1 refill window (de-id)',smsMarketingOptIn:'Opted in',emailMarketingOptIn:'Opted in',lastConsentAt:'2026-05-30'}},
+    {id:'cp_2',contact:'pat_dwyer',data:{contactRef:'ct_1b7c…04',segment:'New-start education (de-id)',smsMarketingOptIn:'Opted in',emailMarketingOptIn:'Not set',lastConsentAt:'2026-06-18'}},
+    {id:'cp_3',contact:'pat_ruiz',data:{contactRef:'ct_77d0…e9',segment:'Awaiting first fill (de-id)',smsMarketingOptIn:'Opted out',emailMarketingOptIn:'Opted in',lastConsentAt:'2026-06-29'}},
+  ],
+  message:[
+    {id:'ms_1',patient:PT,data:{channel:'SMS',template:'rx_ready',body:'Your Mythic Rx order RX-208012 is ready for pickup.',status:'Delivered',sentAt:'2026-06-27 10:04'}},
+    {id:'ms_2',patient:PT,data:{channel:'SMS',template:'refill_due',body:'Time to refill. Reply YES to authorize RX-208841.',status:'Delivered',sentAt:'2026-07-02 09:00'}},
+  ],
+};
+
+/* ---- Workflow (workflow.v1) — Rx lifecycle → notifications ---- */
+const WORKFLOW = {
+  id:'wf_rx_lifecycle', name:'Rx Lifecycle → Patient Notifications', type:'WORKFLOW_TYPE_RESOURCE',
+  resource_type_id:'prescription',
+  graph:[
+    {nt:'NODE_TYPE_TIMEKIT_TRIGGER',nn:'Rx status change',sub:'trigger on prescription.rxStatus'},
+    {nt:'NODE_TYPE_RESOURCE',nn:'Update Rx',sub:'SaveResource → prescription.data'},
+    {nt:'NODE_TYPE_WEBHOOK',nn:'Twilio SMS',sub:'POST → Twilio (no SMS node yet)'},
+    {nt:'NODE_TYPE_EMAIL',nn:'Email fallback',sub:'if no SMS consent'},
+  ],
+  steps:[
+    {who:'tech',role:'Pharmacy Tech',lawful:'Operations',exec:'EXECUTION_STATUS_COMPLETED',
+     mut:'transactionStatus: <b>Waiting for Data Entry → Data Entry Complete</b>',
+     node:'NODE_TYPE_RESOURCE',msg:null},
+    {who:'pharmacist',role:'Pharmacist',lawful:'Treatment',exec:'EXECUTION_STATUS_COMPLETED',
+     mut:'rxStatus: <b>Data Review → DUR Passed</b> · allergies cross-checked',
+     node:'NODE_TYPE_RESOURCE',msg:null},
+    {who:'pharmacist',role:'Pharmacist',lawful:'Treatment',exec:'EXECUTION_STATUS_RUNNING',
+     mut:'rxStatus: <b>Fill in Progress</b>',
+     node:'NODE_TYPE_WEBHOOK',msg:{ch:'SMS · template rx_in_progress',body:'Mythic Rx: RX-208841 is being prepared. No PHI beyond Rx # in message body.'}},
+    {who:'system',role:'Workshift',lawful:'Operations',exec:'EXECUTION_STATUS_PENDING',
+     mut:'rxStatus: <b>Ready for Pickup</b>',
+     node:'NODE_TYPE_WEBHOOK',msg:{ch:'SMS · template rx_ready',body:'Your Mythic Rx order RX-208841 is ready. Reply HELP for support.'}},
+    {who:'billing',role:'Billing',lawful:'Payment',exec:'EXECUTION_STATUS_PENDING',
+     mut:'claim.arBalance charged to tokenized card <span class="mono">tok_…9174</span>',
+     node:'NODE_TYPE_RESOURCE',msg:null},
+    {who:'marketing',role:'Marketing',lawful:'No PHI',exec:'EXECUTION_STATUS_PENDING',
+     mut:'consentProfile.segment refreshed — <b>de-identified</b>, never links back to RX-208841',
+     node:'NODE_TYPE_RESOURCE',msg:{ch:'SMS · marketing (consent-gated)',body:'No drug name, no dx. Fires only if smsMarketingOptIn = Opted in.'}},
+  ]
+};
+
+/* ============================================================================
+   STATE + RENDER
+============================================================================ */
+const state = {appId:'app_staff', role:'provider', rtype:'patient', detailId:null, insp:false, wf:false};
+
+const el = s=>document.querySelector(s);
+const RT = k=>RESOURCE_TYPES[k];
+const cur = ()=>ROLES[state.role];
+const app = ()=>APPS.find(a=>a.app_id===state.appId);
+const esc = s=>String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+function permittedTypes(role){ return role.pg.filter(k=>role.views[k]); }
+function fmt(v){ if(typeof v==='number') return (v%1?'$'+v.toFixed(2):(v>=100?'$'+v.toFixed(2):v)); return v; }
+
+// apply a role's view to one attribute → {visible, value, masked}
+function viewCell(role, rtypeKey, attr, data){
+  const view = role.views[rtypeKey]; if(!view) return {visible:false};
+  if(!view.show.includes(attr.key)) return {visible:false};
+  const maskType = (view.mask||{})[attr.key];
+  let value = data[attr.key];
+  if(maskType==='ssn') value = '•••-••-'+String(data[attr.key]||'').slice(-4);
+  if(maskType==='pan') value = 'tokenized · '+String(data[attr.key]||'');
+  return {visible:true, value, masked:!!maskType, maskType};
+}
+
+/* ---------- APP SWITCH + RAIL ---------- */
+function renderAppSwitch(){
+  el('#appswitch').innerHTML = APPS.map(a=>{
+    const on = a.app_id===state.appId?'on':(a.soon?'soon':'');
+    const t = a.participant_type;
+    return `<button class="${on}" data-app="${a.app_id}" ${a.soon?'disabled':''}>
+      ${a.name} <span class="tag">participant_type: ${t}</span></button>`;
+  }).join('');
+}
+function renderRail(){
+  const a = app();
+  let h='';
+  if(a.participant_type==='staff'){
+    h += `<h4>Role</h4>`;
+    h += a.roles.map(rk=>{
+      const r=ROLES[rk], on=rk===state.role?'on':'';
+      return `<button class="rolebtn ${on}" data-role="${rk}"><span>${r.icon}</span><span>${r.name}<small>${r.rights[0]}</small></span></button>`;
+    }).join('');
+  }else{
+    h += `<div class="pgnote">Signed in as <b>Marissa Chen</b><br><span class="src">app_patient · participant_type: patient</span></div>`;
+  }
+  const role=cur();
+  h += `<h4>${a.participant_type==='patient'?'My records':'Resource types'}</h4>`;
+  h += permittedTypes(role).map(k=>{
+    const rt=RT(k), on=k===state.rtype?'on':'';
+    const label = a.participant_type==='patient' && k==='prescription' ? 'My Prescriptions'
+               : a.participant_type==='patient' && k==='payMethod' ? 'My Payment'
+               : a.participant_type==='patient' && k==='claim' ? 'My Billing'
+               : a.participant_type==='patient' && k==='message' ? 'My Messages'
+               : rt.plural;
+    return `<button class="navbtn ${on}" data-rtype="${k}"><span class="ic">${rt.icon}</span>${label}</button>`;
+  }).join('');
+  h += `<div class="pgnote"><b>PermissionGroup</b><br><span class="src">${role.role_id}</span><br>resource_type_ids:<br><span class="src">[${role.pg.join(', ')}]</span></div>`;
+  el('#rail').innerHTML=h;
+}
+
+/* ---------- MAIN: list + detail ---------- */
+function renderMain(){
+  const role=cur(), rtypeKey=state.rtype, rt=RT(rtypeKey);
+  if(!role.views[rtypeKey]){ // safety: pick first permitted
+    state.rtype=permittedTypes(role)[0]; return renderAll();
+  }
+  const scoped = scopedResources(rtypeKey);
+  let h = `<div class="crumbs"><a data-nav="list">${rt.plural}</a>${state.detailId?` <span>›</span> <span>${detailTitle(rtypeKey,state.detailId)}</span>`:''}</div>`;
+  h += `<div class="pagehead"><div>
+      <h1>${rt.icon} ${state.detailId?detailTitle(rtypeKey,state.detailId):rt.plural}</h1>
+      <div class="sub">${role.icon} ${role.name} view · ResourceView <code class="k">view_${rtypeKey}_${state.role}</code></div>
+    </div><div class="lawful"><b>Lawful basis:</b> ${role.lawful}</div></div>`;
+
+  if(state.role==='marketing'){
+    h += `<div class="notice" style="margin-bottom:14px"><b>Minimum necessary — enforced by config, not convention.</b> Marketing's PermissionGroup contains <span class="src">[consentProfile]</span> only. There is no path from this app to a patient, drug, or diagnosis. The rows below are de-identified consent records.</div>`;
+  }
+
+  if(!state.detailId){
+    h += renderList(rtypeKey, scoped, role);
+  }else{
+    h += renderDetail(rtypeKey, state.detailId, role);
+  }
+  el('#main').innerHTML=h;
+}
+
+function scopedResources(rtypeKey){
+  let rows = RESOURCES[rtypeKey]||[];
+  // patient app = row-level self scope
+  if(app().participant_type==='patient'){
+    rows = rows.filter(r=> (r.patient===PT)||(r.id===PT)||(r.contact===PT));
+  }
+  return rows;
+}
+function detailTitle(rtypeKey,id){
+  const r=(RESOURCES[rtypeKey]||[]).find(x=>x.id===id); if(!r) return id;
+  const d=r.data;
+  return d.fullName||d.rxNumber||d.substance||d.name||d.cardBrand||d.ndc||d.template||d.contactRef||id;
+}
+
+function renderList(rtypeKey, rows, role){
+  const rt=RT(rtypeKey);
+  const cols = rt.attrs.filter(a=>role.views[rtypeKey].show.includes(a.key)).slice(0,5);
+  let h=`<div class="card"><table><thead><tr>`;
+  h += cols.map(a=>`<th>${a.name}</th>`).join('') + `<th></th></tr></thead><tbody>`;
+  if(!rows.length) h+=`<tr><td colspan="${cols.length+1}" style="color:var(--mrx-slate-gray)">No ${rt.plural.toLowerCase()} in scope.</td></tr>`;
+  rows.forEach(r=>{
+    h+=`<tr class="rowlink" data-open="${r.id}">`;
+    cols.forEach(a=>{
+      const c=viewCell(role,rtypeKey,a,r.data);
+      h+=`<td>${renderVal(a,c)}</td>`;
+    });
+    h+=`<td style="text-align:right;color:var(--mrx-blue)">Open ›</td></tr>`;
+  });
+  h+=`</tbody></table></div>`;
+  return h;
+}
+
+function renderVal(attr,c){
+  if(!c.visible) return `<span class="locked">—</span>`;
+  if(c.masked) return `<span class="maskvalue">${esc(c.value)}</span>`;
+  if(attr.dt===DT.STATUS){
+    const cls = /pick|ready|deliver|complete|passed|active/i.test(c.value)?'ok':(/wait|progress|review|data/i.test(c.value)?'txn':'status');
+    return `<span class="pill ${cls}">${esc(c.value)}</span>`;
+  }
+  return esc(fmt(c.value));
+}
+
+function renderDetail(rtypeKey,id,role){
+  const rt=RT(rtypeKey);
+  const r=(RESOURCES[rtypeKey]||[]).find(x=>x.id===id);
+  if(!r) return `<div class="notice">Not found.</div>`;
+  let h=`<div class="card"><div class="sectitle">${rt.icon} Fields <span class="tag">resource_type: ${rtypeKey}</span></div><div class="fieldgrid">`;
+  rt.attrs.forEach(a=>{
+    const c=viewCell(role,rtypeKey,a,r.data);
+    if(!c.visible) return; // hidden by view = not rendered at all
+    h+=`<div class="field"><div class="lbl">${esc(a.name)} <span class="badge dt">${a.dt}</span>${c.masked?`<span class="badge masked">masked</span>`:(a.sens==='cln'||a.sens==='idn'?`<span class="badge phi">phi</span>`:'')}</div>
+        <div class="val ${a.dt===DT.STATUS?'':'mono'}">${a.dt===DT.STATUS?renderVal(a,c):esc(fmt(c.value))}</div>
+        <div class="src">← ${esc(a.src)}</div></div>`;
+  });
+  h+=`</div></div>`;
+
+  // related resources via relationships (respecting permission group)
+  const rels = RELATIONSHIPS.filter(x=>x.from===rtypeKey && role.views[x.to]);
+  rels.forEach(rel=>{
+    const kids=(RESOURCES[rel.to]||[]).filter(k=>k.patient===id||k.rx===id);
+    if(!kids.length) return;
+    h+=`<div class="card" style="margin-top:16px"><div class="sectitle">${RT(rel.to).icon} ${RT(rel.to).plural}
+        <span class="tag">Relationship · ASSOCIATION_TYPE_${rel.assoc}</span></div>`;
+    h+=renderList(rel.to,kids,role).replace('<div class="card">','<div>').replace(/<\/div>$/,'</div>');
+    h+=`</div>`;
+  });
+  return h;
+}
+
+/* ---------- INSPECTOR ---------- */
+function renderInspector(){
+  const insp=el('#inspector');
+  if(!state.insp){insp.style.display='none';return;}
+  insp.style.display='block';
+  const role=cur(), rtypeKey=state.rtype, rt=RT(rtypeKey), view=role.views[rtypeKey];
+  let h=`<h3>Config Inspector</h3><p class="lead">The exact Workshift objects behind this screen — build them in the admin UI or via the <code style="color:#8fd0a3">mcp</code> tools / <code style="color:#8fd0a3">Save*</code> RPCs.</p>`;
+
+  h+=`<div class="obj"><div class="rpc">AdminService.SaveResourceType</div>
+    <div class="row"><span class="kk">key</span><span class="vv">${rt.key}</span></div>
+    <div class="row"><span class="kk">plural</span><span class="vv">${rt.plural}</span></div>
+    <div class="row"><span class="kk">icon</span><span class="vv">${rt.icon}</span></div></div>`;
+
+  h+=`<div class="obj"><div class="rpc">AdminService.SaveAttribute × ${rt.attrs.length}</div>`;
+  rt.attrs.forEach(a=>{
+    const vis = view.show.includes(a.key) ? ((view.mask||{})[a.key]?'m':'y') : 'n';
+    const mark = vis==='y'?'<span class="vis-y">● shown</span>':vis==='m'?'<span class="vis-m">● masked</span>':'<span class="vis-n">○ hidden</span>';
+    h+=`<div class="attrline"><span class="an">${a.key}</span><span>${mark}</span>
+        <span class="as">data_type: ATTRIBUTE_DATA_TYPE_${a.dt} · ← ${a.src}</span></div>`;
+  });
+  h+=`</div>`;
+
+  h+=`<div class="obj"><div class="rpc">AdminService.SavePermissionGroup</div>
+    <div class="row"><span class="kk">name</span><span class="vv">${role.name}</span></div>
+    <div class="row"><span class="kk">role_id</span><span class="vv">${role.role_id}</span></div>
+    <div class="row"><span class="kk">resource_type_ids</span><span class="vv">[${role.pg.join(', ')}]</span></div></div>`;
+
+  h+=`<div class="obj"><div class="rpc">AdminService.SaveResourceView</div>
+    <div class="row"><span class="kk">name</span><span class="vv">view_${rtypeKey}_${state.role}</span></div>
+    <div class="row"><span class="kk">resource_type_id</span><span class="vv">${rtypeKey}</span></div>
+    <div class="row"><span class="kk">show</span><span class="vv">[${view.show.join(', ')}]</span></div>
+    ${Object.keys(view.mask||{}).length?`<div class="row"><span class="kk">mask</span><span class="vv">${JSON.stringify(view.mask)}</span></div>`:''}
+    <div class="row"><span class="kk">rights</span><span class="vv">${role.rights.join(', ')}</span></div></div>`;
+
+  h+=`<div class="obj"><div class="rpc">UserService.User (org-scoped)</div>
+    <div class="row"><span class="kk">organization_id</span><span class="vv">${ORG.id}</span></div>
+    <div class="row"><span class="kk">role_id</span><span class="vv">${role.role_id}</span></div>
+    <div class="row"><span class="kk">rights[]</span><span class="vv">${role.rights.length}</span></div></div>`;
+  insp.innerHTML=h;
+}
+
+/* ---------- WORKFLOW OVERLAY ---------- */
+function renderWorkflow(){
+  const main=el('#main');
+  el('#body').classList.remove('insp');
+  let h=`<div class="crumbs"><a data-nav="list">← Back to portal</a></div>
+    <div class="pagehead"><div><h1>⚙ ${WORKFLOW.name}</h1>
+      <div class="sub">WorkflowService · type <code class="k">${WORKFLOW.type}</code> · resource_type <code class="k">${WORKFLOW.resource_type_id}</code></div></div>
+      <div class="lawful"><b>One Rx, every role.</b> RX-208841 travels the org — each hop is a real permission + a real node.</div></div>`;
+
+  h+=`<div class="card" style="padding:14px 16px"><div class="sectitle" style="padding:0 0 4px">Workflow graph <span class="tag">workflow.v1 Node</span></div><div class="graph">`;
+  WORKFLOW.graph.forEach((n,i)=>{
+    h+=`<div class="node"><div class="nt">${n.nt}</div><div class="nn">${n.nn}</div><small>${n.sub}</small></div>`;
+    if(i<WORKFLOW.graph.length-1) h+=`<div class="arrow">→</div>`;
+  });
+  h+=`</div><div class="notice"><b>Finding:</b> Workshift's <code class="src">NodeType</code> enum has <code class="src">EMAIL</code> and <code class="src">WEBHOOK</code> but <b>no SMS node yet</b>. The refill text ships today as a <code class="src">WEBHOOK</code> → Twilio. Adding <code class="src">NODE_TYPE_SMS</code> is the one backend change this portal actually needs.</div></div>`;
+
+  h+=`<div class="card" style="margin-top:16px;padding:6px 16px 16px"><div class="sectitle" style="padding:12px 0 0">Execution timeline <span class="tag">workflow.v1 Execution</span></div><div class="steps">`;
+  WORKFLOW.steps.forEach((s,i)=>{
+    const stName=s.exec.replace('EXECUTION_STATUS_','');
+    h+=`<div class="step"><div class="who">${s.role}<small>lawful: ${s.lawful}</small>
+        <div class="exec">Execution <span class="st-${stName}">● ${stName}</span></div></div>
+        <div><div class="mut">${i+1}. ${s.mut}</div>`;
+    if(s.msg){
+      h+=`<div class="msg"><div class="ch">${s.node} · ${s.msg.ch}</div>${esc(s.msg.body)}</div>`;
+    }else{
+      h+=`<div class="src" style="margin-top:6px">node: ${s.node} · no outbound message</div>`;
+    }
+    h+=`</div></div>`;
+  });
+  h+=`</div></div>`;
+  main.innerHTML=h;
+}
+
+/* ---------- ORCHESTRATION ---------- */
+function renderAll(){
+  el('#body').classList.toggle('insp', state.insp && !state.wf);
+  el('#btnInsp').classList.toggle('on', state.insp);
+  el('#btnWf').classList.toggle('on', state.wf);
+  renderAppSwitch();
+  renderRail();
+  if(state.wf){ renderWorkflow(); el('#inspector').style.display='none'; }
+  else { renderMain(); renderInspector(); }
+}
+
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-app],[data-role],[data-rtype],[data-open],[data-nav]');
+  if(t){
+    if(t.dataset.app){ state.appId=t.dataset.app; const a=app(); state.role=a.roles[0]; state.rtype=permittedTypes(ROLES[state.role])[0]; state.detailId=null; state.wf=false; }
+    else if(t.dataset.role){ state.role=t.dataset.role; state.rtype=permittedTypes(cur())[0]; state.detailId=null; }
+    else if(t.dataset.rtype){ state.rtype=t.dataset.rtype; state.detailId=null; state.wf=false; }
+    else if(t.dataset.open){ state.detailId=t.dataset.open; }
+    else if(t.dataset.nav==='list'){ state.detailId=null; state.wf=false; }
+    renderAll();
+  }
+});
+el('#btnInsp').onclick=()=>{ state.insp=!state.insp; if(state.insp) state.wf=false; renderAll(); };
+el('#btnWf').onclick=()=>{ state.wf=!state.wf; if(state.wf) state.insp=false; renderAll(); };
+
+renderAll();
+</script>

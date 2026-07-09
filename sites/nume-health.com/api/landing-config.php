@@ -180,7 +180,7 @@ if ($method === 'POST' && $action === 'save') {
   $header .= " * Source version: " . $id . "\n";
   $header .= " * To restore an older version, load it from Client_Onboarding.html and Save again.\n";
   $header .= " */\n";
-  $jsBody  = $header . "window.NUME_CONFIG = " . json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . ";\n";
+  $jsBody  = $header . "window.SITE_CONFIG = window.NUME_CONFIG = " . json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . ";\n";
   if (file_put_contents($LIVE_JS_FILE, $jsBody, LOCK_EX) === false) {
     bail(500, 'Wrote version snapshot but failed to update live JS');
   }
