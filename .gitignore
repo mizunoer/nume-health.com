@@ -21,3 +21,8 @@ npm-debug.log*
 
 # Optional: keep template folders but ignore large binaries if any
 # *.zip
+
+# Runtime-written site data (server owns these; tracking them causes cPanel
+# deploy merge conflicts on every pull). Applies to all sites under sites/.
+sites/*/assets/configs/feedback.json
+sites/*/assets/configs/manifest.json
