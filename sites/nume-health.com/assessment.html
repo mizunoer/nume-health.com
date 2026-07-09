@@ -168,6 +168,15 @@
                                     <label class="form-label" for="phone">Phone <span class="text-muted">(optional)</span></label>
                                     <input id="phone" type="tel" class="form-control" placeholder="For account notifications only">
                                 </div>
+                                <!-- SMS consent — CTIA / A2P 10DLC required disclosures.
+                                     STATIC text (never data-bound). Separate, OPTIONAL opt-in — not bundled with the accuracy/ToS consent below.
+                                     Canonical source: sister-sites-shared/shared/conventions/SMS_CONSENT_DISCLOSURE.md -->
+                                <div class="mb-4">
+                                    <div class="form-check">
+                                        <input type="checkbox" id="sms_consent" name="sms_consent" value="yes" class="form-check-input">
+                                        <label class="form-check-label small" for="sms_consent">I agree to receive SMS text messages from Nume Health at the phone number provided, about my appointments, orders, and account notifications. Consent is not a condition of any purchase or treatment. Message frequency varies. Message and data rates may apply. Reply <strong>STOP</strong> to opt out at any time and <strong>HELP</strong> for help. See our <a href="/privacy.html">Privacy Policy</a> and <a href="/terms.html">Terms</a>.</label>
+                                    </div>
+                                </div>
                                 <div class="mb-4">
                                     <div class="form-check">
                                         <input type="checkbox" id="consent" class="form-check-input" required>
