@@ -98,6 +98,10 @@
                                         <label class="form-label">Email <span class="text-danger">*</span></label>
                                         <input type="email" class="form-control" name="email" required>
                                     </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Phone <span class="text-muted">(optional)</span></label>
+                                        <input type="tel" class="form-control" name="phone" placeholder="For SMS updates about your inquiry">
+                                    </div>
                                     <div class="col-12">
                                         <label class="form-label">What can we help with?</label>
                                         <select class="form-select" name="topic">
@@ -114,6 +118,15 @@
                                     <div class="col-12">
                                         <label class="form-label">Message <span class="text-danger">*</span></label>
                                         <textarea class="form-control" name="message" rows="5" placeholder="No personal medical details please." required></textarea>
+                                    </div>
+                                    <!-- SMS consent — CTIA / A2P 10DLC required disclosures.
+                                         STATIC text (never data-bound). Optional opt-in; phone is optional.
+                                         Canonical source: sister-sites-shared/shared/conventions/SMS_CONSENT_DISCLOSURE.md -->
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            <input type="checkbox" id="sms_consent" name="sms_consent" value="yes" class="form-check-input">
+                                            <label class="form-check-label small" for="sms_consent">I agree to receive SMS text messages from Nume Health at the phone number provided, about my inquiry, appointments, orders, and account notifications. Consent is not a condition of any purchase or treatment. Message frequency varies. Message and data rates may apply. Reply <strong>STOP</strong> to opt out at any time and <strong>HELP</strong> for help. See our <a href="/privacy.html">Privacy Policy</a> and <a href="/terms.html">Terms</a>.</label>
+                                        </div>
                                     </div>
                                     <div class="col-12">
                                         <button type="submit" class="btn btn-two btn-primary-style">Send message</button>
