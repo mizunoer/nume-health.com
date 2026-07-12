@@ -37,5 +37,5 @@ window.SITE_PAGES = [
   { label: 'Marketing tracker (internal)',url: 'Marketing_Next_Steps.html'    },
   { label: 'Color recs (internal)',       url: 'Update_Colors.html'           },
   { label: 'Image picker (internal)',     url: 'ImageSelection.html'          },
-  { label: 'Recommendations (internal)',  url: 'recommendations.html'         }
+  { label: 'Dev tickets (internal)',      url: 'recommendations.html'         }
 ];

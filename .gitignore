@@ -25,4 +25,6 @@ npm-debug.log*
 # Runtime-written site data (server owns these; tracking them causes cPanel
 # deploy merge conflicts on every pull). Applies to all sites under sites/.
 sites/*/assets/configs/feedback.json
+sites/*/assets/configs/feedback.json.migrated
 sites/*/assets/configs/manifest.json
+sites/*/assets/configs/nume-feedback.db*

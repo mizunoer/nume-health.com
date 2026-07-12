@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Recommendations (internal) - Nume Health</title>
-    <meta name="description" content="Internal recommendations form. Not for public use.">
+    <title>Developer tickets (internal) - Nume Health</title>
+    <meta name="description" content="Internal developer ticket board. Not for public use.">
     <meta name="robots" content="noindex,nofollow">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
@@ -29,20 +29,35 @@
     <link rel="stylesheet" href="assets/css/responsive.css">
     <link rel="stylesheet" href="assets/css/nume-health.css">
     <style>
-        .recommendations-form { max-width: 640px; }
-        .recommendations-form label { font-weight: 600; }
-        .recommendations-table { overflow-x: auto; }
-        .recommendations-table table { width: 100%; min-width: 800px; }
-        .recommendations-table th, .recommendations-table td { padding: 0.5rem 0.75rem; vertical-align: top; border: 1px solid #dee2e6; }
-        .recommendations-table th { background: #f8f9fa; }
-        .recommendations-table .internal-only { background: #fff3cd; }
-        .recommendations-note { font-size: 0.9rem; color: #666; margin-top: 1rem; }
+        .rec-form { max-width: 760px; }
+        .rec-form label { font-weight: 600; }
+        .rec-board { overflow-x: auto; }
+        .rec-board table { width: 100%; min-width: 1000px; }
+        .rec-board th, .rec-board td { padding: 0.55rem 0.75rem; vertical-align: top; border: 1px solid #dee2e6; }
+        .rec-board th { background: #f8f9fa; white-space: nowrap; }
+        .rec-board .internal-only { background: #fff8e1; }
+        .rec-note { font-size: 0.9rem; color: #666; }
+        .rec-badge { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 0.15rem 0.55rem; border-radius: 1rem; text-transform: uppercase; letter-spacing: 0.02em; background: #e9ecef; color: #495057; }
+        .rec-badge--bug { background: #f8d7da; color: #842029; }
+        .rec-badge--feature { background: #d1e7dd; color: #0f5132; }
+        .rec-badge--suggestion { background: #cfe2ff; color: #084298; }
+        .rec-badge--copy-edit { background: #e2d9f3; color: #59359a; }
+        .rec-badge--question { background: #fff3cd; color: #664d03; }
+        .rec-details { white-space: pre-wrap; margin-top: 0.25rem; }
+        .rec-meta { font-size: 0.78rem; color: #888; margin-top: 0.35rem; }
+        .rec-comments { margin-top: 0.4rem; font-size: 0.85rem; }
+        .rec-comments summary { cursor: pointer; color: #0077B6; }
+        .rec-comments ul { list-style: none; padding-left: 0; margin: 0.4rem 0; }
+        .rec-comments li { border-left: 3px solid #dee2e6; padding-left: 0.5rem; margin-bottom: 0.35rem; }
+        .rec-toast { position: fixed; right: 1rem; bottom: 1rem; z-index: 1080; background: #212529; color: #fff; padding: 0.6rem 1rem; border-radius: 0.4rem; opacity: 0; pointer-events: none; transition: opacity 0.2s; max-width: 320px; }
+        .rec-toast.is-on { opacity: 1; }
+        .rec-toast--success { background: #0f5132; }
+        .rec-toast--error { background: #842029; }
     </style>
 </head>
 <body>
     <div id="preloader"><div class="tg-cube-grid"><div class="tg-cube tg-cube1"></div><div class="tg-cube tg-cube2"></div><div class="tg-cube tg-cube3"></div><div class="tg-cube tg-cube4"></div><div class="tg-cube tg-cube5"></div><div class="tg-cube tg-cube6"></div><div class="tg-cube tg-cube7"></div><div class="tg-cube tg-cube8"></div><div class="tg-cube tg-cube9"></div></div></div>
     <button class="scroll-top scroll-to-target" data-target="html"><i class="fas fa-angle-up"></i></button>
-
     <header id="home">
         <div id="header-top-fixed"></div>
         <div id="sticky-header" class="menu-area">
@@ -72,40 +87,189 @@
                                         </li>
                                         <li><a href="contact.html">Contact</a></li>
                                     </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-6 col-6">
-                            <div class="footer-widget">
-                                <h4 class="fw-title">Account</h4>
-                                <ul class="list-wrap">
-                                    <li><a href="login.html">Login</a></li>
-                                    <li><a href="register.html">Register</a></li>
-                                    <li><a href="cart.html">Cart</a></li>
-                                    <li><a href="checkout.html">Checkout</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="footer-widget">
-                                <h4 class="fw-title">Contact</h4>
-                                <p>nume-health.com</p>
-                                <ul class="list-wrap"><li><a href="contact.html">Contact form</a></li></ul>
-                            </div>
+                                </div>
+                                <div class="header-action d-none d-sm-block">
+                                    <a href="assessment.html" class="btn btn-two btn-primary-style" style="padding:10px 22px;">See if I qualify</a>
+                                </div>
+                            </nav>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="copyright-wrap">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-12">
-                        <p class="copyright-text mb-0">Copyright Â© 2025 nume-health.com. All rights reserved.</p>
+        <div class="mobile-menu"><nav class="menu-box"><div class="close-btn"><i class="fas fa-times"></i></div><div class="nav-logo"><a href="index.html"><img src="assets/img/logo/logo.svg" alt="Nume Health" onerror="this.src='assets/img/logo/logo.png'; this.onerror=null;"></a></div><div class="menu-outer"></div></nav></div>
+        <div class="menu-backdrop"></div>
+    </header>
+    <main class="main-area fix section-padding">
+        <div class="container">
+            <h1 class="mb-3">Developer tickets</h1>
+            <p class="lead">Suggestions, bug reports, and requests for the dev team. Tickets are stored in the server-side database — <strong>site updates and deploys never remove them</strong>. Yellow columns (Status, Dev notes) are edited by staff.</p>
+            <div id="rec-alert" class="alert alert-warning d-none" role="alert"></div>
+
+            <section class="rec-form mt-4">
+                <h2 class="h4 mb-3">Submit a ticket</h2>
+                <form id="rec-form">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="rec-name" class="form-label">Your name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="rec-name" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="rec-type" class="form-label">Type</label>
+                            <select class="form-select" id="rec-type">
+                                <option value="suggestion" selected>Suggestion</option>
+                                <option value="bug">Bug</option>
+                                <option value="feature">Feature</option>
+                                <option value="copy-edit">Copy edit</option>
+                                <option value="question">Question</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="rec-priority" class="form-label">Priority</label>
+                            <select class="form-select" id="rec-priority">
+                                <option value="low">Low</option>
+                                <option value="med" selected>Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="recommendations-page-select" class="form-label">Page</label>
+                            <select class="form-select" id="recommendations-page-select">
+                                <option value="">(Site-wide / not page-specific)</option>
+                                <!-- filled by site-nav.js from SITE_PAGES -->
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="rec-title" class="form-label">Title <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="rec-title" maxlength="200" placeholder="Short summary of the request" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="rec-details" class="form-label">Details <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="rec-details" rows="4" placeholder="What should change, and why?" required></textarea>
+                        </div>
+                        <div class="col-12">
+                            <label for="rec-images" class="form-label">Screenshot / image link</label>
+                            <input type="text" class="form-control" id="rec-images" placeholder="Paste a shareable link (e.g. Imgur, Google Drive)">
+                            <small class="form-text text-muted">Optional.</small>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-two" id="rec-submit">Submit ticket</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+            <section class="rec-board-wrap mt-5">
+                <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+                    <h2 class="h4 mb-0 me-auto">Tickets <span id="rec-count" class="text-muted fw-normal fs-6"></span></h2>
+                    <select id="rec-filter-status" class="form-select form-select-sm w-auto" title="Filter by status">
+                        <option value="all">All statuses</option>
+                        <option value="open" selected>Open (not done)</option>
+                        <option value="new">New</option>
+                        <option value="in-review">In review</option>
+                        <option value="in-progress">In progress</option>
+                        <option value="done">Done</option>
+                        <option value="wont-do">Won't do</option>
+                    </select>
+                    <select id="rec-filter-type" class="form-select form-select-sm w-auto" title="Filter by type">
+                        <option value="">All types</option>
+                        <option value="suggestion">Suggestion</option>
+                        <option value="bug">Bug</option>
+                        <option value="feature">Feature</option>
+                        <option value="copy-edit">Copy edit</option>
+                        <option value="dev-task-update">Dev-task update</option>
+                        <option value="question">Question</option>
+                    </select>
+                    <button type="button" id="rec-refresh" class="btn btn-sm btn-outline-secondary">Refresh</button>
+                </div>
+                <div class="rec-board">
+                    <table class="table table-bordered mb-2">
+                        <thead>
+                            <tr>
+                                <th style="min-width:340px">Ticket</th>
+                                <th>Page</th>
+                                <th>Priority</th>
+                                <th class="internal-only">Status</th>
+                                <th class="internal-only" style="min-width:230px">Dev notes</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="rec-tbody"></tbody>
+                    </table>
+                </div>
+                <p class="rec-note">Tickets are stored in a SQLite database kept outside the deployed site files (see <code>api/feedback.php</code>), shared with the internal <a href="Client_Feedback.html">Client feedback</a> board. Status and Dev notes are staff-only by convention; changes save immediately.</p>
+            </section>
+        </div>
+    </main>
+    <!-- Unified footer for nume-health.com -->
+<footer class="footer-area">
+    <div class="footer-top-wrap">
+        <div class="container">
+            <div class="footer-widgets-wrap">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-widget">
+                            <div class="footer-about">
+                                <div class="footer-logo logo"><a href="index.html"><img src="assets/img/logo/white_logo.svg" alt="Nume Health" onerror="this.src='assets/img/logo/white_logo.png'; this.onerror=null;"></a></div>
+                                <p>Clinician-guided weight-care, online. Cash-pay options. No insurance required.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-6">
+                        <div class="footer-widget">
+                            <h4 class="fw-title">Care</h4>
+                            <ul class="list-wrap">
+                                <li><a href="index.html">Home</a></li>
+                                <li><a href="shop.html">Plans</a></li>
+                                <li><a href="glp1-pricing.html">Pricing</a></li>
+                                <li><a href="assessment.html">Eligibility</a></li>
+                                <li><a href="glp1-faq.html">FAQ</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-6">
+                        <div class="footer-widget">
+                            <h4 class="fw-title">Account</h4>
+                            <ul class="list-wrap">
+                                <li><a href="login.html">Login</a></li>
+                                <li><a href="register.html">Register</a></li>
+                                <li><a href="reset-password.html">Reset password</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-widget">
+                            <h4 class="fw-title">Legal</h4>
+                            <ul class="list-wrap">
+                                <li><a href="/privacy.html">Privacy Policy</a></li>
+                                <li><a href="/terms.html">Terms of Service</a></li>
+                                <li><a href="/telehealth-consent.html">Telehealth Consent</a></li>
+                                <li><a href="/consumer-health-data.html">Consumer Health Data</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </footer>
+    </div>
+    <div class="copyright-wrap">
+        <div class="container">
+            <div class="row align-items-start g-3">
+                <div class="col-lg-9">
+                    <p class="copyright-text mb-2 small" style="opacity:.8">
+                        Nume Health is a marketing brand. Medical services are provided by independent licensed clinicians.
+                        GLP-1 medications are prescription treatments and are not appropriate for everyone.
+                        Compounded medications, if prescribed, are not FDA-approved and are not reviewed by FDA for safety, effectiveness, or quality.
+                        Prescription is not guaranteed; a licensed provider determines whether treatment is appropriate.
+                    </p>
+                    <p class="copyright-text mb-0 small" style="opacity:.6">© 2026 Nume Health. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+    <div class="rec-toast" id="rec-toast" role="status" aria-live="polite"></div>
 
     <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
@@ -113,19 +277,231 @@
     <script src="assets/js/site-config.js"></script>
     <script src="assets/js/site-nav.js"></script>
     <script>
-        document.getElementById('rec-images').addEventListener('change', function(e) {
-            var preview = document.getElementById('rec-image-preview');
-            var img = document.getElementById('rec-image-preview-img');
-            var file = e.target.files && e.target.files[0];
-            if (file && file.type.indexOf('image/') === 0) {
-                var r = new FileReader();
-                r.onload = function() { img.src = r.result; preview.style.display = 'block'; };
-                r.readAsDataURL(file);
-            } else {
-                preview.style.display = 'none';
-                img.src = '';
+    (function () {
+        "use strict";
+        var API = "api/feedback.php";
+        var BY_KEY = "nume.feedback.by"; /* shared with Client_Feedback.html */
+
+        var TYPE_LABEL = {
+            "suggestion": "Suggestion", "bug": "Bug", "copy-edit": "Copy edit",
+            "dev-task-update": "Dev-task update", "feature": "Feature", "question": "Question"
+        };
+        var STATUS_LABEL = { "new": "New", "in-review": "In review", "in-progress": "In progress", "done": "Done", "wont-do": "Won't do" };
+        var PRIORITY_LABEL = { "low": "Low", "med": "Medium", "high": "High" };
+        var OPEN_STATUSES = ["new", "in-review", "in-progress"];
+
+        var state = { items: [] };
+
+        /* ---------- Toast ---------- */
+        var toastEl = document.getElementById("rec-toast");
+        var toastTimer = null;
+        function toast(msg, kind) {
+            toastEl.textContent = msg;
+            toastEl.classList.remove("rec-toast--success", "rec-toast--error");
+            if (kind) toastEl.classList.add("rec-toast--" + kind);
+            toastEl.classList.add("is-on");
+            if (toastTimer) clearTimeout(toastTimer);
+            toastTimer = setTimeout(function () { toastEl.classList.remove("is-on"); }, 3500);
+        }
+
+        /* ---------- Helpers ---------- */
+        function escHtml(s) {
+            return String(s == null ? "" : s)
+                .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+        }
+        function fmtTime(iso) {
+            if (!iso) return "";
+            try { return new Date(iso).toLocaleString(); } catch (e) { return iso; }
+        }
+        function whoAmI() {
+            var name = (document.getElementById("rec-name").value || "").trim();
+            return name || localStorage.getItem(BY_KEY) || "anon";
+        }
+
+        /* ---------- API ---------- */
+        function api(action, body) {
+            return fetch(API + "?action=" + encodeURIComponent(action), {
+                method: body ? "POST" : "GET",
+                credentials: "same-origin",
+                headers: body ? { "Content-Type": "application/json" } : undefined,
+                body: body ? JSON.stringify(body) : undefined
+            }).then(function (r) {
+                return r.json().then(function (j) { return { httpOk: r.ok, body: j }; });
+            }).then(function (res) {
+                if (!res.httpOk || !res.body || !res.body.ok) {
+                    throw new Error((res.body && res.body.error) || "HTTP error");
+                }
+                return res.body;
+            });
+        }
+
+        function refresh() {
+            return api("list").then(function (j) {
+                state.items = j.items || [];
+                document.getElementById("rec-alert").classList.add("d-none");
+                render();
+            }).catch(function (err) {
+                var el = document.getElementById("rec-alert");
+                el.textContent = "Couldn't load tickets (" + err.message + "). This page needs api/feedback.php — open it on the deployed site, not as a local file.";
+                el.classList.remove("d-none");
+            });
+        }
+
+        /* ---------- Render ---------- */
+        function visibleItems() {
+            var st = document.getElementById("rec-filter-status").value;
+            var ty = document.getElementById("rec-filter-type").value;
+            return state.items.filter(function (it) {
+                if (st === "open") { if (OPEN_STATUSES.indexOf(it.status) < 0) return false; }
+                else if (st !== "all" && it.status !== st) return false;
+                if (ty && it.type !== ty) return false;
+                return true;
+            });
+        }
+
+        function selectHtml(cls, current, labels) {
+            var h = '<select class="form-select form-select-sm ' + cls + '">';
+            Object.keys(labels).forEach(function (k) {
+                h += '<option value="' + k + '"' + (k === current ? " selected" : "") + ">" + labels[k] + "</option>";
+            });
+            return h + "</select>";
+        }
+
+        function ticketCell(it) {
+            var h = '<span class="rec-badge rec-badge--' + escHtml(it.type) + '">' + (TYPE_LABEL[it.type] || escHtml(it.type)) + "</span> ";
+            h += "<strong>" + escHtml(it.title) + "</strong>";
+            if (it.details) h += '<div class="rec-details small">' + escHtml(it.details) + "</div>";
+            if (it.images) {
+                h += '<div class="small mt-1">';
+                h += /^https?:\/\//i.test(it.images)
+                    ? '<a href="' + escHtml(it.images) + '" target="_blank" rel="noopener noreferrer">Screenshot / image</a>'
+                    : "Image: " + escHtml(it.images);
+                h += "</div>";
+            }
+            h += '<div class="rec-meta">by ' + escHtml(it.submittedBy) + " &middot; " + escHtml(fmtTime(it.submittedAt));
+            if (it.updatedAt && it.updatedAt !== it.submittedAt) h += " &middot; updated " + escHtml(fmtTime(it.updatedAt));
+            h += "</div>";
+
+            var comments = it.comments || [];
+            h += '<details class="rec-comments"><summary>' + comments.length + " comment" + (comments.length === 1 ? "" : "s") + "</summary><ul>";
+            comments.forEach(function (c) {
+                h += "<li><strong>" + escHtml(c.by) + "</strong> <span class=\"text-muted\">" + escHtml(fmtTime(c.at)) + "</span><br>" + escHtml(c.text) + "</li>";
+            });
+            h += "</ul>";
+            h += '<div class="d-flex gap-1 mt-1"><input type="text" class="form-control form-control-sm rec-comment-input" placeholder="Add a comment">' +
+                 '<button type="button" class="btn btn-sm btn-outline-secondary rec-comment-add">Add</button></div>';
+            h += "</details>";
+            return h;
+        }
+
+        function render() {
+            var items = visibleItems();
+            document.getElementById("rec-count").textContent = "(" + items.length + " of " + state.items.length + ")";
+            var tbody = document.getElementById("rec-tbody");
+            if (!items.length) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-muted">No tickets match the current filter.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = items.map(function (it) {
+                return '<tr data-id="' + escHtml(it.id) + '">' +
+                    "<td>" + ticketCell(it) + "</td>" +
+                    "<td>" + escHtml(it.page || "—") + "</td>" +
+                    "<td>" + selectHtml("rec-priority-select", it.priority, PRIORITY_LABEL) + "</td>" +
+                    '<td class="internal-only">' + selectHtml("rec-status-select", it.status, STATUS_LABEL) + "</td>" +
+                    '<td class="internal-only"><textarea class="form-control form-control-sm rec-notes" rows="3" placeholder="Staff only">' + escHtml(it.agentNotes) + "</textarea>" +
+                        '<button type="button" class="btn btn-sm btn-outline-secondary mt-1 rec-notes-save">Save notes</button></td>' +
+                    '<td><button type="button" class="btn btn-sm btn-link text-danger p-0 rec-delete">Delete</button></td>' +
+                    "</tr>";
+            }).join("");
+        }
+
+        /* ---------- Board actions (event delegation) ---------- */
+        function rowId(el) {
+            var tr = el.closest("tr[data-id]");
+            return tr ? tr.getAttribute("data-id") : null;
+        }
+
+        function patch(id, body, okMsg) {
+            body.id = id;
+            return api("update", body).then(function (j) {
+                var i = state.items.findIndex(function (x) { return x.id === id; });
+                if (i >= 0) state.items[i] = j.item;
+                render();
+                toast(okMsg, "success");
+            }).catch(function (err) {
+                toast("Save failed: " + err.message, "error");
+                render(); /* revert the control to server state */
+            });
+        }
+
+        var tbody = document.getElementById("rec-tbody");
+        tbody.addEventListener("change", function (e) {
+            var id = rowId(e.target);
+            if (!id) return;
+            if (e.target.classList.contains("rec-status-select"))   patch(id, { status: e.target.value }, "Status updated");
+            if (e.target.classList.contains("rec-priority-select")) patch(id, { priority: e.target.value }, "Priority updated");
+        });
+        tbody.addEventListener("click", function (e) {
+            var id = rowId(e.target);
+            if (!id) return;
+            if (e.target.classList.contains("rec-notes-save")) {
+                var ta = e.target.closest("td").querySelector(".rec-notes");
+                patch(id, { agentNotes: ta.value }, "Dev notes saved");
+            }
+            if (e.target.classList.contains("rec-comment-add")) {
+                var input = e.target.closest("details").querySelector(".rec-comment-input");
+                var text = (input.value || "").trim();
+                if (!text) return;
+                patch(id, { comment: text, commentBy: whoAmI() }, "Comment added");
+            }
+            if (e.target.classList.contains("rec-delete")) {
+                if (!window.confirm("Delete this ticket permanently?")) return;
+                api("delete", { id: id }).then(function () {
+                    state.items = state.items.filter(function (x) { return x.id !== id; });
+                    render();
+                    toast("Ticket deleted", "success");
+                }).catch(function (err) { toast("Delete failed: " + err.message, "error"); });
             }
         });
+
+        /* ---------- Submit form ---------- */
+        document.getElementById("rec-form").addEventListener("submit", function (e) {
+            e.preventDefault();
+            var name = document.getElementById("rec-name").value.trim();
+            var body = {
+                submittedBy: name,
+                type: document.getElementById("rec-type").value,
+                priority: document.getElementById("rec-priority").value,
+                page: document.getElementById("recommendations-page-select").value,
+                title: document.getElementById("rec-title").value.trim(),
+                details: document.getElementById("rec-details").value.trim(),
+                images: document.getElementById("rec-images").value.trim()
+            };
+            if (!name || !body.title || !body.details) { toast("Name, title and details are required", "error"); return; }
+
+            var btn = document.getElementById("rec-submit");
+            btn.disabled = true;
+            api("add", body).then(function (j) {
+                localStorage.setItem(BY_KEY, name);
+                state.items.unshift(j.item);
+                document.getElementById("rec-form").reset();
+                document.getElementById("rec-name").value = name;
+                render();
+                toast("Ticket submitted — thanks!", "success");
+            }).catch(function (err) {
+                toast("Submit failed: " + err.message, "error");
+            }).then(function () { btn.disabled = false; });
+        });
+
+        /* ---------- Filters / init ---------- */
+        document.getElementById("rec-filter-status").addEventListener("change", render);
+        document.getElementById("rec-filter-type").addEventListener("change", render);
+        document.getElementById("rec-refresh").addEventListener("click", refresh);
+
+        var savedName = localStorage.getItem(BY_KEY);
+        if (savedName) document.getElementById("rec-name").value = savedName;
+        refresh();
+    })();
     </script>
 </body>
 </html>
