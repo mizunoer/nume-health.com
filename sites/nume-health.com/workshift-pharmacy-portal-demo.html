@@ -1,14 +1,14 @@
 <meta charset="utf-8">
-<title>Mythic Rx · Workshift Pharmacy Portal — Demo</title>
+<title>Numi Health · Care Portal — Demo</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 :root{
-  /* Mythic-Rx pharmacy-green brand anchor (--mrx-* tokens) */
-  --mrx-blue:#1E6B3A; --mrx-primary-dark:#154D29; --mrx-navy:#072517;
-  --mrx-teal:#0B3A20; --mrx-cyan:#0F4D2E; --mrx-accent-dark:#062012;
-  --mrx-gold:#F8DE70; --mrx-mint:#CFE3CC; --mrx-offwhite:#F6FAF5;
-  --mrx-border:#DADAD3; --mrx-slate:#2E2E2E; --mrx-slate-gray:#4A4A4A; --mrx-white:#fff;
-  --shadow:0 1px 2px rgba(7,37,23,.06),0 4px 16px rgba(7,37,23,.06);
+  /* Numi brand palette (--nume-* values mapped onto the layout tokens) */
+  --mrx-blue:#0077B6; --mrx-primary-dark:#005f92; --mrx-navy:#101D31;
+  --mrx-teal:#0fa898; --mrx-cyan:#00A6C8; --mrx-accent-dark:#0B1B2B;
+  --mrx-gold:#12C8B8; --mrx-mint:#D8F7F2; --mrx-offwhite:#F7FAFC;
+  --mrx-border:#E2E8F0; --mrx-slate:#2E3E50; --mrx-slate-gray:#7A8794; --mrx-white:#fff;
+  --shadow:0 1px 2px rgba(16,29,49,.06),0 4px 16px rgba(16,29,49,.06);
   --mono:'SF Mono',ui-monospace,'Cascadia Code','Roboto Mono',Menlo,Consolas,monospace;
   --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
 }
@@ -92,7 +92,7 @@ tr.rowlink:hover td{background:var(--mrx-offwhite);cursor:pointer}
 .src{font-family:var(--mono);font-size:11px;color:var(--mrx-slate-gray)}
 
 /* ---- inspector ---- */
-.inspector{background:var(--mrx-accent-dark);color:#cfe3cc;overflow:auto;padding:16px 16px 40px;border-left:1px solid #0a2a18}
+.inspector{background:var(--mrx-accent-dark);color:#cfe9f7;overflow:auto;padding:16px 16px 40px;border-left:1px solid #12283f}
 .inspector h3{color:var(--mrx-gold);font-size:12px;text-transform:uppercase;letter-spacing:.8px;margin:2px 0 4px}
 .inspector .lead{color:#9fc3a9;font-size:12px;margin:0 0 14px}
 .obj{background:#0a2a18;border:1px solid #14442a;border-radius:9px;padding:11px 12px;margin-bottom:11px}
@@ -128,13 +128,42 @@ tr.rowlink:hover td{background:var(--mrx-offwhite);cursor:pointer}
 .tag{font-size:10px;font-family:var(--mono);background:var(--mrx-offwhite);border:1px solid var(--mrx-border);border-radius:5px;padding:1px 6px;color:var(--mrx-slate-gray)}
 .hipaa td,.hipaa th{font-size:12px}
 .dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px}
+
+/* ---- dev-detail toggle: hide integration/dev chrome unless enabled ---- */
+body:not(.showdev) .tag, body:not(.showdev) .badge.dt, body:not(.showdev) .src,
+body:not(.showdev) .pgnote, body:not(.showdev) .devbit, body:not(.showdev) #btnInsp {display:none}
+.devtoggle{display:flex;align-items:center;gap:7px;cursor:pointer;user-select:none}
+.devtoggle input{accent-color:var(--mrx-gold);width:14px;height:14px}
+
+/* ---- start call ---- */
+.callbar{display:flex;justify-content:flex-end;margin:0 0 14px}
+.btn-call{background:var(--mrx-blue);color:#fff;border:none;border-radius:999px;padding:11px 24px;font-weight:700;font-size:13.5px;display:flex;gap:9px;align-items:center;box-shadow:var(--shadow);cursor:pointer}
+.btn-call:hover{background:var(--mrx-primary-dark)}
+
+/* ---- provider preferences ---- */
+.prefrow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 14px;border-bottom:1px solid var(--mrx-border);font-size:13.5px}
+.prefrow:last-child{border-bottom:none}
+.prefrow .pl{color:var(--mrx-slate)}
+.prefrow .pl small{display:block;color:var(--mrx-slate-gray);font-size:11.5px}
+.prefrow .pv{font-weight:600;color:var(--mrx-navy);text-align:right}
+.tog{width:36px;height:20px;border-radius:999px;background:var(--mrx-teal);position:relative;flex:none;display:inline-block;vertical-align:middle}
+.tog.off{background:var(--mrx-border)}
+.tog::after{content:'';position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.tog.off::after{right:auto;left:2px}
+.daychips{display:flex;gap:6px;flex-wrap:wrap}
+.daychip{font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:8px;background:var(--mrx-mint);color:var(--mrx-primary-dark);border:1px solid var(--mrx-teal)}
+.daychip.off{background:var(--mrx-offwhite);color:var(--mrx-slate-gray);border-color:var(--mrx-border);font-weight:500;text-decoration:line-through}
+.usechips{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.usechip{font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:#e7f0ff;color:#2451b3;border:1px solid #c7dbff}
+.usechip.ls{background:#e6f7f2;color:#0a7d5f;border-color:#9fe3cf}
 </style>
 
 <div class="app">
   <div class="topbar">
-    <div class="brand"><span class="rx">℞</span> Mythic&nbsp;Rx <small id="orgid">org: org_mythicrx · powered by Workshift</small></div>
+    <div class="brand"><span class="rx">N</span> Numi&nbsp;Health <small id="orgid">powered by Workshift</small></div>
     <div class="appswitch" id="appswitch"></div>
     <div class="spacer"></div>
+    <label class="toolbtn devtoggle"><input type="checkbox" id="devToggle"> Dev detail</label>
     <button class="toolbtn" id="btnWf">⚙ Rx Lifecycle Workflow</button>
     <button class="toolbtn" id="btnInsp">◧ Config Inspector</button>
   </div>
@@ -154,7 +183,7 @@ tr.rowlink:hover td{background:var(--mrx-offwhite);cursor:pointer}
      PermissionGroup · ResourceView · App · Workflow(Node)
    Attribute .src = the PioneerRx API field it syncs from (integration map).
 ============================================================================ */
-const ORG = {id:'org_mythicrx', name:'Mythic Rx Pharmacy'};
+const ORG = {id:'org_numi', name:'Numi Health'};
 
 // AttributeDataType (admin.v1) — the real enum
 const DT = {ASSOCIATION:'ASSOCIATION',DATETIME:'DATETIME',EMAIL:'EMAIL',NUMBER:'NUMBER',
@@ -191,6 +220,7 @@ const RESOURCE_TYPES = {
   appointment:{key:'appointment',name:'Appointment',plural:'Appointments',icon:'📅',
     attrs:[
       {key:'dateTime',name:'Date & time',dt:DT.DATETIME,sens:'ops',src:'Workshift scheduling'},
+      {key:'patientName',name:'Patient',dt:DT.STRING,sens:'idn',src:'GetPatient (linked record)'},
       {key:'apptType',name:'Type',dt:DT.SELECT,sens:'ops',src:'Workshift scheduling (Initial / Follow-up / Ad hoc)'},
       {key:'channel',name:'Channel',dt:DT.SELECT,sens:'ops',src:'Workshift scheduling (Video / Phone)'},
       {key:'apptStatus',name:'Status',dt:DT.STATUS,sens:'ops',src:'Workshift scheduling'},
@@ -276,7 +306,7 @@ const ROLES = {
     lawful:'Treatment', desc:'Prescribing clinician — appointments, marketing-intake answers, full clinical PHI. No card data.',
     pg:['appointment','patient','intake','prescription','condition','allergy'],
     views:{
-      appointment:{show:['dateTime','apptType','channel','apptStatus','providerName','reason','intakeRef'],mask:{}},
+      appointment:{show:['dateTime','patientName','apptType','channel','apptStatus','providerName','reason','intakeRef'],mask:{}},
       patient:{show:['fullName','personID','dob','phone','email','address','status'],mask:{}},
       intake:{show:['submitted','state','primaryGoal','healthHistory','currentMeds','glp1History','payPreference','sourceCampaign'],mask:{}},
       prescription:{show:['rxNumber','medicationPrescribed','medicationDispensed','rxStatus','daysSupply','dawCode','scriptType','expirationDate'],mask:{}},
@@ -334,9 +364,9 @@ const ROLES = {
 
 // Apps (admin.v1 App.participant_type) — multi-product / linked customer view (items 2 & 6)
 const APPS = [
-  {app_id:'app_staff',name:'Pharmacy Staff',participant_type:'staff',roles:['provider','pharmacist','tech','billing','marketing']},
+  {app_id:'app_staff',name:'Care Team',participant_type:'staff',roles:['provider','pharmacist','tech','billing','marketing']},
   {app_id:'app_patient',name:'Patient Portal',participant_type:'patient',roles:['patient']},
-  {app_id:'app_numi',name:'Numi DTC (product 2)',participant_type:'consumer',roles:[],soon:true},
+  {app_id:'app_mrx',name:'Mythic Rx B2B (product 2)',participant_type:'consumer',roles:[],soon:true},
 ];
 
 /* ---- resource instances (data{} Structs) ---- */
@@ -348,9 +378,9 @@ const RESOURCES = {
     {id:'pat_ruiz',data:{fullName:'Alina Ruiz',personID:'PX-40877',dob:'1994-06-27',ssn:'559-11-2043',medicareId:'—',phone:'+1 385 555 0170',email:'aruiz@example.com',address:'14 S State St, SLC UT 84111',status:'New'}},
   ],
   appointment:[
-    {id:'ap_1',patient:PT,data:{dateTime:'Tomorrow 10:00 AM',apptType:'Follow-up',channel:'Video',apptStatus:'Confirmed',providerName:'Dr. K. Ortiz',reason:'GLP-1 dose check-in — week 8',intakeRef:'IN-2201'}},
-    {id:'ap_2',patient:'pat_ruiz',data:{dateTime:'Today 3:30 PM',apptType:'Ad hoc',channel:'Video',apptStatus:'Requested',providerName:'Next available (licensed: UT)',reason:'New patient — weight-care eligibility',intakeRef:'IN-2214'}},
-    {id:'ap_3',patient:'pat_dwyer',data:{dateTime:'Fri 9:15 AM',apptType:'Initial consult',channel:'Phone',apptStatus:'Confirmed',providerName:'Dr. K. Ortiz',reason:'Tirzepatide start — history review',intakeRef:'IN-2209'}},
+    {id:'ap_1',patient:PT,data:{dateTime:'Tomorrow 10:00 AM',patientName:'Marissa Chen',apptType:'Follow-up',channel:'Video',apptStatus:'Confirmed',providerName:'Dr. K. Ortiz',reason:'GLP-1 dose check-in — week 8',intakeRef:'IN-2201'}},
+    {id:'ap_2',patient:'pat_ruiz',data:{dateTime:'Today 3:30 PM',patientName:'Alina Ruiz',apptType:'Ad hoc',channel:'Video',apptStatus:'Requested',providerName:'Next available (licensed: UT)',reason:'New patient — weight-care eligibility',intakeRef:'IN-2214'}},
+    {id:'ap_3',patient:'pat_dwyer',data:{dateTime:'Fri 9:15 AM',patientName:'Theo Dwyer',apptType:'Initial consult',channel:'Phone',apptStatus:'Confirmed',providerName:'Dr. K. Ortiz',reason:'Tirzepatide start — history review',intakeRef:'IN-2209'}},
   ],
   intake:[
     {id:'in_1',patient:'ap_1',data:{submitted:'2026-05-28',state:'UT',primaryGoal:'Lose 25 lbs, improve A1C',healthHistory:'T2 diabetes · no thyroid ca · no MEN2 · no pancreatitis',currentMeds:'Metformin 500mg BID',glp1History:'Currently on semaglutide (8 wks)',payPreference:'Cash-pay, no insurance',sourceCampaign:'cmp_glp1_refill_q2 (de-id)'}},
@@ -383,7 +413,7 @@ const RESOURCES = {
     {id:'cp_3',contact:'pat_ruiz',data:{contactRef:'ct_77d0…e9',segment:'Awaiting first fill (de-id)',smsMarketingOptIn:'Opted out',emailMarketingOptIn:'Opted in',lastConsentAt:'2026-06-29'}},
   ],
   message:[
-    {id:'ms_1',patient:PT,data:{channel:'SMS',template:'rx_ready',body:'Your Mythic Rx order RX-208012 is ready for pickup.',status:'Delivered',sentAt:'2026-06-27 10:04'}},
+    {id:'ms_1',patient:PT,data:{channel:'SMS',template:'rx_ready',body:'Your Numi order RX-208012 is ready.',status:'Delivered',sentAt:'2026-06-27 10:04'}},
     {id:'ms_2',patient:PT,data:{channel:'SMS',template:'refill_due',body:'Time to refill. Reply YES to authorize RX-208841.',status:'Delivered',sentAt:'2026-07-02 09:00'}},
   ],
 };
@@ -407,10 +437,10 @@ const WORKFLOW = {
      node:'NODE_TYPE_RESOURCE',msg:null},
     {who:'pharmacist',role:'Pharmacist',lawful:'Treatment',exec:'EXECUTION_STATUS_RUNNING',
      mut:'rxStatus: <b>Fill in Progress</b>',
-     node:'NODE_TYPE_WEBHOOK',msg:{ch:'SMS · template rx_in_progress',body:'Mythic Rx: RX-208841 is being prepared. No PHI beyond Rx # in message body.'}},
+     node:'NODE_TYPE_WEBHOOK',msg:{ch:'SMS · template rx_in_progress',body:'Numi: RX-208841 is being prepared. No PHI beyond Rx # in message body.'}},
     {who:'system',role:'Workshift',lawful:'Operations',exec:'EXECUTION_STATUS_PENDING',
      mut:'rxStatus: <b>Ready for Pickup</b>',
-     node:'NODE_TYPE_WEBHOOK',msg:{ch:'SMS · template rx_ready',body:'Your Mythic Rx order RX-208841 is ready. Reply HELP for support.'}},
+     node:'NODE_TYPE_WEBHOOK',msg:{ch:'SMS · template rx_ready',body:'Your Numi order RX-208841 is ready. Reply HELP for support.'}},
     {who:'billing',role:'Billing',lawful:'Payment',exec:'EXECUTION_STATUS_PENDING',
      mut:'claim.arBalance charged to tokenized card <span class="mono">tok_…9174</span>',
      node:'NODE_TYPE_RESOURCE',msg:null},
@@ -478,21 +508,26 @@ function renderRail(){
                : rt.plural;
     return `<button class="navbtn ${on}" data-rtype="${k}"><span class="ic">${rt.icon}</span>${label}</button>`;
   }).join('');
+  if(a.participant_type==='staff' && state.role==='provider'){
+    h += `<h4>Settings</h4><button class="navbtn ${state.rtype==='_prefs'?'on':''}" data-rtype="_prefs"><span class="ic">⚙</span>My practice</button>`;
+  }
   h += `<div class="pgnote"><b>PermissionGroup</b><br><span class="src">${role.role_id}</span><br>resource_type_ids:<br><span class="src">[${role.pg.join(', ')}]</span></div>`;
   el('#rail').innerHTML=h;
 }
 
 /* ---------- MAIN: list + detail ---------- */
 function renderMain(){
-  const role=cur(), rtypeKey=state.rtype, rt=RT(rtypeKey);
-  if(!role.views[rtypeKey]){ // safety: pick first permitted
+  const role=cur(), rtypeKey=state.rtype;
+  if(rtypeKey==='_prefs' && state.role==='provider'){ el('#main').innerHTML=renderPrefs(); return; }
+  const rt=RT(rtypeKey);
+  if(!rt || !role.views[rtypeKey]){ // safety: pick first permitted
     state.rtype=permittedTypes(role)[0]; return renderAll();
   }
   const scoped = scopedResources(rtypeKey);
   let h = `<div class="crumbs"><a data-nav="list">${rt.plural}</a>${state.detailId?` <span>›</span> <span>${detailTitle(rtypeKey,state.detailId)}</span>`:''}</div>`;
   h += `<div class="pagehead"><div>
       <h1>${rt.icon} ${state.detailId?detailTitle(rtypeKey,state.detailId):rt.plural}</h1>
-      <div class="sub">${role.icon} ${role.name} view · ResourceView <code class="k">view_${rtypeKey}_${state.role}</code></div>
+      <div class="sub">${role.icon} ${role.name} view<span class="devbit"> · ResourceView <code class="k">view_${rtypeKey}_${state.role}</code></span></div>
     </div><div class="lawful"><b>Lawful basis:</b> ${role.lawful}</div></div>`;
 
   if(state.role==='marketing'){
@@ -502,6 +537,9 @@ function renderMain(){
   if(!state.detailId){
     h += renderList(rtypeKey, scoped, role);
   }else{
+    if(rtypeKey==='appointment' && app().participant_type==='staff'){
+      h += `<div class="callbar"><button class="btn-call" data-call="${state.detailId}">▶&nbsp; Start call</button></div>`;
+    }
     h += renderDetail(rtypeKey, state.detailId, role);
   }
   el('#main').innerHTML=h;
@@ -623,7 +661,7 @@ function renderWorkflow(){
   el('#body').classList.remove('insp');
   let h=`<div class="crumbs"><a data-nav="list">← Back to portal</a></div>
     <div class="pagehead"><div><h1>⚙ ${WORKFLOW.name}</h1>
-      <div class="sub">WorkflowService · type <code class="k">${WORKFLOW.type}</code> · resource_type <code class="k">${WORKFLOW.resource_type_id}</code></div></div>
+      <div class="sub">Rx lifecycle walkthrough<span class="devbit"> · WorkflowService · type <code class="k">${WORKFLOW.type}</code> · resource_type <code class="k">${WORKFLOW.resource_type_id}</code></span></div></div>
       <div class="lawful"><b>One Rx, every role.</b> RX-208841 travels the org — each hop is a real permission + a real node.</div></div>`;
 
   h+=`<div class="card" style="padding:14px 16px"><div class="sectitle" style="padding:0 0 4px">Workflow graph <span class="tag">workflow.v1 Node</span></div><div class="graph">`;
@@ -650,6 +688,104 @@ function renderWorkflow(){
   main.innerHTML=h;
 }
 
+/* ---------- PROVIDER PREFERENCES (My practice) ---------- */
+function renderPrefs(){
+  const pill = (t,cls)=>`<span class="pill ${cls}">${t}</span>`;
+  const uses = (...u)=>`<span class="usechips">${u.map(x=>`<span class="usechip ${x==='LegitScript'?'ls':''}">${x}</span>`).join('')}</span>`;
+  let h = `<div class="crumbs"><a data-nav="list">← Back</a></div>
+    <div class="pagehead"><div><h1>⚙ My practice — Dr. K. Ortiz</h1>
+      <div class="sub">Availability, credentials &amp; ad-compliance profile</div></div>
+      <div class="lawful"><b>Why we ask:</b> credentials feed LegitScript certification and Google/Meta ad verification.</div></div>`;
+
+  h += `<div class="card"><div class="sectitle">📅 Availability &amp; scheduling</div>
+    <div class="prefrow"><div class="pl">Weekly schedule<small>patients only see slots inside these windows</small></div>
+      <div class="daychips">
+        <span class="daychip">Mon 8–4</span><span class="daychip">Tue 8–4</span><span class="daychip off">Wed</span>
+        <span class="daychip">Thu 8–4</span><span class="daychip">Fri 8–12</span><span class="daychip off">Sat</span><span class="daychip off">Sun</span>
+      </div></div>
+    <div class="prefrow"><div class="pl">Accept ad hoc appointments<small>same-day requests from marketing campaigns</small></div>
+      <div class="pv"><span class="tog"></span> &nbsp;max 4 / day</div></div>
+    <div class="prefrow"><div class="pl">Buffer between visits</div><div class="pv">10 min</div></div>
+    <div class="prefrow"><div class="pl">Auto-pause campaign offers<small>stop offering my slots when my day is nearly full</small></div>
+      <div class="pv"><span class="tog"></span> &nbsp;at 80% booked</div></div>
+    <div class="prefrow"><div class="pl">Campaign visibility<small>ads may only offer my open slots while real availability remains — protects provider time per lead</small></div>
+      <div class="pv"><span class="tog"></span> &nbsp;availability &gt; 20%</div></div>
+  </div>`;
+
+  h += `<div class="card" style="margin-top:16px"><div class="sectitle">🪪 Credentials &amp; verification</div>
+    <div class="prefrow"><div class="pl">NPI<small>1234567890</small></div><div class="pv">${pill('Verified','ok')} ${uses('LegitScript','Google Ads','Meta Ads')}</div></div>
+    <div class="prefrow"><div class="pl">DEA registration<small>XO1234567 · exp 06/2027</small></div><div class="pv">${pill('Verified','ok')} ${uses('LegitScript')}</div></div>
+    <div class="prefrow"><div class="pl">State license — Utah<small>#345678 · exp 03/2027</small></div><div class="pv">${pill('Active','ok')} ${uses('LegitScript','Google Ads','Meta Ads')}</div></div>
+    <div class="prefrow"><div class="pl">State license — Nevada<small>#98765 · received 07/2026</small></div><div class="pv">${pill('Pending review','txn')} ${uses('LegitScript')}</div></div>
+    <div class="prefrow"><div class="pl">State license — Idaho<small>#22114 · exp 11/2026</small></div><div class="pv">${pill('Active','ok')} ${uses('LegitScript')}</div></div>
+    <div class="prefrow"><div class="pl">Board certification<small>ABFM — Family Medicine · exp 2028</small></div><div class="pv">${pill('Verified','ok')} ${uses('LegitScript')}</div></div>
+    <div class="prefrow"><div class="pl">Malpractice coverage<small>$1M / $3M · exp 12/2026</small></div><div class="pv">${pill('On file','ok')} ${uses('LegitScript')}</div></div>
+    <div class="prefrow"><div class="pl">Public profile<small>headshot + bio — shown on the provider directory that ad campaigns link to</small></div><div class="pv">${pill('Published','ok')} ${uses('Directory','Google Ads','Meta Ads')}</div></div>
+  </div>`;
+
+  h += `<div class="notice" style="margin-top:16px"><b>How this keeps campaigns compliant:</b> LegitScript certifies the organization and its prescribers (licensure verified above), which unlocks Google and Meta ad campaigns and compliant payment processing. Ad creative names the <b>licensed states</b> and links to the <b>provider directory</b> — individual providers are never named in ads. Availability controls above decide when campaigns may offer this provider's open slots.</div>`;
+  return h;
+}
+
+/* ---------- CALL CONSOLE (dummy telehealth window) ---------- */
+function openCallConsole(apptId){
+  const ap = (RESOURCES.appointment||[]).find(a=>a.id===apptId); if(!ap) return;
+  const pt = (RESOURCES.patient||[]).find(p=>p.id===ap.patient);
+  const ik = (RESOURCES.intake||[]).find(i=>i.patient===apptId);
+  const als = (RESOURCES.allergy||[]).filter(a=>a.patient===ap.patient);
+  const cns = (RESOURCES.condition||[]).filter(c=>c.patient===ap.patient);
+  const rxs = (RESOURCES.prescription||[]).filter(r=>r.patient===ap.patient);
+  const initials = (ap.data.patientName||'?').split(' ').map(w=>w[0]).join('');
+  const fld = (l,v)=>`<div style="margin-bottom:9px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#7A8794;font-weight:600">${l}</div><div style="font-size:13.5px;color:#2E3E50">${v??'—'}</div></div>`;
+  const card = (title,body)=>`<div style="background:#fff;border:1px solid #E2E8F0;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;min-height:0"><div style="padding:10px 14px;font-weight:700;font-size:13px;color:#101D31;border-bottom:1px solid #E2E8F0;background:#F7FAFC">${title}</div><div style="padding:12px 14px;overflow:auto">${body}</div></div>`;
+  const yn = n=>`<label style="margin-right:10px"><input type="radio" name="${n}"> Yes</label><label><input type="radio" name="${n}" checked> No</label>`;
+
+  const html = `<!doctype html><html><head><meta charset="utf-8"><title>Numi Call — ${ap.data.patientName}</title></head>
+  <body style="margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:#F7FAFC;height:100vh;display:flex;flex-direction:column">
+    <div style="background:#101D31;color:#fff;padding:10px 18px;display:flex;align-items:center;gap:14px">
+      <span style="background:#12C8B8;color:#0B1B2B;width:26px;height:26px;border-radius:7px;display:grid;place-items:center;font-weight:800">N</span>
+      <b>Numi Telehealth</b><span style="opacity:.7">· ${ap.data.apptType} · ${ap.data.patientName}</span>
+      <span id="timer" style="margin-left:auto;font-family:monospace;font-size:14px;background:rgba(255,255,255,.1);padding:3px 10px;border-radius:6px">00:00</span>
+      <button onclick="alert('Muted (demo)')" style="background:rgba(255,255,255,.12);color:#fff;border:none;border-radius:8px;padding:7px 14px;cursor:pointer">🎙 Mute</button>
+      <button onclick="alert('Camera toggled (demo)')" style="background:rgba(255,255,255,.12);color:#fff;border:none;border-radius:8px;padding:7px 14px;cursor:pointer">🎥 Video</button>
+      <button onclick="window.close()" style="background:#e5484d;color:#fff;border:none;border-radius:8px;padding:7px 16px;font-weight:700;cursor:pointer">⏻ End call</button>
+    </div>
+    <div style="background:#0B1B2B;color:#9db4c8;display:flex;align-items:center;justify-content:center;gap:14px;padding:14px">
+      <span style="width:52px;height:52px;border-radius:50%;background:#12C8B8;color:#0B1B2B;display:grid;place-items:center;font-weight:800;font-size:19px">${initials}</span>
+      <span>Connecting secure video… <b style="color:#fff">(demo console — no real call)</b></span>
+    </div>
+    <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr auto;gap:14px;padding:14px;min-height:0">
+      ${card('👤 Patient information',
+        fld('Name', ap.data.patientName)+fld('Date of birth', pt?.data.dob)+fld('Phone', pt?.data.phone)+fld('Address', pt?.data.address)
+        +fld('Allergies', als.length?als.map(a=>`<span style="background:#fde8ea;color:#a12633;border:1px solid #f5c2c8;border-radius:999px;padding:2px 9px;font-size:12px;font-weight:600;margin-right:5px">${a.data.substance} — ${a.data.severity}</span>`).join(''):'None recorded')
+        +fld('Conditions', cns.length?cns.map(c=>c.data.name).join('; '):'None recorded')
+        +fld('Active prescriptions', rxs.length?rxs.map(r=>`${r.data.rxNumber} · ${r.data.medicationPrescribed} (${r.data.rxStatus})`).join('<br>'):'None'))}
+      ${card('📋 Intake questionnaire <span style="font-weight:500;color:#7A8794">(from marketing funnel — consent on file)</span>',
+        ik?(fld('Submitted', ik.data.submitted)+fld('State', ik.data.state)+fld('Primary goal', ik.data.primaryGoal)+fld('Health history flags', ik.data.healthHistory)+fld('Current medications', ik.data.currentMeds)+fld('GLP-1 history', ik.data.glp1History)+fld('Payment preference', ik.data.payPreference)+fld('Source campaign', ik.data.sourceCampaign)):'No intake on file')}
+      <div style="grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        ${card('🩺 Diagnostic questionnaire (GLP-1 safety screen)',
+          `<div style="font-size:13px;color:#2E3E50;display:flex;flex-direction:column;gap:9px">
+            <div>Personal/family history of medullary thyroid carcinoma or MEN2? &nbsp;${yn('q1')}</div>
+            <div>History of pancreatitis? &nbsp;${yn('q2')}</div>
+            <div>Pregnant, planning pregnancy, or breastfeeding? &nbsp;${yn('q3')}</div>
+            <div>Active gallbladder disease? &nbsp;${yn('q4')}</div>
+            <div>Current GI symptoms &nbsp;<select><option>None</option><option>Mild</option><option>Moderate</option><option>Severe</option></select></div>
+          </div>`)}
+        ${card('📝 Clinical notes',
+          `<textarea placeholder="Encounter notes…" style="width:100%;height:96px;border:1px solid #E2E8F0;border-radius:8px;padding:10px;font-family:inherit;font-size:13px;resize:vertical;box-sizing:border-box"></textarea>
+           <div style="display:flex;gap:8px;margin-top:8px;justify-content:flex-end">
+             <button onclick="alert('Marked reviewed (demo)')" style="background:#fff;border:1px solid #E2E8F0;border-radius:999px;padding:8px 16px;cursor:pointer">Mark reviewed</button>
+             <button onclick="alert('Saved to encounter (demo)')" style="background:#0077B6;color:#fff;border:none;border-radius:999px;padding:8px 18px;font-weight:700;cursor:pointer">Save note</button>
+           </div>`)}
+      </div>
+    </div>
+    <script>var s=0;setInterval(function(){s++;var m=String(Math.floor(s/60)).padStart(2,'0');var x=String(s%60).padStart(2,'0');document.getElementById('timer').textContent=m+':'+x;},1000);<\/script>
+  </body></html>`;
+  const w = window.open('','numiCallConsole','width=1320,height=900');
+  if(!w){ alert('Popup blocked — allow popups for this page to open the call console.'); return; }
+  w.document.open(); w.document.write(html); w.document.close();
+}
+
 /* ---------- ORCHESTRATION ---------- */
 function renderAll(){
   el('#body').classList.toggle('insp', state.insp && !state.wf);
@@ -662,6 +798,8 @@ function renderAll(){
 }
 
 document.addEventListener('click',e=>{
+  const c=e.target.closest('[data-call]');
+  if(c){ openCallConsole(c.dataset.call); return; }
   const t=e.target.closest('[data-app],[data-role],[data-rtype],[data-open],[data-nav]');
   if(t){
     if(t.dataset.app){ state.appId=t.dataset.app; const a=app(); state.role=a.roles[0]; state.rtype=permittedTypes(ROLES[state.role])[0]; state.detailId=null; state.wf=false; }
@@ -673,6 +811,10 @@ document.addEventListener('click',e=>{
   }
 });
 el('#btnInsp').onclick=()=>{ state.insp=!state.insp; if(state.insp) state.wf=false; renderAll(); };
+el('#devToggle').onchange=e=>{
+  document.body.classList.toggle('showdev', e.target.checked);
+  if(!e.target.checked && state.insp){ state.insp=false; renderAll(); }
+};
 el('#btnWf').onclick=()=>{ state.wf=!state.wf; if(state.wf) state.insp=false; renderAll(); };
 
 renderAll();
