@@ -188,6 +188,28 @@ const RESOURCE_TYPES = {
       {key:'scriptType',name:'Script type',dt:DT.SELECT,sens:'ops',src:'RxEvent.ScriptType'},
       {key:'expirationDate',name:'Expiration',dt:DT.DATETIME,sens:'ops',src:'RxEvent.ExpirationDate'},
     ]},
+  appointment:{key:'appointment',name:'Appointment',plural:'Appointments',icon:'📅',
+    attrs:[
+      {key:'dateTime',name:'Date & time',dt:DT.DATETIME,sens:'ops',src:'Workshift scheduling'},
+      {key:'apptType',name:'Type',dt:DT.SELECT,sens:'ops',src:'Workshift scheduling (Initial / Follow-up / Ad hoc)'},
+      {key:'channel',name:'Channel',dt:DT.SELECT,sens:'ops',src:'Workshift scheduling (Video / Phone)'},
+      {key:'apptStatus',name:'Status',dt:DT.STATUS,sens:'ops',src:'Workshift scheduling'},
+      {key:'providerName',name:'Provider',dt:DT.STRING,sens:'ops',src:'Workshift provider directory'},
+      {key:'reason',name:'Reason',dt:DT.STRING,sens:'cln',src:'Workshift scheduling'},
+      {key:'intakeRef',name:'Intake',dt:DT.STRING,sens:'sys',src:'link → marketing questionnaire'},
+    ]},
+  intake:{key:'intake',name:'Intake questionnaire',plural:'Intake questionnaires',icon:'📋',
+    attrs:[
+      {key:'submitted',name:'Submitted',dt:DT.DATETIME,sens:'ops',src:'nume-health.com assessment form'},
+      {key:'state',name:'State',dt:DT.SELECT,sens:'ops',src:'assessment: state eligibility'},
+      {key:'primaryGoal',name:'Primary goal',dt:DT.STRING,sens:'cln',src:'assessment: goal'},
+      {key:'healthHistory',name:'Health history flags',dt:DT.STRING,sens:'cln',src:'assessment: history checklist'},
+      {key:'currentMeds',name:'Current medications',dt:DT.STRING,sens:'cln',src:'assessment: medications'},
+      {key:'glp1History',name:'GLP-1 history',dt:DT.SELECT,sens:'cln',src:'assessment: prior GLP-1 use'},
+      {key:'payPreference',name:'Payment preference',dt:DT.SELECT,sens:'ops',src:'assessment: pay preference'},
+      {key:'smsOptIn',name:'SMS opt-in',dt:DT.SELECT,sens:'ops',src:'assessment: SMS consent checkbox'},
+      {key:'sourceCampaign',name:'Source campaign',dt:DT.STRING,sens:'ops',src:'Workshift attribution (de-identified)'},
+    ]},
   allergy:{key:'allergy',name:'Allergy',plural:'Allergies',icon:'⚠️',
     attrs:[
       {key:'substance',name:'Substance',dt:DT.STRING,sens:'cln',src:'GetPatientAllergy.substance'},
@@ -235,6 +257,8 @@ const RESOURCE_TYPES = {
 
 // Relationships (admin.v1 Relationship, ASSOCIATION_TYPE_MANY/ONE)
 const RELATIONSHIPS = [
+  {from:'patient',to:'appointment',assoc:'MANY'},
+  {from:'appointment',to:'intake',assoc:'ONE'},
   {from:'patient',to:'prescription',assoc:'MANY'},
   {from:'patient',to:'allergy',assoc:'MANY'},
   {from:'patient',to:'condition',assoc:'MANY'},
@@ -248,11 +272,13 @@ const RELATIONSHIPS = [
    show:[keys] visible · mask:{key:'ssn|pan'} shown obfuscated · (anything not listed = hidden) */
 const ROLES = {
   provider:{name:'Provider',icon:'🧑‍⚕️',role_id:'role_provider',
-    rights:['patients:read','prescriptions:read','conditions:read','allergies:read'],
-    lawful:'Treatment', desc:'Prescribing clinician — full clinical PHI, no card data.',
-    pg:['patient','prescription','condition','allergy'],
+    rights:['patients:read','appointments:write','intakes:read','prescriptions:read','conditions:read','allergies:read'],
+    lawful:'Treatment', desc:'Prescribing clinician — appointments, marketing-intake answers, full clinical PHI. No card data.',
+    pg:['appointment','patient','intake','prescription','condition','allergy'],
     views:{
+      appointment:{show:['dateTime','apptType','channel','apptStatus','providerName','reason','intakeRef'],mask:{}},
       patient:{show:['fullName','personID','dob','phone','email','address','status'],mask:{}},
+      intake:{show:['submitted','state','primaryGoal','healthHistory','currentMeds','glp1History','payPreference','sourceCampaign'],mask:{}},
       prescription:{show:['rxNumber','medicationPrescribed','medicationDispensed','rxStatus','daysSupply','dawCode','scriptType','expirationDate'],mask:{}},
       condition:{show:['name','icd10','onsetDate']},
       allergy:{show:['substance','reaction','severity']},
@@ -296,8 +322,9 @@ const ROLES = {
   patient:{name:'Patient',icon:'👤',role_id:'role_patient',
     rights:['self:read'],
     lawful:'Individual right of access', desc:'Sees only their own record.',
-    pg:['prescription','claim','payMethod','message'],
+    pg:['appointment','prescription','claim','payMethod','message'],
     views:{
+      appointment:{show:['dateTime','apptType','channel','apptStatus','providerName'],mask:{}},
       prescription:{show:['rxNumber','medicationPrescribed','rxStatus','daysSupply','refillNumber','expirationDate'],mask:{}},
       claim:{show:['billed','paid','arBalance']},
       payMethod:{show:['cardBrand','last4','expiry'],mask:{}},
@@ -319,6 +346,16 @@ const RESOURCES = {
     {id:PT,data:{fullName:'Marissa Chen',personID:'PX-40219',dob:'1989-03-14',ssn:'438-52-9174',medicareId:'—',phone:'+1 385 555 0142',email:'marissa.c@example.com',address:'220 W 900 S, SLC UT 84104',status:'Active'}},
     {id:'pat_dwyer',data:{fullName:'Theo Dwyer',personID:'PX-40114',dob:'1976-11-02',ssn:'221-40-8830',medicareId:'1EG4-TE5-MK72',phone:'+1 801 555 0199',email:'tdwyer@example.com',address:'88 Center St, Provo UT 84601',status:'Active'}},
     {id:'pat_ruiz',data:{fullName:'Alina Ruiz',personID:'PX-40877',dob:'1994-06-27',ssn:'559-11-2043',medicareId:'—',phone:'+1 385 555 0170',email:'aruiz@example.com',address:'14 S State St, SLC UT 84111',status:'New'}},
+  ],
+  appointment:[
+    {id:'ap_1',patient:PT,data:{dateTime:'Tomorrow 10:00 AM',apptType:'Follow-up',channel:'Video',apptStatus:'Confirmed',providerName:'Dr. K. Ortiz',reason:'GLP-1 dose check-in — week 8',intakeRef:'IN-2201'}},
+    {id:'ap_2',patient:'pat_ruiz',data:{dateTime:'Today 3:30 PM',apptType:'Ad hoc',channel:'Video',apptStatus:'Requested',providerName:'Next available (licensed: UT)',reason:'New patient — weight-care eligibility',intakeRef:'IN-2214'}},
+    {id:'ap_3',patient:'pat_dwyer',data:{dateTime:'Fri 9:15 AM',apptType:'Initial consult',channel:'Phone',apptStatus:'Confirmed',providerName:'Dr. K. Ortiz',reason:'Tirzepatide start — history review',intakeRef:'IN-2209'}},
+  ],
+  intake:[
+    {id:'in_1',patient:'ap_1',data:{submitted:'2026-05-28',state:'UT',primaryGoal:'Lose 25 lbs, improve A1C',healthHistory:'T2 diabetes · no thyroid ca · no MEN2 · no pancreatitis',currentMeds:'Metformin 500mg BID',glp1History:'Currently on semaglutide (8 wks)',payPreference:'Cash-pay, no insurance',sourceCampaign:'cmp_glp1_refill_q2 (de-id)'}},
+    {id:'in_2',patient:'ap_2',data:{submitted:'Today 2:41 PM',state:'UT',primaryGoal:'Lose 30 lbs for health',healthHistory:'None of the flagged conditions',currentMeds:'None',glp1History:'Never used',payPreference:'Cash-pay, no insurance',sourceCampaign:'cmp_meta_awareness_jul (de-id)'}},
+    {id:'in_3',patient:'ap_3',data:{submitted:'2026-07-12',state:'UT',primaryGoal:'Weight + energy',healthHistory:'T2 diabetes',currentMeds:'Lisinopril 10mg',glp1History:'Prior semaglutide, stopped 2025',payPreference:'Use insurance if possible',sourceCampaign:'cmp_switch_provider (de-id)'}},
   ],
   prescription:[
     {id:'rx_208841',patient:PT,data:{rxNumber:'RX-208841',medicationPrescribed:'Semaglutide 2.5mg/mL inj',medicationDispensed:'Semaglutide 2.5mg/mL (compounded, 503A)',rxStatus:'Fill in Progress',transactionStatus:'Waiting for Data Entry',daysSupply:28,refillNumber:2,dawCode:'0 — No product selection',scriptType:'Compounded',expirationDate:'2027-01-14'}},
@@ -386,7 +423,7 @@ const WORKFLOW = {
 /* ============================================================================
    STATE + RENDER
 ============================================================================ */
-const state = {appId:'app_staff', role:'provider', rtype:'patient', detailId:null, insp:false, wf:false};
+const state = {appId:'app_staff', role:'provider', rtype:'appointment', detailId:null, insp:false, wf:false};
 
 const el = s=>document.querySelector(s);
 const RT = k=>RESOURCE_TYPES[k];
@@ -433,7 +470,8 @@ function renderRail(){
   h += `<h4>${a.participant_type==='patient'?'My records':'Resource types'}</h4>`;
   h += permittedTypes(role).map(k=>{
     const rt=RT(k), on=k===state.rtype?'on':'';
-    const label = a.participant_type==='patient' && k==='prescription' ? 'My Prescriptions'
+    const label = a.participant_type==='patient' && k==='appointment' ? 'My Appointments'
+               : a.participant_type==='patient' && k==='prescription' ? 'My Prescriptions'
                : a.participant_type==='patient' && k==='payMethod' ? 'My Payment'
                : a.participant_type==='patient' && k==='claim' ? 'My Billing'
                : a.participant_type==='patient' && k==='message' ? 'My Messages'
@@ -480,7 +518,7 @@ function scopedResources(rtypeKey){
 function detailTitle(rtypeKey,id){
   const r=(RESOURCES[rtypeKey]||[]).find(x=>x.id===id); if(!r) return id;
   const d=r.data;
-  return d.fullName||d.rxNumber||d.substance||d.name||d.cardBrand||d.ndc||d.template||d.contactRef||id;
+  return d.fullName||d.rxNumber||d.reason||d.primaryGoal||d.substance||d.name||d.cardBrand||d.ndc||d.template||d.contactRef||id;
 }
 
 function renderList(rtypeKey, rows, role){
