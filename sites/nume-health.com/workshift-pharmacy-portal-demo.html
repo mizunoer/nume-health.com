@@ -373,14 +373,14 @@ const APPS = [
 const PT = 'pat_marissa';
 const RESOURCES = {
   patient:[
-    {id:PT,data:{fullName:'Marissa Chen',personID:'PX-40219',dob:'1989-03-14',ssn:'438-52-9174',medicareId:'—',phone:'+1 385 555 0142',email:'marissa.c@example.com',address:'220 W 900 S, SLC UT 84104',status:'Active'}},
-    {id:'pat_dwyer',data:{fullName:'Theo Dwyer',personID:'PX-40114',dob:'1976-11-02',ssn:'221-40-8830',medicareId:'1EG4-TE5-MK72',phone:'+1 801 555 0199',email:'tdwyer@example.com',address:'88 Center St, Provo UT 84601',status:'Active'}},
-    {id:'pat_ruiz',data:{fullName:'Alina Ruiz',personID:'PX-40877',dob:'1994-06-27',ssn:'559-11-2043',medicareId:'—',phone:'+1 385 555 0170',email:'aruiz@example.com',address:'14 S State St, SLC UT 84111',status:'New'}},
+    {id:PT,data:{fullName:'Wilma Flintstone',personID:'PX-40219',dob:'1989-03-14',ssn:'000-00-0001',medicareId:'—',phone:'+1 385 555 0142',email:'wilma.flintstone@demo.example',address:'301 Cobblestone Way, Bedrock UT 84104',status:'Active'}},
+    {id:'pat_dwyer',data:{fullName:'George Jetson',personID:'PX-40114',dob:'1976-11-02',ssn:'000-00-0002',medicareId:'TEST-MBI-0000',phone:'+1 801 555 0199',email:'george.jetson@demo.example',address:'Skypad Apartments 2062, Provo UT 84601',status:'Active'}},
+    {id:'pat_ruiz',data:{fullName:'Daphne Blake',personID:'PX-40877',dob:'1994-06-27',ssn:'000-00-0003',medicareId:'—',phone:'+1 385 555 0170',email:'daphne.blake@demo.example',address:'14 Mystery Machine Ln, SLC UT 84111',status:'New'}},
   ],
   appointment:[
-    {id:'ap_1',patient:PT,data:{dateTime:'Tomorrow 10:00 AM',patientName:'Marissa Chen',apptType:'Follow-up',channel:'Video',apptStatus:'Confirmed',providerName:'Dr. K. Ortiz',reason:'GLP-1 dose check-in — week 8',intakeRef:'IN-2201'}},
-    {id:'ap_2',patient:'pat_ruiz',data:{dateTime:'Today 3:30 PM',patientName:'Alina Ruiz',apptType:'Ad hoc',channel:'Video',apptStatus:'Requested',providerName:'Next available (licensed: UT)',reason:'New patient — weight-care eligibility',intakeRef:'IN-2214'}},
-    {id:'ap_3',patient:'pat_dwyer',data:{dateTime:'Fri 9:15 AM',patientName:'Theo Dwyer',apptType:'Initial consult',channel:'Phone',apptStatus:'Confirmed',providerName:'Dr. K. Ortiz',reason:'Tirzepatide start — history review',intakeRef:'IN-2209'}},
+    {id:'ap_1',patient:PT,data:{dateTime:'Tomorrow 10:00 AM',patientName:'Wilma Flintstone',apptType:'Follow-up',channel:'Video',apptStatus:'Confirmed',providerName:'Dr. K. Ortiz',reason:'GLP-1 dose check-in — week 8',intakeRef:'IN-2201'}},
+    {id:'ap_2',patient:'pat_ruiz',data:{dateTime:'Today 3:30 PM',patientName:'Daphne Blake',apptType:'Ad hoc',channel:'Video',apptStatus:'Requested',providerName:'Next available (licensed: UT)',reason:'New patient — weight-care eligibility',intakeRef:'IN-2214'}},
+    {id:'ap_3',patient:'pat_dwyer',data:{dateTime:'Fri 9:15 AM',patientName:'George Jetson',apptType:'Initial consult',channel:'Phone',apptStatus:'Confirmed',providerName:'Dr. K. Ortiz',reason:'Tirzepatide start — history review',intakeRef:'IN-2209'}},
   ],
   intake:[
     {id:'in_1',patient:'ap_1',data:{submitted:'2026-05-28',state:'UT',primaryGoal:'Lose 25 lbs, improve A1C',healthHistory:'T2 diabetes · no thyroid ca · no MEN2 · no pancreatitis',currentMeds:'Metformin 500mg BID',glp1History:'Currently on semaglutide (8 wks)',payPreference:'Cash-pay, no insurance',sourceCampaign:'cmp_glp1_refill_q2 (de-id)'}},
@@ -417,6 +417,33 @@ const RESOURCES = {
     {id:'ms_2',patient:PT,data:{channel:'SMS',template:'refill_due',body:'Time to refill. Reply YES to authorize RX-208841.',status:'Delivered',sentAt:'2026-07-02 09:00'}},
   ],
 };
+
+/* ---- 30 additional demo patients ----
+   Every name is a deliberately recognizable fictional character so nobody can
+   mistake demo data for real people — and no lookalike name can ever trigger
+   a real prescription (lesson learned). SSNs are 000-00-XXXX placeholders. */
+const FAKE_PATIENTS = [
+  'Homer Simpson|1956-05-12','Marge Simpson|1958-03-19','Bart Simpson|1990-04-01','Lisa Simpson|1992-05-09',
+  'Fred Flintstone|1960-02-02','Barney Rubble|1961-07-24','Bugs Bunny|1940-07-27','Daffy Duck|1937-04-17',
+  'Shaggy Rogers|1969-09-13','Velma Dinkley|1971-12-05','Clark Kent|1978-06-18','Bruce Wayne|1972-02-19',
+  'Diana Prince|1975-03-22','Peter Parker|1995-08-10','Tony Stark|1970-05-29','SpongeBob Squarepants|1986-07-14',
+  'Patrick Star|1984-08-17','Sherlock Holmes|1954-01-06','Dorothy Gale|1985-05-15','Willy Wonka|1964-09-13',
+  'Mary Poppins|1955-10-17','Frodo Baggins|1968-09-22','Bilbo Baggins|1941-09-22','Luke Skywalker|1977-05-25',
+  'Leia Organa|1977-05-25','Han Solo|1965-07-13','Phineas Flynn|1998-08-17','Ferb Fletcher|1998-06-06',
+  'Mario Mario|1981-07-09','Luigi Mario|1983-07-14',
+];
+const FAKE_STREETS = ['742 Evergreen Terrace','1050 Acme Acres Blvd','124 Conch Street','221B Baker Street','12 Grimmauld Place','1007 Mountain Drive','20 Ingram Street','31 Spooner Street'];
+FAKE_PATIENTS.forEach((s,i)=>{
+  const [fullName,dob]=s.split('|');
+  const n=String(i+1).padStart(2,'0');
+  RESOURCES.patient.push({id:'pat_f'+n,data:{
+    fullName, personID:'PX-9'+(100+i), dob, ssn:'000-00-01'+n, medicareId:'—',
+    phone:'+1 801 555 0'+(200+i),
+    email: fullName.toLowerCase().replace(/[^a-z]+/g,'.')+'@demo.example',
+    address: FAKE_STREETS[i%FAKE_STREETS.length]+', Salt Lake City UT 8410'+(i%9),
+    status: i%9===0?'New':(i%7===0?'Paused':'Active'),
+  }});
+});
 
 /* ---- Workflow (workflow.v1) — Rx lifecycle → notifications ---- */
 const WORKFLOW = {
@@ -494,7 +521,7 @@ function renderRail(){
       return `<button class="rolebtn ${on}" data-role="${rk}"><span>${r.icon}</span><span>${r.name}<small>${r.rights[0]}</small></span></button>`;
     }).join('');
   }else{
-    h += `<div class="pgnote">Signed in as <b>Marissa Chen</b><br><span class="src">app_patient · participant_type: patient</span></div>`;
+    h += `<div class="pgnote">Signed in as <b>Wilma Flintstone</b><br><span class="src">app_patient · participant_type: patient</span></div>`;
   }
   const role=cur();
   h += `<h4>${a.participant_type==='patient'?'My records':'Resource types'}</h4>`;
