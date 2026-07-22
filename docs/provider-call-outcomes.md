@@ -71,3 +71,48 @@ The viaim summary is **directionally accurate — no fabrications found** — bu
 | Ad channels (Instagram-first, TV later) | Marketing plan |
 
 **Verdict:** trust the summaries for structure and to-dos; pull the transcript whenever numbers, direct answers to prepared questions, or product commitments matter. (Share links also expire in 7 days — archive transcripts you care about.)
+
+---
+
+# Owners follow-up call (2026-07-21, after Kara)
+
+## Timelines stated
+
+| When | What |
+|---|---|
+| **Tonight** | Dev changes push to production; DJ notifies owners when live |
+| **End of next week** | Website production-ready (landing pages + insurance components); devs then shift to bugs/special-requests only |
+| **Week after the production push** | Login portal + health record modules continue |
+| **Now** | LegitScript application submitted (DJ has Nico's NPI/address/email) |
+| **After DJ talks to devs** | Simplified marketing-setup question list → schedule next owners call |
+
+## DJ committed to
+
+1. Submit LegitScript (verify nothing missing beyond Nico's info).
+2. Ask around: malpractice/E&O requirements, enrollment+disenrollment rules, what credentialing data lowers platform liability rates.
+3. Finish provider enrollment screen — require + verify malpractice insurance; keep required compliance checks (NPI, OCR-list check, license validity); other questions org-editable on the fly.
+4. Pharmacy + pharmacist + pharmacy-tech enrollment screens, prefilled from Pioneer data.
+5. 1099 independent-provider enrollment materials.
+6. Find out (via buddies on Ro-style platforms) whether scripts are clinic-branded or generic-to-provider; plan: patient portal shows fulfilled script + info page / packing list, or digital-only if opted in.
+7. Send owners: rebranded portal link (Mythic → NuMe), portal demo link, brand options for Mythic RX (designer's rebrand offer accepted — Sean not attached to current brand).
+8. Add TikTok to the channel list (likely easier approval than Meta/Google; Sarah has a large following) — pending Shannon's check on GLP visibility there.
+9. Marketing email as the credential account for TikTok/Google/Meta; auto-handlers for spend-limit/routine notices; route billing→accounting, info→info.
+10. Harden site/URLs; DMARC records for marketing domains at DNS cutover.
+11. Simplify the 20-page feedback form into a focused question list.
+12. Send enrollment links to pilot participants (everyone talked to so far; Caleb can add more).
+13. Consider Kara consulting on the whole platform (owners floated part-ownership for veteran-owned government-contracting angle).
+
+## Needed FROM the owners (reminder-email list)
+
+1. **Sean:** resend the current price list; send it to Kara and cc DJ.
+2. **Sean:** resend pharmacy credentials — Sarah's pharmacist NPI + license number(s) (+ controlled-substance license if separate), pharmacy DEA registration — for prefilling enrollment screens.
+3. **Sean:** the still-unsent portal feedback.
+4. **Sean:** Kara's email address (per first call) so DJ can reach out with the login.
+5. **Caleb/Sean:** talk to an insurance contact — what credentialing evidence lowers liability premiums; typical malpractice cost in this discipline; confirm require-own-insurance stance at launch (offer-as-perk later).
+6. **Caleb/Sean:** does the marketing email exist? If not, create it (it becomes the credential account for all ad platforms).
+7. **Caleb:** ask Shannon whether GLP content/ads are currently visible on TikTok (post-restriction status).
+8. **Both:** website feedback after tonight's production push; names of any additional pilot participants.
+
+## Highest-volume testing guidance (for QA priorities)
+
+Pharmacy techs live in the portal most (fulfillment + patient questions). Clean questionnaire answers → tech task is a button click; physicians touch only side effects. Highest question volume: membership billing, cancellations, side effects. Test those paths first.
