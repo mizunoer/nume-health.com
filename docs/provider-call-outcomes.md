@@ -41,12 +41,12 @@ Source: viaim recording (54 min). Facts below are from the transcript, not the a
 ## Build actions (added to deliverables)
 
 - [x] Fix brand misspelling in the demo header (Numi → **Nume Health**) — caught live on the call.
-- [ ] Follow-up vs initial appointment views: chief-complaint-first for follow-ups; full intake for initials.
-- [ ] Patient history click-through from appointment (previous encounters/intakes/prescriptions).
-- [ ] Red-flag engine: bold PMH/meds/allergies conflicts; detect **intake-inconsistency** across visits (e.g., allergy disappears between intakes — an FDA trouble pattern).
-- [ ] Complete the intake questionnaire content in the portal (all assessment questions).
-- [ ] Rename portal work items to task/subtask nomenclature.
-- [ ] Comorbidity highlight list for provider prep.
+- [x] Follow-up vs initial appointment views: chief-complaint-first check-in card for follow-ups; full intake for initials *(demo, 7dc47cd)*.
+- [x] Patient history click-through from appointment *(demo: Patient history button → chart with nested appointments/Rx/allergies/conditions)*.
+- [x] Red-flag engine *(demo: auto-computed severe allergies, chart-vs-intake inconsistency, GLP-1 comorbidities, pregnancy screen)*.
+- [x] Complete the intake questionnaire content *(demo: + height/weight/BMI, pregnancy status, prior attempts)*.
+- [x] Task/subtask nomenclature *(demo: Tasks card — appointments → tasks → subtasks with open/done)*.
+- [x] Comorbidity highlights *(demo: E66/E11 flags)*.
 - [ ] Provider comp model: per-script base with fair pay on side-effect-heavy mixes (the reason she quit Hims weight loss).
 - [ ] Continuity option: patient chooses same-provider vs first-available; provider schedule edits lock until booked appointments lapse.
 - [ ] Labs routing: flagged intake answers → request labs/PCP records instead of auto-disqualifying.
