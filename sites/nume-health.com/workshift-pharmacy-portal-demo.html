@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<title>Numi Health · Care Portal — Demo</title>
+<title>Nume Health · Care Portal — Demo</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 :root{
@@ -160,7 +160,7 @@ body:not(.showdev) .pgnote, body:not(.showdev) .devbit, body:not(.showdev) #btnI
 
 <div class="app">
   <div class="topbar">
-    <div class="brand"><span class="rx">N</span> Numi&nbsp;Health <small id="orgid">powered by Workshift</small></div>
+    <div class="brand"><span class="rx">N</span> Nume&nbsp;Health <small id="orgid">powered by Workshift</small></div>
     <div class="appswitch" id="appswitch"></div>
     <div class="spacer"></div>
     <label class="toolbtn devtoggle"><input type="checkbox" id="devToggle"> Dev detail</label>
@@ -183,7 +183,7 @@ body:not(.showdev) .pgnote, body:not(.showdev) .devbit, body:not(.showdev) #btnI
      PermissionGroup · ResourceView · App · Workflow(Node)
    Attribute .src = the PioneerRx API field it syncs from (integration map).
 ============================================================================ */
-const ORG = {id:'org_numi', name:'Numi Health'};
+const ORG = {id:'org_numi', name:'Nume Health'};
 
 // AttributeDataType (admin.v1) — the real enum
 const DT = {ASSOCIATION:'ASSOCIATION',DATETIME:'DATETIME',EMAIL:'EMAIL',NUMBER:'NUMBER',
@@ -413,7 +413,7 @@ const RESOURCES = {
     {id:'cp_3',contact:'pat_ruiz',data:{contactRef:'ct_77d0…e9',segment:'Awaiting first fill (de-id)',smsMarketingOptIn:'Opted out',emailMarketingOptIn:'Opted in',lastConsentAt:'2026-06-29'}},
   ],
   message:[
-    {id:'ms_1',patient:PT,data:{channel:'SMS',template:'rx_ready',body:'Your Numi order RX-208012 is ready.',status:'Delivered',sentAt:'2026-06-27 10:04'}},
+    {id:'ms_1',patient:PT,data:{channel:'SMS',template:'rx_ready',body:'Your Nume order RX-208012 is ready.',status:'Delivered',sentAt:'2026-06-27 10:04'}},
     {id:'ms_2',patient:PT,data:{channel:'SMS',template:'refill_due',body:'Time to refill. Reply YES to authorize RX-208841.',status:'Delivered',sentAt:'2026-07-02 09:00'}},
   ],
 };
@@ -464,10 +464,10 @@ const WORKFLOW = {
      node:'NODE_TYPE_RESOURCE',msg:null},
     {who:'pharmacist',role:'Pharmacist',lawful:'Treatment',exec:'EXECUTION_STATUS_RUNNING',
      mut:'rxStatus: <b>Fill in Progress</b>',
-     node:'NODE_TYPE_WEBHOOK',msg:{ch:'SMS · template rx_in_progress',body:'Numi: RX-208841 is being prepared. No PHI beyond Rx # in message body.'}},
+     node:'NODE_TYPE_WEBHOOK',msg:{ch:'SMS · template rx_in_progress',body:'Nume: RX-208841 is being prepared. No PHI beyond Rx # in message body.'}},
     {who:'system',role:'Workshift',lawful:'Operations',exec:'EXECUTION_STATUS_PENDING',
      mut:'rxStatus: <b>Ready for Pickup</b>',
-     node:'NODE_TYPE_WEBHOOK',msg:{ch:'SMS · template rx_ready',body:'Your Numi order RX-208841 is ready. Reply HELP for support.'}},
+     node:'NODE_TYPE_WEBHOOK',msg:{ch:'SMS · template rx_ready',body:'Your Nume order RX-208841 is ready. Reply HELP for support.'}},
     {who:'billing',role:'Billing',lawful:'Payment',exec:'EXECUTION_STATUS_PENDING',
      mut:'claim.arBalance charged to tokenized card <span class="mono">tok_…9174</span>',
      node:'NODE_TYPE_RESOURCE',msg:null},
@@ -767,11 +767,11 @@ function openCallConsole(apptId){
   const card = (title,body)=>`<div style="background:#fff;border:1px solid #E2E8F0;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;min-height:0"><div style="padding:10px 14px;font-weight:700;font-size:13px;color:#101D31;border-bottom:1px solid #E2E8F0;background:#F7FAFC">${title}</div><div style="padding:12px 14px;overflow:auto">${body}</div></div>`;
   const yn = n=>`<label style="margin-right:10px"><input type="radio" name="${n}"> Yes</label><label><input type="radio" name="${n}" checked> No</label>`;
 
-  const html = `<!doctype html><html><head><meta charset="utf-8"><title>Numi Call — ${ap.data.patientName}</title></head>
+  const html = `<!doctype html><html><head><meta charset="utf-8"><title>Nume Call — ${ap.data.patientName}</title></head>
   <body style="margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:#F7FAFC;height:100vh;display:flex;flex-direction:column">
     <div style="background:#101D31;color:#fff;padding:10px 18px;display:flex;align-items:center;gap:14px">
       <span style="background:#12C8B8;color:#0B1B2B;width:26px;height:26px;border-radius:7px;display:grid;place-items:center;font-weight:800">N</span>
-      <b>Numi Telehealth</b><span style="opacity:.7">· ${ap.data.apptType} · ${ap.data.patientName}</span>
+      <b>Nume Telehealth</b><span style="opacity:.7">· ${ap.data.apptType} · ${ap.data.patientName}</span>
       <span id="timer" style="margin-left:auto;font-family:monospace;font-size:14px;background:rgba(255,255,255,.1);padding:3px 10px;border-radius:6px">00:00</span>
       <button onclick="alert('Muted (demo)')" style="background:rgba(255,255,255,.12);color:#fff;border:none;border-radius:8px;padding:7px 14px;cursor:pointer">🎙 Mute</button>
       <button onclick="alert('Camera toggled (demo)')" style="background:rgba(255,255,255,.12);color:#fff;border:none;border-radius:8px;padding:7px 14px;cursor:pointer">🎥 Video</button>
