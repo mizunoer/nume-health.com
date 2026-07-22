@@ -135,8 +135,22 @@ body:not(.showdev) .pgnote, body:not(.showdev) .devbit, body:not(.showdev) #btnI
 .devtoggle{display:flex;align-items:center;gap:7px;cursor:pointer;user-select:none}
 .devtoggle input{accent-color:var(--mrx-gold);width:14px;height:14px}
 
+/* ---- provider clinical cards (tasks / flags / check-in) ---- */
+.taskrow{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--mrx-border);font-size:13.5px;color:var(--mrx-slate)}
+.taskrow:last-child{border-bottom:none}
+.tstat{font-size:10.5px;font-weight:700;border-radius:999px;padding:2px 9px;flex:none}
+.tstat.done{background:#dff3e6;color:#1c7a42}
+.tstat.open{background:#fff4d6;color:#8a6d00}
+.flagrow{display:flex;gap:9px;padding:9px 14px;border-bottom:1px solid var(--mrx-border);font-size:13px;align-items:flex-start}
+.flagrow:last-child{border-bottom:none}
+.flag-high{color:#a12633}
+.flag-warn{color:#8a6d00}
+.flag-info{color:var(--mrx-primary-dark)}
+.chief{border-left:4px solid var(--mrx-blue)}
+.subnote{font-weight:500;font-size:11px;color:var(--mrx-slate-gray)}
+
 /* ---- start call ---- */
-.callbar{display:flex;justify-content:flex-end;margin:0 0 14px}
+.callbar{display:flex;justify-content:flex-end;gap:10px;margin:0 0 14px}
 .btn-call{background:var(--mrx-blue);color:#fff;border:none;border-radius:999px;padding:11px 24px;font-weight:700;font-size:13.5px;display:flex;gap:9px;align-items:center;box-shadow:var(--shadow);cursor:pointer}
 .btn-call:hover{background:var(--mrx-primary-dark)}
 
@@ -233,9 +247,12 @@ const RESOURCE_TYPES = {
       {key:'submitted',name:'Submitted',dt:DT.DATETIME,sens:'ops',src:'nume-health.com assessment form'},
       {key:'state',name:'State',dt:DT.SELECT,sens:'ops',src:'assessment: state eligibility'},
       {key:'primaryGoal',name:'Primary goal',dt:DT.STRING,sens:'cln',src:'assessment: goal'},
+      {key:'heightWeightBmi',name:'Height / weight / BMI',dt:DT.STRING,sens:'cln',src:'assessment: measurements'},
       {key:'healthHistory',name:'Health history flags',dt:DT.STRING,sens:'cln',src:'assessment: history checklist'},
       {key:'currentMeds',name:'Current medications',dt:DT.STRING,sens:'cln',src:'assessment: medications'},
       {key:'glp1History',name:'GLP-1 history',dt:DT.SELECT,sens:'cln',src:'assessment: prior GLP-1 use'},
+      {key:'pregnancyStatus',name:'Pregnancy status',dt:DT.SELECT,sens:'cln',src:'assessment: pregnancy screen'},
+      {key:'priorAttempts',name:'Prior weight-loss attempts',dt:DT.STRING,sens:'cln',src:'assessment: history of attempts'},
       {key:'payPreference',name:'Payment preference',dt:DT.SELECT,sens:'ops',src:'assessment: pay preference'},
       {key:'smsOptIn',name:'SMS opt-in',dt:DT.SELECT,sens:'ops',src:'assessment: SMS consent checkbox'},
       {key:'sourceCampaign',name:'Source campaign',dt:DT.STRING,sens:'ops',src:'Workshift attribution (de-identified)'},
@@ -308,7 +325,7 @@ const ROLES = {
     views:{
       appointment:{show:['dateTime','patientName','apptType','channel','apptStatus','providerName','reason','intakeRef'],mask:{}},
       patient:{show:['fullName','personID','dob','phone','email','address','status'],mask:{}},
-      intake:{show:['submitted','state','primaryGoal','healthHistory','currentMeds','glp1History','payPreference','sourceCampaign'],mask:{}},
+      intake:{show:['submitted','state','primaryGoal','heightWeightBmi','healthHistory','currentMeds','glp1History','pregnancyStatus','priorAttempts','payPreference','sourceCampaign'],mask:{}},
       prescription:{show:['rxNumber','medicationPrescribed','medicationDispensed','rxStatus','daysSupply','dawCode','scriptType','expirationDate'],mask:{}},
       condition:{show:['name','icd10','onsetDate']},
       allergy:{show:['substance','reaction','severity']},
@@ -383,9 +400,9 @@ const RESOURCES = {
     {id:'ap_3',patient:'pat_dwyer',data:{dateTime:'Fri 9:15 AM',patientName:'George Jetson',apptType:'Initial consult',channel:'Phone',apptStatus:'Confirmed',providerName:'Dr. K. Ortiz',reason:'Tirzepatide start — history review',intakeRef:'IN-2209'}},
   ],
   intake:[
-    {id:'in_1',patient:'ap_1',data:{submitted:'2026-05-28',state:'UT',primaryGoal:'Lose 25 lbs, improve A1C',healthHistory:'T2 diabetes · no thyroid ca · no MEN2 · no pancreatitis',currentMeds:'Metformin 500mg BID',glp1History:'Currently on semaglutide (8 wks)',payPreference:'Cash-pay, no insurance',sourceCampaign:'cmp_glp1_refill_q2 (de-id)'}},
-    {id:'in_2',patient:'ap_2',data:{submitted:'Today 2:41 PM',state:'UT',primaryGoal:'Lose 30 lbs for health',healthHistory:'None of the flagged conditions',currentMeds:'None',glp1History:'Never used',payPreference:'Cash-pay, no insurance',sourceCampaign:'cmp_meta_awareness_jul (de-id)'}},
-    {id:'in_3',patient:'ap_3',data:{submitted:'2026-07-12',state:'UT',primaryGoal:'Weight + energy',healthHistory:'T2 diabetes',currentMeds:'Lisinopril 10mg',glp1History:'Prior semaglutide, stopped 2025',payPreference:'Use insurance if possible',sourceCampaign:'cmp_switch_provider (de-id)'}},
+    {id:'in_1',patient:'ap_1',data:{submitted:'2026-05-28',state:'UT',primaryGoal:'Lose 25 lbs, improve A1C',healthHistory:'T2 diabetes · no thyroid ca · no MEN2 · no pancreatitis',currentMeds:'Metformin 500mg BID',glp1History:'Currently on semaglutide (8 wks)',heightWeightBmi:`5'6" · 196 lb · BMI 31.6`,pregnancyStatus:'Not pregnant / not planning',priorAttempts:'Diet + exercise 2yrs; phentermine 2023 (stopped, jitters)',payPreference:'Cash-pay, no insurance',sourceCampaign:'cmp_glp1_refill_q2 (de-id)'}},
+    {id:'in_2',patient:'ap_2',data:{submitted:'Today 2:41 PM',state:'UT',primaryGoal:'Lose 30 lbs for health',healthHistory:'None of the flagged conditions',currentMeds:'None',glp1History:'Never used',heightWeightBmi:`5'4" · 189 lb · BMI 32.4`,pregnancyStatus:'Not pregnant / not planning',priorAttempts:'Calorie tracking apps, on/off 3 yrs',payPreference:'Cash-pay, no insurance',sourceCampaign:'cmp_meta_awareness_jul (de-id)'}},
+    {id:'in_3',patient:'ap_3',data:{submitted:'2026-07-12',state:'UT',primaryGoal:'Weight + energy',healthHistory:'T2 diabetes',currentMeds:'Lisinopril 10mg',glp1History:'Prior semaglutide, stopped 2025',heightWeightBmi:`5'11" · 241 lb · BMI 33.6`,pregnancyStatus:'N/A',priorAttempts:'Semaglutide 2025 (stopped: cost); keto 2022',payPreference:'Use insurance if possible',sourceCampaign:'cmp_switch_provider (de-id)'}},
   ],
   prescription:[
     {id:'rx_208841',patient:PT,data:{rxNumber:'RX-208841',medicationPrescribed:'Semaglutide 2.5mg/mL inj',medicationDispensed:'Semaglutide 2.5mg/mL (compounded, 503A)',rxStatus:'Fill in Progress',transactionStatus:'Waiting for Data Entry',daysSupply:28,refillNumber:2,dawCode:'0 — No product selection',scriptType:'Compounded',expirationDate:'2027-01-14'}},
@@ -399,6 +416,7 @@ const RESOURCES = {
   condition:[
     {id:'cn_1',patient:PT,data:{name:'Type 2 diabetes mellitus',icd10:'E11.9',onsetDate:'2021-08-01'}},
     {id:'cn_2',patient:PT,data:{name:'Obesity, BMI 32.4',icd10:'E66.9',onsetDate:'2020-02-15'}},
+    {id:'cn_3',patient:'pat_dwyer',data:{name:'Type 2 diabetes mellitus',icd10:'E11.9',onsetDate:'2019-05-20'}},
   ],
   payMethod:[
     {id:'pm_1',patient:PT,data:{cardBrand:'Visa',panToken:'tok_1PmXvA_9174',last4:'4242',expiry:'08/28'}},
@@ -565,7 +583,21 @@ function renderMain(){
     h += renderList(rtypeKey, scoped, role);
   }else{
     if(rtypeKey==='appointment' && app().participant_type==='staff'){
-      h += `<div class="callbar"><button class="btn-call" data-call="${state.detailId}">▶&nbsp; Start call</button></div>`;
+      const ap=(RESOURCES.appointment||[]).find(a=>a.id===state.detailId);
+      const fu = ap && ap.data.apptType==='Follow-up';
+      h += `<div class="callbar">
+        <button class="toolbtn" style="background:var(--mrx-white);color:var(--mrx-primary-dark);border:1px solid var(--mrx-border)" data-goto-patient="${ap.patient}">👤 Patient history</button>
+        <button class="btn-call" data-call="${state.detailId}">▶&nbsp; Start call</button></div>`;
+      if(fu && CHECKINS[ap.id]){
+        const c=CHECKINS[ap.id];
+        h += `<div class="card chief" style="margin-bottom:16px"><div class="sectitle">🩺 Chief complaint &amp; updates <span class="subnote">follow-up view — check-in reviewed first</span></div>
+          <div class="fieldgrid">${[['Chief complaint',c.chief],['Check-in submitted',c.submitted],['Side effects',c.sideEffects],['Weight change',c.weightChange],['Adherence',c.adherence],['Patient request',c.requests]].map(([l,v])=>`<div class="field"><div class="lbl">${l}</div><div class="val">${v}</div></div>`).join('')}</div></div>`;
+      }
+      h += `<div class="card" style="margin-bottom:16px"><div class="sectitle">🗂 Tasks <span class="subnote">appointments → tasks → subtasks</span></div>
+        ${tasksFor(ap).map(t=>`<div class="taskrow"><span class="tstat ${t.done?'done':'open'}">${t.done?'Done':'Open'}</span> ${t.t}</div>`).join('')}</div>`;
+      h += `<div class="card" style="margin-bottom:16px"><div class="sectitle">🚩 Clinical flags <span class="subnote">auto-computed: past medical history · medications · allergies</span></div>
+        ${flagsFor(ap).map(f=>`<div class="flagrow flag-${f.lv}"><span>${f.lv==='high'?'⛔':f.lv==='warn'?'⚠️':'ℹ️'}</span><span>${f.t}</span></div>`).join('')}</div>`;
+      if(fu){ h += `<div class="notice" style="margin-bottom:14px">Follow-up: the full initial intake stays below and in Patient history — the check-in above is the working view.</div>`; }
     }
     h += renderDetail(rtypeKey, state.detailId, role);
   }
@@ -593,7 +625,7 @@ function renderList(rtypeKey, rows, role){
   h += cols.map(a=>`<th>${a.name}</th>`).join('') + `<th></th></tr></thead><tbody>`;
   if(!rows.length) h+=`<tr><td colspan="${cols.length+1}" style="color:var(--mrx-slate-gray)">No ${rt.plural.toLowerCase()} in scope.</td></tr>`;
   rows.forEach(r=>{
-    h+=`<tr class="rowlink" data-open="${r.id}">`;
+    h+=`<tr class="rowlink" data-open="${r.id}" data-rt="${rtypeKey}">`;
     cols.forEach(a=>{
       const c=viewCell(role,rtypeKey,a,r.data);
       h+=`<td>${renderVal(a,c)}</td>`;
@@ -754,6 +786,44 @@ function renderPrefs(){
   return h;
 }
 
+/* ---------- APPOINTMENT CLINICAL HELPERS (provider feedback build-out) ---------- */
+// Follow-up check-ins. Production: a per-visit check-in questionnaire resource;
+// follow-ups show this FIRST (chief complaint + updates), full intake stays in history.
+const CHECKINS = {
+  ap_1: {submitted:'Yesterday 8:12 PM', chief:'GLP-1 dose check-in — week 8',
+    sideEffects:'None reported', weightChange:'−9 lb since start (196 → 187)',
+    adherence:'All doses taken', requests:'Asking about moving to 5.0 mg'},
+};
+function intakeFor(apId){ return (RESOURCES.intake||[]).find(i=>i.patient===apId); }
+
+// Auto-computed clinical flags: severe allergies, chart-vs-intake inconsistencies
+// (an FDA scrutiny pattern), GLP-1-relevant comorbidities, pregnancy screen.
+function flagsFor(ap){
+  const flags=[], pid=ap.patient, ik=intakeFor(ap.id);
+  (RESOURCES.allergy||[]).filter(a=>a.patient===pid).forEach(a=>{
+    if((a.data.severity||'').toLowerCase()==='severe')
+      flags.push({lv:'high',t:`<b>${a.data.substance} allergy — ${a.data.severity}</b> (${a.data.reaction}) on chart`});
+    if(ik && !(ik.data.healthHistory||'').toLowerCase().includes((a.data.substance||'').split(' ')[0].toLowerCase()))
+      flags.push({lv:'warn',t:`<b>Intake inconsistency:</b> chart allergy "${a.data.substance}" not mentioned in intake ${ap.data.intakeRef} — confirm with patient`});
+  });
+  (RESOURCES.condition||[]).filter(c=>c.patient===pid).forEach(c=>{
+    if(/E66|E11/.test(c.data.icd10||''))
+      flags.push({lv:'info',t:`Comorbidity: <b>${c.data.name}</b> (${c.data.icd10}) — GLP-1 relevant`});
+  });
+  if(ik && /^pregnant/i.test(ik.data.pregnancyStatus||'')) flags.push({lv:'high',t:'<b>Pregnancy screen requires review</b>'});
+  if(!flags.length) flags.push({lv:'info',t:'No chart flags — new patient; verify intake on the call'});
+  return flags;
+}
+
+function tasksFor(ap){
+  const fu = ap.data.apptType==='Follow-up';
+  return [
+    {t: fu?'Review check-in (chief complaint & updates)':'Review intake questionnaire', done: fu && ap.data.apptStatus==='Confirmed'},
+    {t:'Review prescriptions', done:false},
+    {t:'Review flagged conditions & allergies', done:false},
+  ];
+}
+
 /* ---------- CALL CONSOLE (dummy telehealth window) ---------- */
 function openCallConsole(apptId){
   const ap = (RESOURCES.appointment||[]).find(a=>a.id===apptId); if(!ap) return;
@@ -827,12 +897,14 @@ function renderAll(){
 document.addEventListener('click',e=>{
   const c=e.target.closest('[data-call]');
   if(c){ openCallConsole(c.dataset.call); return; }
+  const gp=e.target.closest('[data-goto-patient]');
+  if(gp){ state.rtype='patient'; state.detailId=gp.dataset.gotoPatient; state.wf=false; renderAll(); return; }
   const t=e.target.closest('[data-app],[data-role],[data-rtype],[data-open],[data-nav]');
   if(t){
     if(t.dataset.app){ state.appId=t.dataset.app; const a=app(); state.role=a.roles[0]; state.rtype=permittedTypes(ROLES[state.role])[0]; state.detailId=null; state.wf=false; }
     else if(t.dataset.role){ state.role=t.dataset.role; state.rtype=permittedTypes(cur())[0]; state.detailId=null; }
     else if(t.dataset.rtype){ state.rtype=t.dataset.rtype; state.detailId=null; state.wf=false; }
-    else if(t.dataset.open){ state.detailId=t.dataset.open; }
+    else if(t.dataset.open){ if(t.dataset.rt) state.rtype=t.dataset.rt; state.detailId=t.dataset.open; }
     else if(t.dataset.nav==='list'){ state.detailId=null; state.wf=false; }
     renderAll();
   }
