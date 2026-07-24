@@ -1,0 +1,160 @@
+{
+ "ranAt": "2026-07-24T17:12:53.844Z",
+ "results": [
+  {
+   "area": "preflight",
+   "ok": true,
+   "msg": "resourceViewId present on resource tools (PR #39 live on dev-api)"
+  },
+  {
+   "area": "seed",
+   "ok": true,
+   "msg": "1 legacy patient(s) renamed/SSN-zeroed"
+  },
+  {
+   "area": "seed",
+   "ok": true,
+   "msg": "30 patients + 24 child records added — org total 63 records"
+  },
+  {
+   "area": "read:Billing — Patient",
+   "ok": true,
+   "msg": "31 records, keys ⊆ view (5 allowed)"
+  },
+  {
+   "area": "read:Pharmacist — Patient",
+   "ok": true,
+   "msg": "31 records, keys ⊆ view (6 allowed)"
+  },
+  {
+   "area": "read:Pharmacy Tech — Patient",
+   "ok": true,
+   "msg": "31 records, keys ⊆ view (7 allowed)"
+  },
+  {
+   "area": "read:Provider — Patient",
+   "ok": true,
+   "msg": "31 records, keys ⊆ view (7 allowed)"
+  },
+  {
+   "area": "read:Patient — Prescription",
+   "ok": true,
+   "msg": "9 records, keys ⊆ view (6 allowed)"
+  },
+  {
+   "area": "read:Pharmacy Tech — Prescription",
+   "ok": true,
+   "msg": "9 records, keys ⊆ view (10 allowed)"
+  },
+  {
+   "area": "read:Provider — Prescription",
+   "ok": true,
+   "msg": "9 records, keys ⊆ view (8 allowed)"
+  },
+  {
+   "area": "read:Pharmacist — Prescription",
+   "ok": true,
+   "msg": "9 records, keys ⊆ view (10 allowed)"
+  },
+  {
+   "area": "read:Pharmacist — Allergy",
+   "ok": true,
+   "msg": "10 records, keys ⊆ view (3 allowed)"
+  },
+  {
+   "area": "read:Provider — Allergy",
+   "ok": true,
+   "msg": "10 records, keys ⊆ view (3 allowed)"
+  },
+  {
+   "area": "read:Pharmacy Tech — Allergy",
+   "ok": true,
+   "msg": "10 records, keys ⊆ view (3 allowed)"
+  },
+  {
+   "area": "read:Provider — Condition",
+   "ok": true,
+   "msg": "1 records, keys ⊆ view (3 allowed)"
+  },
+  {
+   "area": "read:Pharmacist — Condition",
+   "ok": true,
+   "msg": "1 records, keys ⊆ view (3 allowed)"
+  },
+  {
+   "area": "read:Billing — Payment method",
+   "ok": true,
+   "msg": "1 records, keys ⊆ view (4 allowed)"
+  },
+  {
+   "area": "read:Patient — Payment method",
+   "ok": true,
+   "msg": "1 records, keys ⊆ view (3 allowed)"
+  },
+  {
+   "area": "read:Patient — Claim",
+   "ok": true,
+   "msg": "9 records, keys ⊆ view (3 allowed)"
+  },
+  {
+   "area": "read:Billing — Claim",
+   "ok": true,
+   "msg": "9 records, keys ⊆ view (5 allowed)"
+  },
+  {
+   "area": "read:Pharmacist — Claim",
+   "ok": true,
+   "msg": "9 records, keys ⊆ view (4 allowed)"
+  },
+  {
+   "area": "read:Marketing — Consent profile",
+   "ok": true,
+   "msg": "1 records, keys ⊆ view (5 allowed)"
+  },
+  {
+   "area": "read:Patient — Message",
+   "ok": true,
+   "msg": "1 records, keys ⊆ view (5 allowed)"
+  },
+  {
+   "area": "critical:Pharmacy Tech — Patient",
+   "ok": true,
+   "msg": "ssn hidden across 31 records"
+  },
+  {
+   "area": "critical:Provider — Patient",
+   "ok": true,
+   "msg": "ssn,ssn-last-4 hidden across 31 records"
+  },
+  {
+   "area": "critical:Billing — Patient",
+   "ok": true,
+   "msg": "ssn,mobile-phone,email hidden across 31 records"
+  },
+  {
+   "area": "critical:Patient — Prescription",
+   "ok": true,
+   "msg": "transaction-status hidden across 9 records"
+  },
+  {
+   "area": "write:hidden",
+   "ok": true,
+   "msg": "SSN unchanged through Tech view"
+  },
+  {
+   "area": "write:readonly",
+   "ok": true,
+   "msg": "read-only full-name unchanged"
+  },
+  {
+   "area": "fail-closed",
+   "ok": true,
+   "msg": "view without display_settings exposes zero attributes"
+  },
+  {
+   "area": "cross-type",
+   "ok": true,
+   "msg": "rejected as expected"
+  }
+ ]
+}
