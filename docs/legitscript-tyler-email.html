@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>LegitScript referral email — Tyler</title>
+<style>
+  body{font-family:Arial,Helvetica,sans-serif;background:#f4f6f8;margin:0;padding:24px;color:#222}
+  .wrap{max-width:720px;margin:0 auto}
+  .bar{display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+  button{background:#0077B6;color:#fff;border:none;border-radius:6px;padding:10px 16px;font-size:14px;cursor:pointer}
+  button:hover{background:#005f92}
+  .ok{color:#0a7a3d;font-size:13px;visibility:hidden}
+  .subject{background:#fff;border:1px solid #d9dee3;border-radius:6px;padding:10px 14px;margin-bottom:12px;font-size:14px}
+  .subject b{color:#555;font-weight:600;margin-right:6px}
+  .card{background:#fff;border:1px solid #d9dee3;border-radius:8px;padding:28px 32px}
+  .note{font-size:12px;color:#667;margin-top:14px;line-height:1.5}
+  @media (prefers-color-scheme: dark){
+    body{background:#14181c;color:#ddd}
+    .subject,.card{background:#1d2329;border-color:#333b44}
+    .note{color:#9aa4ae}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar">
+    <button onclick="copyEmail()">Copy email (keeps formatting)</button>
+    <span class="ok" id="okmsg">Copied — paste into Gmail/Outlook</span>
+  </div>
+  <div class="subject"><b>Subject:</b><span id="subj">Referral program structure + our first two applications</span></div>
+
+  <div class="card">
+    <div id="email" style="font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.55;color:#222222">
+      <p>Tyler,</p>
+      <p>Thanks again for the walkthrough. Plan on our side: we&rsquo;ll certify the telemedicine entity first (Nume Health &mdash; that&rsquo;s the site running the marketing), and after going through the application requirements it looks like the pharmacy site needs certification from the start as well. So we have two applications now, with a pipeline of partner organizations behind them &mdash; which is why the referral program has my attention.</p>
+      <p>Before I commit to a block, can you confirm how it&rsquo;s structured:</p>
+      <ol>
+        <li><b>Payment timing</b> &mdash; are all codes paid at signing, or can we pay per code as each one is activated? If upfront is required, what do 10- and 15-code blocks each look like?</li>
+        <li><b>Code life</b> &mdash; how long do we have to use them? If partner onboarding runs past 12 months, can we get a 24-month window?</li>
+        <li><b>Eligibility</b> &mdash; can codes go to partner organizations we sign later, or only ones named now?</li>
+        <li><b>Annual fees</b> &mdash; is the $1,800 billed to each certified entity directly at approval, or aggregated to us?</li>
+        <li><b>Speed</b> &mdash; I have partner priority at ~10 business days and expedited at ~2. Our first two applications need the 2-day track: can the $2,500 expedite be added on top of a referral code, or would those two run as standard applications outside the block?</li>
+        <li>And confirm 15 codes still gets the $499 / $1,800 pricing with priority included, since 20 was the usual minimum we discussed.</li>
+      </ol>
+      <p>Checking my math on the two immediate sites at standard pricing: ($975 + $2,500 + $2,150) &times; 2 = $11,250 all-in year one. If expedite can stack on a code, that becomes ($499 + $2,500 + $1,800) &times; 2 = $9,598 with the codes coming out of the block. Does that match how you&rsquo;d bill it?</p>
+      <p>One more thing &mdash; you mentioned co-branding and highlighting our model. We&rsquo;d be glad to participate; your customer spotlights look like a natural fit once we&rsquo;re certified, so loop in your marketing contact whenever that makes sense.</p>
+      <p>Dallin</p>
+    </div>
+  </div>
+
+  <div class="note">The button copies rich text (HTML + plain-text fallback), so bold and the numbered list survive pasting into Gmail, Outlook, or Apple Mail. Paste with normal Ctrl+V &mdash; &ldquo;paste without formatting&rdquo; (Ctrl+Shift+V) would strip it. The email body itself stays black-on-white regardless of dark mode, since that&rsquo;s what mail clients expect.</div>
+</div>
+
+<script>
+async function copyEmail(){
+  const el = document.getElementById('email');
+  const html = el.innerHTML;
+  const text = el.innerText;
+  try{
+    await navigator.clipboard.write([new ClipboardItem({
+      'text/html': new Blob([html], {type:'text/html'}),
+      'text/plain': new Blob([text], {type:'text/plain'})
+    })]);
+    flash();
+  }catch(e){
+    const r = document.createRange(); r.selectNodeContents(el);
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    document.execCommand('copy'); s.removeAllRanges();
+    flash();
+  }
+}
+function flash(){
+  const m = document.getElementById('okmsg');
+  m.style.visibility = 'visible';
+  setTimeout(()=>{ m.style.visibility = 'hidden'; }, 2500);
+}
+</script>
+</body>
+</html>

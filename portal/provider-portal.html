@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Nume Health · Provider Portal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+  --blue:#0077B6; --blue-dark:#005f92; --navy:#101D31; --teal:#0fa898;
+  --gold:#12C8B8; --mint:#D8F7F2; --off:#F7FAFC; --bd:#E2E8F0;
+  --slate:#2E3E50; --gray:#7A8794; --white:#fff;
+  --red:#c0392b; --red-bg:#fdecea; --amber:#8a6d00; --amber-bg:#fff4d6; --green:#1c7a42; --green-bg:#dff3e6;
+  --shadow:0 1px 2px rgba(16,29,49,.06),0 4px 16px rgba(16,29,49,.07);
+  --mono:'SF Mono',ui-monospace,'Cascadia Code','Roboto Mono',Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:var(--sans);color:var(--slate);background:var(--off);font-size:14px;line-height:1.45}
+button{font-family:inherit;cursor:pointer}
+.app{display:grid;grid-template-rows:auto 1fr;height:100vh}
+
+/* topbar */
+.topbar{display:flex;align-items:center;gap:14px;padding:10px 18px;background:var(--navy);color:#fff;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700}
+.brand .mk{background:var(--gold);color:var(--navy);width:27px;height:27px;border-radius:7px;display:grid;place-items:center;font-weight:800}
+.brand small{font-weight:500;opacity:.65;font-size:11.5px}
+.spacer{flex:1}
+.rolepick{display:flex;align-items:center;gap:8px;font-size:12.5px}
+.rolepick select{font-family:inherit;font-size:12.5px;padding:6px 9px;border-radius:8px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff}
+.rolepick select option{color:#111}
+.who{display:flex;flex-direction:column;line-height:1.2;text-align:right}
+.who b{font-size:12.5px}.who small{font-size:10.5px;opacity:.6}
+.lensbtn{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.2);padding:6px 11px;border-radius:8px;font-size:12px}
+.lensbtn.on{background:var(--gold);color:var(--navy);border-color:var(--gold);font-weight:700}
+
+/* body */
+.body{display:grid;grid-template-columns:220px 1fr;min-height:0}
+.rail{background:#fff;border-right:1px solid var(--bd);padding:14px 12px;overflow:auto}
+.rail h4{margin:12px 8px 6px;font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--gray)}
+.navbtn{width:100%;text-align:left;background:none;border:1px solid transparent;border-radius:9px;padding:9px 11px;display:flex;gap:10px;align-items:center;color:var(--slate);margin-bottom:2px;font-size:13.5px}
+.navbtn:hover{background:var(--off)}
+.navbtn.on{background:var(--mint);border-color:var(--blue);font-weight:600}
+.navbtn .ic{width:20px;text-align:center}
+.navbtn .ct{margin-left:auto;font-size:11px;background:var(--blue);color:#fff;border-radius:999px;padding:1px 8px;font-weight:700}
+.navbtn .ct.warn{background:var(--red)}
+.scopecard{margin:14px 8px 4px;font-size:11.5px;color:var(--gray);background:var(--off);border:1px dashed var(--bd);border-radius:8px;padding:9px 10px}
+.scopecard b{color:var(--blue-dark)}
+.main{overflow:auto;padding:20px 26px}
+
+/* page head */
+.crumbs{display:flex;gap:7px;align-items:center;color:var(--gray);font-size:12.5px;margin-bottom:12px}
+.crumbs a{color:var(--blue);cursor:pointer}
+.pagehead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+.pagehead h1{font-size:22px;margin:0;color:var(--navy)}
+.pagehead .sub{color:var(--gray);font-size:13px;margin-top:3px}
+.toolrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.toggle{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--slate);background:#fff;border:1px solid var(--bd);border-radius:8px;padding:6px 10px}
+
+/* cards / queue */
+.card{background:#fff;border:1px solid var(--bd);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px}
+.card>.hd{padding:12px 16px;border-bottom:1px solid var(--bd);font-weight:700;color:var(--navy);display:flex;align-items:center;gap:9px}
+.card>.hd .r{margin-left:auto;font-weight:500;font-size:12px;color:var(--gray)}
+.qitem{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:13px 16px;border-bottom:1px solid var(--bd);cursor:pointer}
+.qitem:last-child{border-bottom:none}
+.qitem:hover{background:var(--off)}
+.qitem .av{width:38px;height:38px;border-radius:50%;background:var(--mint);color:var(--blue-dark);display:grid;place-items:center;font-weight:700;font-size:13px}
+.qitem .nm{font-weight:600;color:var(--navy)}
+.qitem .meta{font-size:12px;color:var(--gray);margin-top:2px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.qitem .right{display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+.qitem .age{font-size:11.5px;color:var(--gray)}
+
+.tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap}
+.tag.consult{background:#e7f0ff;color:#2451b3}
+.tag.followup{background:var(--mint);color:var(--blue-dark)}
+.tag.refill{background:#efe7ff;color:#59359a}
+.tag.side{background:var(--amber-bg);color:var(--amber)}
+.tag.lab{background:#e0f7fa;color:#00707d}
+.tag.msg{background:#eee;color:#555}
+.flagpill{font-size:10.5px;font-weight:700;color:var(--red);background:var(--red-bg);border:1px solid #f5c2c8;border-radius:999px;padding:2px 8px}
+.pri{font-size:10.5px;font-weight:700;border-radius:5px;padding:1px 6px}
+.pri.high{background:var(--red-bg);color:var(--red)} .pri.med{background:var(--amber-bg);color:var(--amber)} .pri.low{background:var(--off);color:var(--gray)}
+
+/* chart */
+.chart-hd{display:flex;gap:16px;align-items:center;flex-wrap:wrap;background:#fff;border:1px solid var(--bd);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow);margin-bottom:16px}
+.chart-hd .big{width:52px;height:52px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:700;font-size:18px}
+.chart-hd h2{margin:0;font-size:19px;color:var(--navy)}
+.chart-hd .demo{color:var(--gray);font-size:12.5px;margin-top:3px;display:flex;gap:12px;flex-wrap:wrap}
+.chart-hd .actions{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.grid2{grid-template-columns:1fr}}
+.sec{margin:0}
+.sec .hd{padding:11px 15px;border-bottom:1px solid var(--bd);font-weight:700;color:var(--navy);font-size:13.5px;display:flex;gap:8px;align-items:center}
+.sec .bd{padding:6px 15px 13px}
+.li{padding:7px 0;border-bottom:1px solid var(--bd);font-size:13.5px}
+.li:last-child{border-bottom:none}
+.li .s{font-size:11.5px;color:var(--gray)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13.5px;padding:5px 0}
+.kv .k{color:var(--gray);font-size:12px}
+
+/* flags banner */
+.flags{background:var(--red-bg);border:1px solid #f5c2c8;border-left:4px solid var(--red);border-radius:10px;padding:12px 15px;margin-bottom:16px}
+.flags b{color:var(--red)}
+.flags ul{margin:7px 0 0;padding-left:18px}
+.flags li{margin:3px 0;font-size:13px}
+.flags.clear{background:var(--green-bg);border-color:#b6e3c7;border-left-color:var(--green)}
+.flags.clear b{color:var(--green)}
+
+/* permission masks */
+.mask{color:var(--gray);font-family:var(--mono);font-size:12.5px}
+.obsc{color:var(--gray);font-style:italic;font-size:12.5px;display:inline-flex;gap:5px;align-items:center}
+.lens .partial{outline:2px dashed var(--gold);outline-offset:1px;border-radius:4px}
+.lens .obscured{outline:2px dashed var(--red);outline-offset:1px;border-radius:4px}
+.vbadge{display:none}
+.lens .vbadge{display:inline-block;font-size:9px;font-family:var(--mono);padding:0 4px;border-radius:4px;margin-left:5px;vertical-align:middle}
+.lens .vbadge.p{background:var(--amber-bg);color:var(--amber)}
+.lens .vbadge.o{background:var(--red-bg);color:var(--red)}
+
+/* buttons */
+.btn{border:1px solid var(--bd);background:#fff;color:var(--slate);border-radius:9px;padding:8px 14px;font-size:13px;font-weight:600}
+.btn:hover{background:var(--off)}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.primary:hover{background:var(--blue-dark)}
+.btn.ok{background:var(--green);border-color:var(--green);color:#fff}
+.btn.danger{background:#fff;border-color:#f5c2c8;color:var(--red)}
+.btn.sm{padding:5px 10px;font-size:12px}
+
+/* encounter */
+.enc{background:#fff;border:1px solid var(--bd);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px}
+.enc .tabs{display:flex;gap:2px;border-bottom:1px solid var(--bd);background:var(--off);padding:0 8px;flex-wrap:wrap}
+.enc .tab{background:none;border:none;border-bottom:3px solid transparent;padding:11px 14px;font-size:13px;font-weight:600;color:var(--gray)}
+.enc .tab.on{color:var(--blue-dark);border-bottom-color:var(--blue)}
+.enc .pane{padding:16px 18px;display:none}
+.enc .pane.on{display:block}
+.q{margin:0 0 12px}
+.q .ql{font-size:12px;color:var(--gray);text-transform:uppercase;letter-spacing:.4px}
+.q .qa{font-size:14.5px;color:var(--navy);margin-top:2px}
+.q .qa.flag{color:var(--red);font-weight:600}
+.protocol{border:1px solid var(--bd);border-radius:10px;padding:12px 14px;margin-bottom:10px;cursor:pointer}
+.protocol:hover{background:var(--off)}
+.protocol.sel{border-color:var(--blue);background:var(--mint)}
+.protocol .t{font-weight:700;color:var(--navy)}
+.protocol .steps{font-size:12.5px;color:var(--gray);margin-top:4px}
+textarea{width:100%;font-family:inherit;font-size:13.5px;border:1px solid var(--bd);border-radius:9px;padding:10px;resize:vertical;min-height:70px}
+.decisionbar{display:flex;gap:10px;flex-wrap:wrap;padding:14px 18px;border-top:1px solid var(--bd);background:var(--off)}
+.autonomy{font-size:12px;color:var(--gray);margin-left:auto;align-self:center;max-width:320px}
+
+/* history timeline */
+.tl{position:relative;margin:4px 0 0 6px;padding-left:18px;border-left:2px solid var(--bd)}
+.tl .ev{position:relative;padding:0 0 16px 8px}
+.tl .ev:before{content:'';position:absolute;left:-25px;top:2px;width:11px;height:11px;border-radius:50%;background:var(--blue);border:2px solid #fff}
+.tl .ev .d{font-size:11.5px;color:var(--gray)}
+.tl .ev .t{font-weight:600;color:var(--navy);font-size:13.5px}
+
+.toast{position:fixed;right:18px;bottom:18px;background:var(--navy);color:#fff;padding:11px 16px;border-radius:10px;box-shadow:var(--shadow);opacity:0;transform:translateY(8px);transition:.2s;max-width:340px;z-index:50;font-size:13px}
+.toast.on{opacity:1;transform:none}
+.empty{color:var(--gray);text-align:center;padding:40px 20px}
+.small{font-size:12px;color:var(--gray)}
+.note-inline{background:var(--off);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;font-size:12.5px;color:var(--slate);margin-top:6px}
+.note-inline b{color:var(--blue-dark)}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="brand"><span class="mk">N</span> Nume Health <small>Provider&nbsp;Portal</small></div>
+    <div class="spacer"></div>
+    <label class="rolepick">View as
+      <select id="roleSel"></select>
+    </label>
+    <button class="lensbtn" id="lensBtn" title="Highlight how the permission level restricts each field">◐ Permission lens</button>
+    <div class="who"><b id="whoName"></b><small id="whoRole"></small></div>
+  </div>
+  <div class="body">
+    <div class="rail" id="rail"></div>
+    <div class="main" id="main"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================================
+   Nume Health — Provider Portal (testable front-end)
+   Data-driven demo of the provider workflow + Workshift-style permission model.
+   Maps onto PioneerRx entities (Patient / Rx / Prescriber) + a basic EHR
+   (encounters, vitals, intake, assessment/plan). All patients are fictional.
+   ========================================================================== */
+
+/* ---- Roles & the permission/visibility engine -----------------------------
+   Workshift resolves each attribute to one of three visibility levels per the
+   viewer's permission group: FULL (see value), PARTIAL (masked/redacted), or
+   OBSCURED (hidden). Here each field carries a sensitivity CLASS; each role
+   maps class -> level. Patient SCOPE is separate: providers default to only
+   patients under their DIRECT CARE; pharmacy roles see everything sent to the
+   pharmacy. This mirrors view-level access control + calculated (last-4) attrs. */
+const ROLES = {
+  provider:  { label:'Provider (NP/MD)', person:'Dr. Nico Okafor, NP', scope:'direct-care',
+               vis:{demographic:'full', contact:'full', clinical:'full', ssn:'partial', financial:'obscured', note:'full', claim:'obscured'} },
+  pharmacist:{ label:'Pharmacist', person:'Sarah Vance, PharmD', scope:'pharmacy',
+               vis:{demographic:'full', contact:'full', clinical:'full', ssn:'partial', financial:'full', note:'partial', claim:'full'} },
+  tech:      { label:'Pharmacy Tech', person:'Jordan Lee, CPhT', scope:'pharmacy',
+               vis:{demographic:'full', contact:'full', clinical:'partial', ssn:'obscured', financial:'partial', note:'obscured', claim:'partial'} },
+  support:   { label:'Support / Billing', person:'Robin Park', scope:'pharmacy',
+               vis:{demographic:'partial', contact:'full', clinical:'obscured', ssn:'obscured', financial:'partial', note:'obscured', claim:'partial'} },
+};
+const PHARMACY_ID = 'mythic-slc';
+const ME = { provider:'presc_okafor' }; // the logged-in provider's id (for direct-care scope)
+
+let state = { role:'provider', view:'queue', patientId:null, lens:false, showAll:false, encTab:'summary', selProtocol:null };
+
+/* ---- Titration protocols (Kara: suggested tx + ~3 titration options + 1-click) */
+const PROTOCOLS = {
+  semaglutide:[
+    {id:'sema-standard', t:'Semaglutide — standard titration', steps:'0.25 → 0.5 → 1.0 → 1.7 → 2.4 mg weekly (4 wks/step)'},
+    {id:'sema-slow', t:'Semaglutide — slow / GI-sensitive', steps:'0.25 → 0.25 → 0.5 → 0.5 → 1.0 mg (extend each step)'},
+    {id:'sema-maint', t:'Semaglutide — maintenance (established)', steps:'Continue 1.0 mg weekly; reassess in 12 wks'},
+  ],
+  tirzepatide:[
+    {id:'tirz-standard', t:'Tirzepatide — standard titration', steps:'2.5 → 5 → 7.5 → 10 → 12.5 → 15 mg weekly (4 wks/step)'},
+    {id:'tirz-slow', t:'Tirzepatide — slow / GI-sensitive', steps:'2.5 → 2.5 → 5 → 5 → 7.5 mg (extend each step)'},
+    {id:'tirz-maint', t:'Tirzepatide — maintenance (established)', steps:'Continue 5 mg weekly; reassess in 12 wks'},
+  ],
+};
+
+/* ---- Fictional patients (PioneerRx-shaped + EHR) --------------------------- */
+const PATIENTS = [
+  {
+    id:'pat_blake', personID:'PX-40877', first:'Daphne', last:'Blake', dob:'1994-06-27', sex:'F',
+    phone:'+1 385 555 0170', email:'daphne.blake@demo.example', ssn:'000-00-0003',
+    address:'14 Mystery Machine Ln, SLC UT 84111', pharmacyId:PHARMACY_ID, careTeam:['presc_okafor'],
+    pmh:['Obesity (E66.9), BMI 33.1','Prediabetes (R73.03)'],
+    allergies:[{sub:'Penicillin', reaction:'Hives', sev:'Moderate'}],
+    meds:[{name:'Metformin 500 mg', sig:'1 tab PO BID'}],
+    conditions:[{name:'Obesity, BMI 33.1', icd:'E66.9'}],
+    rx:[], vitals:{ht:'5\'6"', wt:'205 lb', bmi:'33.1', bp:'128/82'},
+    intake:{type:'initial', chief:'Requesting weight management with GLP-1',
+      answers:[
+        {q:'Height / weight / BMI', a:'5\'6" · 205 lb · BMI 33.1'},
+        {q:'Prior weight-loss attempts', a:'Diet + exercise 12 mo; Metformin 6 mo'},
+        {q:'Personal/family hx thyroid cancer (MTC) or MEN2', a:'No'},
+        {q:'History of pancreatitis', a:'No'},
+        {q:'Pregnant / breastfeeding / planning pregnancy', a:'No — on contraception'},
+        {q:'Gallbladder disease', a:'No'},
+        {q:'Current medications', a:'Metformin 500 mg BID'},
+        {q:'Allergies', a:'Penicillin (hives)'},
+      ]},
+    history:[{d:'2026-07-28', t:'Intake submitted', s:'Initial GLP-1 consult'}],
+  },
+  {
+    id:'pat_flint', personID:'PX-40219', first:'Wilma', last:'Flintstone', dob:'1989-03-14', sex:'F',
+    phone:'+1 385 555 0142', email:'wilma.flintstone@demo.example', ssn:'000-00-0001',
+    address:'301 Cobblestone Way, Bedrock UT 84104', pharmacyId:PHARMACY_ID, careTeam:['presc_okafor'],
+    pmh:['Type 2 diabetes (E11.9)','Obesity (E66.9), BMI 32.4'],
+    allergies:[{sub:'Sulfa drugs', reaction:'Rash', sev:'Moderate'}],
+    meds:[{name:'Semaglutide 0.5 mg/wk (compounded)', sig:'Inject 0.5 mg SC weekly'},{name:'Metformin 1000 mg', sig:'1 tab PO BID'}],
+    conditions:[{name:'Type 2 diabetes', icd:'E11.9'},{name:'Obesity, BMI 32.4', icd:'E66.9'}],
+    rx:[{drug:'Semaglutide 2.5 mg/mL (compounded, 503A)', status:'Active', dose:'0.5 mg weekly', refills:2, filled:'2026-07-01'}],
+    vitals:{ht:'5\'4"', wt:'188 lb', bmi:'32.4', bp:'122/78'},
+    intake:{type:'followup', chief:'4-week follow-up, tolerating well, ready to titrate',
+      answers:[
+        {q:'Since last visit — weight change', a:'−7 lb (188 from 195)'},
+        {q:'Side effects', a:'Mild nausea week 1, resolved'},
+        {q:'Adherence', a:'No missed doses'},
+        {q:'New meds / conditions', a:'None'},
+      ]},
+    history:[
+      {d:'2026-07-01', t:'Rx dispensed', s:'Semaglutide 0.5 mg weekly · 28-day'},
+      {d:'2026-06-03', t:'Initial consult — approved', s:'Semaglutide started 0.25 mg'},
+      {d:'2026-06-01', t:'Intake submitted', s:'Initial GLP-1 consult'},
+    ],
+  },
+  {
+    id:'pat_jetson', personID:'PX-40114', first:'George', last:'Jetson', dob:'1976-11-02', sex:'M',
+    phone:'+1 801 555 0199', email:'george.jetson@demo.example', ssn:'000-00-0002',
+    address:'Skypad Apartments 2062, Provo UT 84601', pharmacyId:PHARMACY_ID, careTeam:['presc_okafor'],
+    pmh:['Obesity (E66.9), BMI 31.0'],
+    allergies:[],
+    meds:[{name:'Tirzepatide 5 mg/wk (compounded)', sig:'Inject 5 mg SC weekly'}],
+    conditions:[{name:'Obesity, BMI 31.0', icd:'E66.9'}],
+    rx:[{drug:'Tirzepatide 25 mg/mL (compounded, 503A)', status:'Active', dose:'5 mg weekly', refills:1, filled:'2026-07-20'}],
+    vitals:{ht:'5\'10"', wt:'232 lb', bmi:'31.0', bp:'134/86'},
+    intake:{type:'side-effect', chief:'Reports persistent nausea + vomiting x3 days on 5 mg',
+      answers:[
+        {q:'Symptom', a:'Nausea, vomiting x3 days, poor PO intake'},
+        {q:'Severity', a:'Moderate — able to keep fluids down'},
+        {q:'Signs of pancreatitis (severe abd pain radiating to back)', a:'No', flag:false},
+        {q:'Dehydration signs', a:'Mild — reduced urination'},
+        {q:'Wants to continue therapy', a:'Yes, if manageable'},
+      ]},
+    history:[
+      {d:'2026-07-20', t:'Rx dispensed', s:'Tirzepatide 5 mg weekly'},
+      {d:'2026-07-19', t:'Titration approved', s:'2.5 → 5 mg'},
+      {d:'2026-06-21', t:'Initial consult — approved', s:'Tirzepatide started 2.5 mg'},
+    ],
+  },
+  {
+    id:'pat_quinn', personID:'PX-41002', first:'Harley', last:'Quinn', dob:'1991-02-20', sex:'F',
+    phone:'+1 385 555 0188', email:'harley.quinn@demo.example', ssn:'000-00-0004',
+    address:'42 Amusement Mile, SLC UT 84102', pharmacyId:PHARMACY_ID, careTeam:['presc_okafor'],
+    pmh:['Obesity (E66.9), BMI 34.7','Hypothyroidism (E03.9)'],
+    allergies:[{sub:'Sulfa drugs', reaction:'Anaphylaxis', sev:'Severe'}],
+    meds:[{name:'Levothyroxine 75 mcg', sig:'1 tab PO daily'}],
+    conditions:[{name:'Obesity, BMI 34.7', icd:'E66.9'}],
+    rx:[],
+    vitals:{ht:'5\'7"', wt:'221 lb', bmi:'34.7', bp:'118/76'},
+    intake:{type:'initial', chief:'Requesting tirzepatide for weight loss',
+      answers:[
+        {q:'Height / weight / BMI', a:'5\'7" · 221 lb · BMI 34.7'},
+        {q:'Prior weight-loss attempts', a:'Multiple diets; brief phentermine trial'},
+        {q:'Personal/family hx thyroid cancer (MTC) or MEN2', a:'Yes — mother had medullary thyroid carcinoma', flag:true},
+        {q:'History of pancreatitis', a:'No'},
+        {q:'Pregnant / breastfeeding / planning pregnancy', a:'No'},
+        {q:'Current medications', a:'Levothyroxine 75 mcg daily'},
+        {q:'Allergies', a:'Sulfa (anaphylaxis)'},
+      ]},
+    history:[{d:'2026-07-29', t:'Intake submitted', s:'Initial GLP-1 consult'}],
+  },
+  {
+    id:'pat_west', personID:'PX-41055', first:'Wally', last:'West', dob:'1998-09-30', sex:'M',
+    phone:'+1 801 555 0155', email:'wally.west@demo.example', ssn:'000-00-0005',
+    address:'6 Central City Ct, Provo UT 84604', pharmacyId:PHARMACY_ID, careTeam:['presc_okafor'],
+    pmh:['Obesity (E66.9), BMI 30.4'],
+    allergies:[],
+    meds:[{name:'Semaglutide 1.0 mg/wk (compounded)', sig:'Inject 1.0 mg SC weekly'}],
+    conditions:[{name:'Obesity, BMI 30.4', icd:'E66.9'}],
+    rx:[{drug:'Semaglutide 5 mg/mL (compounded, 503A)', status:'Refill due', dose:'1.0 mg weekly', refills:0, filled:'2026-06-28'}],
+    vitals:{ht:'5\'11"', wt:'214 lb', bmi:'30.4', bp:'120/74'},
+    intake:{type:'refill', chief:'Auto-refill review — 0 refills remaining',
+      answers:[
+        {q:'Weight trend', a:'−12 lb over 12 weeks'},
+        {q:'Side effects', a:'None currently'},
+        {q:'Continue therapy?', a:'Yes'},
+      ]},
+    history:[
+      {d:'2026-06-28', t:'Rx dispensed', s:'Semaglutide 1.0 mg weekly'},
+      {d:'2026-04-05', t:'Initial consult — approved', s:'Semaglutide started 0.25 mg'},
+    ],
+  },
+  {
+    id:'pat_prince', personID:'PX-41090', first:'Diana', last:'Prince', dob:'1985-03-22', sex:'F',
+    phone:'+1 385 555 0133', email:'diana.prince@demo.example', ssn:'000-00-0006',
+    address:'1 Themyscira Blvd, SLC UT 84105', pharmacyId:PHARMACY_ID, careTeam:['presc_okafor'],
+    pmh:['Obesity (E66.9), BMI 36.2','Hypertension (I10)'],
+    allergies:[],
+    meds:[{name:'Lisinopril 20 mg', sig:'1 tab PO daily'}],
+    conditions:[{name:'Obesity, BMI 36.2', icd:'E66.9'},{name:'Essential hypertension', icd:'I10'}],
+    rx:[],
+    vitals:{ht:'5\'9"', wt:'245 lb', bmi:'36.2', bp:'158/96'},
+    intake:{type:'initial', chief:'Requesting semaglutide; BP elevated on intake',
+      answers:[
+        {q:'Height / weight / BMI', a:'5\'9" · 245 lb · BMI 36.2'},
+        {q:'Blood pressure (self-reported)', a:'158/96 — elevated', flag:true},
+        {q:'Personal/family hx thyroid cancer (MTC) or MEN2', a:'No'},
+        {q:'History of pancreatitis', a:'No'},
+        {q:'Pregnant / breastfeeding / planning pregnancy', a:'No'},
+        {q:'Recent labs (A1c, CMP)', a:'None in last 12 months', flag:true},
+        {q:'Current medications', a:'Lisinopril 20 mg daily'},
+      ]},
+    history:[{d:'2026-07-29', t:'Intake submitted', s:'Initial GLP-1 consult'}],
+  },
+  /* Not on this provider's care team — visible to pharmacy roles, obscured to the provider */
+  {
+    id:'pat_kent', personID:'PX-41120', first:'Clark', last:'Kent', dob:'1980-02-29', sex:'M',
+    phone:'+1 801 555 0111', email:'clark.kent@demo.example', ssn:'000-00-0007',
+    address:'344 Clinton St, Metropolis UT 84101', pharmacyId:PHARMACY_ID, careTeam:['presc_lang'],
+    pmh:['Obesity (E66.9), BMI 30.9'],
+    allergies:[],
+    meds:[{name:'Tirzepatide 2.5 mg/wk (compounded)', sig:'Inject 2.5 mg SC weekly'}],
+    conditions:[{name:'Obesity, BMI 30.9', icd:'E66.9'}],
+    rx:[{drug:'Tirzepatide 25 mg/mL (compounded, 503A)', status:'Fill in progress', dose:'2.5 mg weekly', refills:3, filled:'—'}],
+    vitals:{ht:'6\'2"', wt:'240 lb', bmi:'30.9', bp:'118/72'},
+    intake:{type:'followup', chief:'Follow-up (Dr. Lang panel)', answers:[]},
+    history:[{d:'2026-07-27', t:'Rx sent to pharmacy', s:'Tirzepatide 2.5 mg weekly'}],
+  },
+];
+
+/* ---- Care Queue items (the "tasks", framed warmly) ------------------------- */
+const QUEUE = [
+  {id:'q1', patientId:'pat_prince', type:'consult', label:'New consult', pri:'high', age:'12 min', assignedTo:'presc_okafor', sub:['Intake review','Rx review','Flagged: BP, labs']},
+  {id:'q2', patientId:'pat_quinn', type:'consult', label:'New consult', pri:'high', age:'1 hr', assignedTo:'presc_okafor', sub:['Intake review','Rx review','Flagged: MTC/MEN2 hx']},
+  {id:'q3', patientId:'pat_jetson', type:'side', label:'Side-effect check', pri:'med', age:'2 hr', assignedTo:'presc_okafor', sub:['Symptom review','Titration decision']},
+  {id:'q4', patientId:'pat_blake', type:'consult', label:'New consult', pri:'med', age:'5 hr', assignedTo:'presc_okafor', sub:['Intake review','Rx review']},
+  {id:'q5', patientId:'pat_flint', type:'followup', label:'Follow-up', pri:'low', age:'1 day', assignedTo:'presc_okafor', sub:['Check-in review','Titration decision']},
+  {id:'q6', patientId:'pat_west', type:'refill', label:'Refill review', pri:'low', age:'1 day', assignedTo:'presc_okafor', sub:['Refill authorization']},
+  {id:'q7', patientId:'pat_kent', type:'followup', label:'Follow-up', pri:'low', age:'3 hr', assignedTo:'presc_lang', sub:['Check-in review']},
+];
+
+/* ---- Red-flag engine (Kara: bold red flags) -------------------------------- */
+function redFlags(p){
+  const f=[];
+  (p.allergies||[]).forEach(a=>{ if(a.sev==='Severe') f.push('Severe allergy on file: '+a.sub+' ('+a.reaction+')'); });
+  (p.intake?.answers||[]).forEach(a=>{ if(a.flag) f.push('Intake flag — '+a.q+': '+a.a); });
+  // GLP-1 contraindication scan
+  const hay=JSON.stringify(p.intake?.answers||[]).toLowerCase();
+  if(hay.includes('medullary')||hay.includes('men2')) f.push('GLP-1 CONTRAINDICATION: personal/family hx of MTC / MEN2');
+  if(hay.includes('pancreatitis')&&hay.includes('yes')) f.push('Caution: history of pancreatitis');
+  // chart vs intake allergy inconsistency
+  const chartAll=(p.allergies||[]).map(a=>a.sub.toLowerCase());
+  const intakeAll=(p.intake?.answers||[]).filter(a=>/allerg/i.test(a.q)).map(a=>a.a.toLowerCase()).join(' ');
+  chartAll.forEach(s=>{ if(intakeAll && !intakeAll.includes(s.split(' ')[0])) f.push('Chart/intake mismatch: chart lists “'+s+'”, not confirmed on intake'); });
+  // BP
+  const bp=(p.vitals?.bp||'').split('/'); if(+bp[0]>=140||+bp[1]>=90) f.push('Elevated BP on intake: '+p.vitals.bp);
+  return f;
+}
+
+/* ---- Permission helpers ---------------------------------------------------- */
+function vis(cls){ return ROLES[state.role].vis[cls] || 'full'; }
+function inScope(p){
+  const r=ROLES[state.role];
+  if(r.scope==='pharmacy') return p.pharmacyId===PHARMACY_ID;
+  // direct-care: only patients whose care team includes me
+  return (p.careTeam||[]).includes(ME.provider);
+}
+/* render a value honoring the field's visibility level for the current role */
+function field(cls, value, opts={}){
+  const level=vis(cls);
+  if(level==='full') return '<span>'+esc(value)+'</span>';
+  if(level==='partial'){
+    let masked = opts.mask!==undefined ? opts.mask : partialMask(cls, value);
+    return '<span class="partial mask">'+esc(masked)+'<span class="vbadge p">PARTIAL</span></span>';
+  }
+  return '<span class="obscured obscured">🔒 restricted<span class="vbadge o">OBSCURED</span></span>';
+}
+function partialMask(cls,value){
+  value=String(value==null?'':value);
+  if(cls==='ssn') return '•••-••-'+value.slice(-4);
+  if(cls==='demographic') return value.split(' ')[0]+' ' + (value.split(' ').slice(1).map(w=>w[0]?w[0]+'.':'').join(''));
+  if(cls==='financial') return '$ ••••';
+  if(cls==='note') return value.slice(0,40)+'… (full note restricted)';
+  return '••••';
+}
+function canSeeClinical(){ return vis('clinical')==='full'; }
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+/* ---- App state helpers ----------------------------------------------------- */
+function patient(id){ return PATIENTS.find(p=>p.id===id); }
+function myQueue(){
+  const r=ROLES[state.role];
+  return QUEUE.filter(q=>{
+    const p=patient(q.patientId); if(!p) return false;
+    if(r.scope==='pharmacy') return p.pharmacyId===PHARMACY_ID;
+    return q.assignedTo===ME.provider; // provider: only my assigned items
+  });
+}
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('on'),2600); }
+
+/* ---- Rendering ------------------------------------------------------------- */
+function render(){
+  const r=ROLES[state.role];
+  document.getElementById('whoName').textContent=r.person;
+  document.getElementById('whoRole').textContent=r.label;
+  document.getElementById('lensBtn').classList.toggle('on', state.lens);
+  document.getElementById('main').classList.toggle('lens', state.lens);
+  renderRail();
+  if(state.view==='queue') renderQueue();
+  else if(state.view==='patients') renderPatients();
+  else if(state.view==='chart') renderChart();
+  else if(state.view==='practice') renderPractice();
+}
+
+function renderRail(){
+  const r=ROLES[state.role];
+  const q=myQueue();
+  const openConsults=q.filter(x=>x.type==='consult').length;
+  const rail=document.getElementById('rail');
+  const scopeText = r.scope==='direct-care'
+    ? 'Scope: <b>your direct-care panel</b>. Patients outside your care are hidden or obscured.'
+    : 'Scope: <b>all patients sent to '+PHARMACY_ID+'</b>.';
+  rail.innerHTML =
+    '<h4>Work</h4>'+
+    navbtn('queue','🗂️','Care Queue', q.length, openConsults>0)+
+    navbtn('patients','👥','Patients', null)+
+    (state.role==='provider'?navbtn('practice','⚙️','My Practice', null):'')+
+    '<div class="scopecard">'+scopeText+'</div>'+
+    '<h4>About</h4>'+
+    '<div class="scopecard">Fictional data. The <b>Permission lens</b> (top-right) shows how each field is shown <b>full</b>, <b>partial</b>, or <b>obscured</b> for the selected role — the same control Workshift enforces server-side.</div>';
+}
+function navbtn(view,ic,label,count,warn){
+  return '<button class="navbtn '+(state.view===view?'on':'')+'" onclick="go(\''+view+'\')">'+
+    '<span class="ic">'+ic+'</span> '+label+
+    (count!=null?'<span class="ct '+(warn?'warn':'')+'">'+count+'</span>':'')+'</button>';
+}
+
+function renderQueue(){
+  const items=myQueue();
+  const main=document.getElementById('main');
+  let rows = items.map(q=>{
+    const p=patient(q.patientId);
+    const flags=redFlags(p);
+    const nameCanShow = inScope(p);
+    const nm = nameCanShow ? esc(p.first+' '+p.last) : field('demographic', p.first+' '+p.last);
+    const init=(p.first[0]+p.last[0]);
+    return '<div class="qitem" onclick="openChart(\''+p.id+'\')">'+
+      '<div class="av">'+esc(init)+'</div>'+
+      '<div><div class="nm">'+nm+'</div>'+
+        '<div class="meta"><span class="tag '+q.type+'">'+esc(q.label)+'</span>'+
+        '<span>'+esc(p.personID)+'</span>'+
+        (flags.length&&nameCanShow?'<span class="flagpill">⚑ '+flags.length+' flag'+(flags.length>1?'s':'')+'</span>':'')+
+        '<span>'+esc(q.sub.join(' · '))+'</span></div></div>'+
+      '<div class="right"><span class="pri '+q.pri+'">'+q.pri.toUpperCase()+'</span><span class="age">'+esc(q.age)+'</span></div>'+
+      '</div>';
+  }).join('');
+  if(!items.length) rows='<div class="empty">Your care queue is clear. 🎉</div>';
+  main.innerHTML =
+    crumbs([['Care Queue',null]])+
+    '<div class="pagehead"><div><h1>Care Queue</h1>'+
+      '<div class="sub">'+(state.role==='provider'?'Your assigned visits & reviews — newest urgent first. Click a patient to open their chart.':'All pharmacy work items.')+'</div></div></div>'+
+    '<div class="card"><div class="hd">🗂️ Open items <span class="r">'+items.length+' item'+(items.length!==1?'s':'')+'</span></div>'+rows+'</div>'+
+    (state.role==='provider'?'<div class="note-inline"><b>Naming:</b> shown as “Care Queue”/“visits” rather than “tasks” — under the hood these are still task/subtask records (intake review, Rx review, flagged conditions), per the demo nomenclature Kara approved. Say the word to relabel (Worklist / Rounds / Today).</div>':'');
+}
+
+function renderPatients(){
+  const list=PATIENTS.filter(p=>{
+    if(ROLES[state.role].scope==='pharmacy') return p.pharmacyId===PHARMACY_ID;
+    return state.showAll ? p.pharmacyId===PHARMACY_ID : inScope(p);
+  });
+  const main=document.getElementById('main');
+  const rows=list.map(p=>{
+    const scoped=inScope(p);
+    const nm = scoped ? esc(p.first+' '+p.last) : field('demographic', p.first+' '+p.last);
+    const canOpen = scoped || ROLES[state.role].scope==='pharmacy';
+    const rx=(p.rx[0]?esc(p.rx[0].drug.split('(')[0]):'—');
+    return '<div class="qitem" '+(canOpen?'onclick="openChart(\''+p.id+'\')"':'style="cursor:default;opacity:.7"')+'>'+
+      '<div class="av">'+esc(p.first[0]+p.last[0])+'</div>'+
+      '<div><div class="nm">'+nm+'</div><div class="meta"><span>'+esc(p.personID)+'</span><span>'+rx+'</span>'+
+      (!scoped&&ROLES[state.role].scope!=='pharmacy'?'<span class="obscured">🔒 not under your direct care</span>':'')+'</div></div>'+
+      '<div class="right"><span class="small">'+(p.rx[0]?esc(p.rx[0].status):'no active Rx')+'</span></div></div>';
+  }).join('');
+  const toggle = state.role==='provider'
+    ? '<label class="toggle"><input type="checkbox" '+(state.showAll?'checked':'')+' onchange="toggleAll(this.checked)"> Show all pharmacy patients (obscured — outside your care)</label>' : '';
+  main.innerHTML =
+    crumbs([['Patients',null]])+
+    '<div class="pagehead"><div><h1>Patients</h1><div class="sub">'+
+      (ROLES[state.role].scope==='pharmacy'?'Everyone sent to '+PHARMACY_ID+'.':'Your direct-care panel — the default view.')+'</div></div>'+
+      '<div class="toolrow">'+toggle+'</div></div>'+
+    '<div class="card">'+(rows||'<div class="empty">No patients in scope.</div>')+'</div>';
+}
+
+function openChart(id){ const p=patient(id);
+  if(!inScope(p) && ROLES[state.role].scope!=='pharmacy'){ toast('That patient is not under your direct care — access restricted.'); return; }
+  state.patientId=id; state.view='chart'; state.encExpanded=false; state.encTab='summary'; state.selProtocol=null; render();
+}
+
+function renderChart(){
+  const p=patient(state.patientId); if(!p){ go('queue'); return; }
+  const main=document.getElementById('main');
+  const flags = canSeeClinical() ? redFlags(p) : [];
+  const q = QUEUE.find(x=>x.patientId===p.id);
+  const isProvider = state.role==='provider';
+
+  // header
+  let head =
+    '<div class="chart-hd"><div class="big">'+esc(p.first[0]+p.last[0])+'</div>'+
+    '<div><h2>'+esc(p.first+' '+p.last)+'</h2>'+
+    '<div class="demo"><span>'+esc(p.personID)+'</span>'+
+      '<span>DOB '+field('demographic',p.dob,{mask:p.dob.slice(-4)})+'</span>'+
+      '<span>'+esc(p.sex)+'</span>'+
+      '<span>SSN '+field('ssn',p.ssn)+'</span>'+
+      '<span>'+field('contact',p.phone)+'</span></div></div>'+
+    '<div class="actions">'+
+      (isProvider && q ? '<button class="btn primary" onclick="toggleEnc()">'+(state.encExpanded?'Collapse encounter':'Open full encounter')+'</button>':'')+
+      '<button class="btn" onclick="go(\'queue\')">← Queue</button>'+
+    '</div></div>';
+
+  // flags banner
+  let flagBanner='';
+  if(canSeeClinical()){
+    flagBanner = flags.length
+      ? '<div class="flags"><b>⚑ '+flags.length+' clinical flag'+(flags.length>1?'s':'')+'</b><ul>'+flags.map(f=>'<li>'+esc(f)+'</li>').join('')+'</ul></div>'
+      : '<div class="flags clear"><b>✓ No red flags</b> — allergies, contraindications, comorbidity and intake-consistency checks passed.</div>';
+  }
+
+  // quick chart (top-3 per Kara: PMH, meds, allergies) + current Rx
+  const quick =
+    '<div class="grid2">'+
+      sec('🩺 Past medical history', canSeeClinical()
+        ? (p.pmh.length?p.pmh.map(x=>'<div class="li">'+esc(x)+'</div>').join(''):'<div class="li small">None recorded</div>')
+        : lockedClinical())+
+      sec('💊 Current medications', canSeeClinical()
+        ? (p.meds.length?p.meds.map(m=>'<div class="li">'+esc(m.name)+'<div class="s">'+esc(m.sig)+'</div></div>').join(''):'<div class="li small">None</div>')
+        : lockedClinical())+
+      sec('⚠️ Allergies', canSeeClinical()
+        ? (p.allergies.length?p.allergies.map(a=>'<div class="li">'+esc(a.sub)+' <span class="tag '+(a.sev==='Severe'?'side':'msg')+'">'+esc(a.sev)+'</span><div class="s">'+esc(a.reaction)+'</div></div>').join(''):'<div class="li small">No known allergies</div>')
+        : lockedClinical())+
+      sec('📈 Vitals',
+        '<div class="kv"><span class="k">Height</span><span>'+esc(p.vitals.ht)+'</span>'+
+        '<span class="k">Weight</span><span>'+esc(p.vitals.wt)+'</span>'+
+        '<span class="k">BMI</span><span>'+esc(p.vitals.bmi)+'</span>'+
+        '<span class="k">BP</span><span>'+esc(p.vitals.bp)+'</span></div>')+
+    '</div>';
+
+  // current Rx + pharmacy/financial (financial obscured for provider)
+  const rxRows = p.rx.length? p.rx.map(rx=>
+      '<div class="li"><b>'+esc(rx.drug)+'</b> <span class="tag followup">'+esc(rx.status)+'</span>'+
+      '<div class="s">'+esc(rx.dose)+' · refills '+rx.refills+' · last filled '+esc(rx.filled)+'</div></div>').join('')
+    : '<div class="li small">No active prescriptions</div>';
+  const rxCard = sec('℞ Prescriptions & fills',
+      rxRows + '<div class="li"><span class="k small">Billing / claim total</span> '+field('financial','$ 284.00 (Rx + visit)')+'</div>');
+
+  // encounter (expand)
+  let encHtml='';
+  if(state.encExpanded && isProvider) encHtml=renderEncounter(p);
+
+  main.innerHTML =
+    crumbs([['Care Queue','queue'],[p.first+' '+p.last,null]])+
+    head + flagBanner + quick + rxCard + encHtml +
+    sec('🕑 Patient history', p.history.map(h=>'').length?
+      '<div class="tl">'+p.history.map(h=>'<div class="ev"><div class="d">'+esc(h.d)+'</div><div class="t">'+esc(h.t)+'</div><div class="small">'+esc(h.s)+'</div></div>').join('')+'</div>'
+      :'<div class="li small">No prior encounters</div>');
+}
+function lockedClinical(){ return '<div class="li"><span class="obscured obscured">🔒 clinical detail restricted for this role<span class="vbadge o">OBSCURED</span></span></div>'; }
+function sec(title, bodyHtml){ return '<div class="card sec"><div class="hd">'+title+'</div><div class="bd">'+bodyHtml+'</div></div>'; }
+
+/* ---- Comprehensive encounter (Kara: initial=full intake, follow-up=chief-first) */
+function renderEncounter(p){
+  const it=p.intake||{answers:[]};
+  const isInitial = it.type==='initial';
+  const tabs=[['summary', isInitial?'Full intake':'Check-in'],['assess','Assessment & plan'],['rx','Prescribe']];
+  const tabBar='<div class="tabs">'+tabs.map(t=>'<button class="tab '+(state.encTab===t[0]?'on':'')+'" onclick="encTab(\''+t[0]+'\')">'+t[1]+'</button>').join('')+'</div>';
+
+  // summary/intake pane
+  let chief='<div class="q"><div class="ql">Chief complaint</div><div class="qa">'+esc(it.chief||'—')+'</div></div>';
+  let intakePane;
+  if(isInitial){
+    intakePane = chief + it.answers.map(a=>'<div class="q"><div class="ql">'+esc(a.q)+'</div><div class="qa '+(a.flag?'flag':'')+'">'+(a.flag?'⚑ ':'')+esc(a.a)+'</div></div>').join('');
+  } else {
+    // follow-up / side-effect / refill: chief complaint + updated info first
+    intakePane = chief +
+      '<div class="note-inline">Follow-up view — showing chief complaint + what changed since last visit first (full intake available via history).</div>'+
+      it.answers.map(a=>'<div class="q"><div class="ql">'+esc(a.q)+'</div><div class="qa '+(a.flag?'flag':'')+'">'+(a.flag?'⚑ ':'')+esc(a.a)+'</div></div>').join('')+
+      '<div style="margin-top:8px"><button class="btn sm" onclick="toast(\'Would open the full prior intake from the patient history.\')">View full prior intake →</button></div>';
+  }
+
+  // assessment
+  const flags=redFlags(p);
+  const assessPane =
+    '<div class="q"><div class="ql">Impression</div><div class="qa">'+esc((p.conditions[0]?p.conditions[0].name:'Weight management'))+' — candidate for GLP-1 therapy</div></div>'+
+    (flags.length?'<div class="flags"><b>Consider before prescribing</b><ul>'+flags.map(f=>'<li>'+esc(f)+'</li>').join('')+'</ul></div>':'<div class="flags clear"><b>No contraindication flags.</b></div>')+
+    '<div class="q"><div class="ql">Assessment note</div><textarea id="assessNote" placeholder="Clinical assessment...">'+esc(assessDefault(p))+'</textarea></div>';
+
+  // prescribe pane — suggested drug + 3 titration options + one-click
+  const suggest = /tirzepatide/i.test((p.rx[0]||{}).drug||'') || /tirzepatide/i.test(it.chief||'') ? 'tirzepatide' : 'semaglutide';
+  const protos = PROTOCOLS[suggest];
+  const rxPane =
+    '<div class="q"><div class="ql">Suggested therapy</div><div class="qa">'+cap(suggest)+' (compounded, 503A) — Nume formulary</div></div>'+
+    '<div class="small" style="margin-bottom:8px">Pre-queued titration options — select one, then approve. You may also decline without pressure.</div>'+
+    protos.map(pr=>'<div class="protocol '+(state.selProtocol===pr.id?'sel':'')+'" onclick="pickProtocol(\''+pr.id+'\')"><div class="t">'+esc(pr.t)+'</div><div class="steps">'+esc(pr.steps)+'</div></div>').join('')+
+    '<div class="q"><div class="ql">Directions / note to pharmacy</div><textarea id="rxNote" placeholder="Sig, counseling, special instructions...">Inject SC once weekly. Rotate injection sites. Counsel on GI side effects and red-flag symptoms.</textarea></div>';
+
+  const panes =
+    '<div class="pane '+(state.encTab==='summary'?'on':'')+'">'+intakePane+'</div>'+
+    '<div class="pane '+(state.encTab==='assess'?'on':'')+'">'+assessPane+'</div>'+
+    '<div class="pane '+(state.encTab==='rx'?'on':'')+'">'+rxPane+'</div>';
+
+  const decision =
+    '<div class="decisionbar">'+
+      '<button class="btn ok" onclick="decide(\'approve\')">✓ Approve & send to pharmacy</button>'+
+      '<button class="btn" onclick="decide(\'labs\')">🧪 Request labs / records first</button>'+
+      '<button class="btn" onclick="decide(\'message\')">✉️ Message patient</button>'+
+      '<button class="btn danger" onclick="decide(\'decline\')">Decline / not clinically appropriate</button>'+
+      '<div class="autonomy">Provider autonomy: declining or deferring carries no penalty. Labs routing sends a request instead of auto-disqualifying.</div>'+
+    '</div>';
+
+  return '<div class="enc"><div class="hd" style="padding:12px 16px;border-bottom:1px solid var(--bd);font-weight:700;color:var(--navy)">📝 '+(isInitial?'Initial encounter':'Follow-up encounter')+' — '+esc(p.first+' '+p.last)+'</div>'+tabBar+panes+decision+'</div>';
+}
+function assessDefault(p){
+  const bmi=p.vitals?.bmi; return (p.first+' '+p.last[0]+'. — BMI '+bmi+'. '+ (p.conditions[0]?p.conditions[0].name:'Obesity') +'. Reviewed PMH, meds, allergies and GLP-1 contraindication screen.');
+}
+function cap(s){return s[0].toUpperCase()+s.slice(1);}
+
+/* ---- My Practice (provider) ------------------------------------------------ */
+function renderPractice(){
+  document.getElementById('main').innerHTML =
+    crumbs([['My Practice',null]])+
+    '<div class="pagehead"><div><h1>My Practice</h1><div class="sub">Availability, credentials, and continuity preferences.</div></div></div>'+
+    '<div class="grid2">'+
+      sec('🗓️ Availability & throttle', '<div class="kv"><span class="k">Status</span><span>Accepting queue</span>'+
+        '<span class="k">Max open consults</span><span>15 / hour</span>'+
+        '<span class="k">States licensed</span><span>UT, NV, AZ, ID</span>'+
+        '<span class="k">Visit modes</span><span>Async (UT); video for initials on own license</span></div>'+
+        '<div class="note-inline">Kara: schedule edits should lock until booked appointments lapse; comp fair on side-effect-heavy mixes.</div>')+
+      sec('🎫 Credentials & compliance', '<div class="kv"><span class="k">NPI</span><span>1&bull;&bull;&bull;&bull;&bull;7890</span>'+
+        '<span class="k">DEA</span><span>on file · verified</span>'+
+        '<span class="k">Malpractice / E&amp;O</span><span>Verified · exp 2027-03</span>'+
+        '<span class="k">OIG/OCR exclusion check</span><span>Clear</span></div>')+
+      sec('🔁 Continuity', '<div class="li">Patients may choose <b>same-provider</b> or <b>first-available</b>. Your follow-ups are routed to you first, then released to the queue.</div>')+
+      sec('💵 Compensation (preview)', '<div class="li">Per-script base with a fair floor on side-effect-heavy visit mixes (the Hims weight-loss gap). Volume incentives above threshold.</div>')+
+    '</div>';
+}
+
+/* ---- misc UI --------------------------------------------------------------- */
+function crumbs(parts){ return '<div class="crumbs">'+parts.map((p,i)=>(p[1]?'<a onclick="go(\''+p[1]+'\')">'+esc(p[0])+'</a>':'<span>'+esc(p[0])+'</span>')+(i<parts.length-1?' <span>›</span>':'')).join('')+'</div>'; }
+function go(v){ state.view=v; if(v!=='chart') state.patientId=null; render(); }
+function toggleAll(v){ state.showAll=v; render(); }
+function toggleEnc(){ state.encExpanded=!state.encExpanded; render(); }
+function encTab(t){ state.encTab=t; render(); }
+function pickProtocol(id){ state.selProtocol=id; render(); }
+function decide(kind){
+  const p=patient(state.patientId);
+  if(kind==='approve'){ if(!state.selProtocol && state.encTab!=='rx'){ toast('Open the Prescribe tab and choose a titration plan first.'); encTab('rx'); return; }
+    if(!state.selProtocol){ toast('Select a titration plan to approve.'); return; }
+    toast('✓ Approved — Rx sent to pharmacy for '+p.first+' '+p.last+'. Queue item closed.'); state.encExpanded=false; setTimeout(()=>go('queue'),700); return; }
+  if(kind==='labs'){ toast('🧪 Labs/records requested — patient moved to “awaiting labs”, not disqualified.'); return; }
+  if(kind==='message'){ toast('✉️ Secure message drafted to '+p.first+'.'); return; }
+  if(kind==='decline'){ toast('Declined — documented as not clinically appropriate. No penalty; patient notified with guidance.'); state.encExpanded=false; setTimeout(()=>go('queue'),700); return; }
+}
+
+/* ---- boot ------------------------------------------------------------------ */
+function boot(){
+  const sel=document.getElementById('roleSel');
+  sel.innerHTML=Object.keys(ROLES).map(k=>'<option value="'+k+'">'+ROLES[k].label+'</option>').join('');
+  sel.value=state.role;
+  sel.onchange=e=>{ state.role=e.target.value; state.view='queue'; state.patientId=null; render(); };
+  document.getElementById('lensBtn').onclick=()=>{ state.lens=!state.lens; render(); };
+  render();
+}
+boot();
+</script>
+</body>
+</html>
