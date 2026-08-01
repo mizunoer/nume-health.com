@@ -33,12 +33,32 @@ changing the nameservers.** Stack: `dev-workshift-dns` (us-west-2), source
   URLs), JSON-LD (Pharmacy with full NAP for mythic; MedicalOrganization for
   nume; auto-FAQPage on FAQ pages).
 
-## Nameservers to paste at Namecheap (Domain → Nameservers → Custom DNS)
+## Where the nameserver change happens: SQUARESPACE (the registrar)
 
-| Domain | Nameservers |
+The domains are registered at Squarespace with nameservers currently delegated
+to Namecheap. Nameserver delegation is a registrar setting, so the swap happens
+in **Squarespace → Domains → <domain> → DNS/Nameservers → Use custom
+nameservers** — Namecheap's dashboard is not involved and nothing needs to be
+"pointed back" to Namecheap:
+
+- **Email needs nothing at Namecheap.** Mail is Google Workspace; Namecheap
+  only *answered DNS queries* about it. The Route 53 zones carry the identical
+  MX/SPF/DKIM/DMARC answers (byte-verified), so email follows the zones.
+- **cPanel keeps serving** the sites/forms/webmail because the zones point
+  apex/www/`cpanel.`/`forms.` at the cPanel IP until the deliberate flip.
+- **DNSSEC verified OFF** for both domains (no DS records at the registry,
+  checked 2026-08-02) — the one thing that can hard-break an NS change is not
+  in play. Don't enable DNSSEC at Squarespace before or during the swap.
+- If Google Workspace is *billed* through Squarespace (common for ex-Google
+  Domains), billing is unaffected — it's independent of nameservers.
+
+| Domain | Nameservers to enter at Squarespace |
 |---|---|
 | nume-health.com | ns-1304.awsdns-35.org · ns-1553.awsdns-02.co.uk · ns-165.awsdns-20.com · ns-639.awsdns-15.net |
 | mythic-rx.com | ns-839.awsdns-40.net · ns-284.awsdns-35.com · ns-2045.awsdns-63.co.uk · ns-1475.awsdns-56.org |
+
+Rollback venue changes accordingly: set Squarespace nameservers back to
+`dns1/dns2.namecheaphosting.com`.
 
 ## Cutover day (target: Saturday evening, Aug 8)
 
