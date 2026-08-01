@@ -1,125 +1,88 @@
-# DNS cutover plan — nume-health.com + mythic-rx.com
+# DNS cutover runbook — Route 53 (staged 2026-08-01)
 
-**Status: staged, not applied.** Nothing in here has been changed. This is the
-record-by-record plan for moving both sites from Namecheap cPanel hosting to
-AWS (S3 + CloudFront), plus the blockers that must clear first.
+**Everything is pre-staged. The only Namecheap action on cutover day is
+changing the nameservers.** Stack: `dev-workshift-dns` (us-west-2), source
+`api/resource/dns/dns-main.yaml`, deployed via `./deploy-dns-dev.sh`.
 
-Verified live on 2026-07-30.
+## What is already done
 
-## Where DNS actually lives
+- **Route 53 hosted zones live** for both domains, records verified against
+  Namecheap's authoritative servers record-by-record (MX, SPF, DKIM
+  byte-identical at 411 chars each, DMARC, www, cpanel). The NS swap is a
+  functional no-op: apex/www still point at cPanel (`199.188.200.144`) until
+  the flip.
+- **Beyond the mirror** (deliberate additions):
+  - `_dmarc` upgraded to `p=none; rua=mailto:dmarc@<domain>; fo=1` — same
+    non-enforcing policy, now with aggregate reports so deliverability is
+    observable before ad campaigns. **Requires the `dmarc@` alias/group to
+    exist in Google Workspace on both domains** (create before swap).
+  - **CAA** locked to the CAs in use: amazon.com (ACM), sectigo/comodoca
+    (cPanel AutoSSL), letsencrypt.org.
+  - **`forms.<domain>` → cPanel** on both domains: the forms-bridge subdomain
+    so PHP form handlers keep working after the sites move.
+  - **ACM validation CNAMEs pre-staged** for both certificates.
+- **ACM certs requested 2026-08-01** (us-east-1, apex + www):
+  - nume: `arn:aws:acm:us-east-1:054743862825:certificate/0b19b862-a1ca-4594-8390-00e024c1307b`
+  - mythic: `arn:aws:acm:us-east-1:054743862825:certificate/0fec1512-e887-41c2-8e96-1cef64a082ba`
+  - DNS-validated certs time out after ~72h unvalidated. If status is
+    `VALIDATION_TIMED_OUT` on cutover day, re-request — validation tokens are
+    stable per domain+account, so the pre-staged CNAMEs still satisfy the new
+    request: `aws acm request-certificate --region us-east-1 --domain-name
+    <domain> --subject-alternative-names www.<domain> --validation-method DNS`
+- **SEO layer staged on both v2 sites**: robots.txt, sitemap.xml (final-domain
+  URLs), JSON-LD (Pharmacy with full NAP for mythic; MedicalOrganization for
+  nume; auto-FAQPage on FAQ pages).
 
-Worth stating up front, because it differs from the assumption that these are
-"hosted at Squarespace and forwarded to Namecheap": **authoritative DNS for
-both domains is Namecheap**, and both sites are served today from Namecheap's
-cPanel shared hosting. Squarespace is not in the serving path for either
-domain. All record edits below happen in the **Namecheap dashboard**
-(Domain List → Manage → Advanced DNS).
+## Nameservers to paste at Namecheap (Domain → Nameservers → Custom DNS)
 
-If a domain is still *registered* at Squarespace with nameservers delegated to
-Namecheap, the registrar is irrelevant to this cutover — only the nameservers
-matter, and those are Namecheap's.
+| Domain | Nameservers |
+|---|---|
+| nume-health.com | ns-1304.awsdns-35.org · ns-1553.awsdns-02.co.uk · ns-165.awsdns-20.com · ns-639.awsdns-15.net |
+| mythic-rx.com | ns-839.awsdns-40.net · ns-284.awsdns-35.com · ns-2045.awsdns-63.co.uk · ns-1475.awsdns-56.org |
 
-## Current state (verified)
+## Cutover day (target: Saturday evening, Aug 8)
 
-| Record | nume-health.com | mythic-rx.com |
-|---|---|---|
-| Nameservers | `dns1/dns2.namecheaphosting.com` | `dns1/dns2.namecheaphosting.com` |
-| A (apex) | `199.188.200.144` | `199.188.200.144` |
-| www | CNAME → apex | CNAME → apex |
-| MX | Google Workspace (`aspmx.l.google.com`) | Google Workspace (`smtp.google.com`) |
-| Live check | HTTP 200 from `199.188.200.144` | HTTP 200 from `199.188.200.144` |
-
-Both apexes also return a stray `192.168.0.1` alongside the real IP. That is a
-private address and cannot route from the internet — it should be deleted
-regardless of whether the cutover proceeds. It is likely a leftover A record.
-
-## Do not touch
-
-- **MX records.** Both domains run Google Workspace email. Moving web hosting
-  must not alter MX, and there is no reason to. Breaking these silently stops
-  mail delivery, which is the single worst failure mode of this change.
-- **TXT / SPF / DKIM / DMARC**, and any `_domainkey` or verification records.
-  They belong to mail and site verification, not hosting.
-
-Change **only** the records that point at the web server: the apex A and the
-`www` CNAME.
-
-## Blockers — none of this can proceed yet
-
-1. **The sites stack is not deployed.** `dev-workshift-sites` does not exist in
-   `us-west-2` (confirmed: `Stack with id dev-workshift-sites does not exist`).
-   Until `./deploy-sites-dev.sh` runs, there are no CloudFront distributions to
-   point DNS at.
-2. **No ACM certificates.** CloudFront requires certs in **us-east-1**
-   specifically. One per domain, covering both apex and `www`.
-3. **The contact/feedback forms still need a backend.** The forms currently
-   POST to PHP handlers on cPanel (`api/feedback.php`, `php/form_process.php`).
-   Those do not exist on S3/CloudFront — static hosting cannot execute PHP. If
-   DNS is cut over before this is solved, **every form on both sites breaks.**
-
-   This is now a solved problem in principle: a Workshift workflow using the
-   `action.postWebhook` node can call the existing PHP handlers, and this was
-   verified end-to-end on 2026-07-30 (a workflow created a real ticket in the
-   cPanel feedback store). Two viable options:
-   - **Bridge**: keep the PHP handlers running on cPanel at a subdomain that
-     stays pointed there, and have the AWS-hosted forms post to it.
-   - **Replace**: build a real form endpoint in the API stack and repoint the
-     forms at it before cutover.
-
-   The bridge is the lower-risk path for cutover day and can be done first.
-
-## Target records
-
-Once the stack is deployed and certs are issued, per domain:
-
-| Type | Host | Value | Notes |
-|---|---|---|---|
-| ALIAS (or CNAME) | `@` | `<dist>.cloudfront.net` | Namecheap supports `ALIAS` at the apex; a plain CNAME at apex is invalid DNS |
-| CNAME | `www` | `<dist>.cloudfront.net` | Replaces the current CNAME-to-apex |
-| CNAME | `_<acm-token>` | `<acm-value>.acm-validations.aws.` | One per domain, from ACM; required for cert issuance |
-| — | `@` `192.168.0.1` | **delete** | Unroutable leftover |
-| MX / TXT | — | **unchanged** | See "Do not touch" |
-
-Namecheap's `ALIAS` record type is the apex equivalent of a Route 53 alias and
-is what makes this work without moving nameservers to Route 53. If you would
-rather consolidate DNS into Route 53 later, that is a separate migration and
-not required here.
-
-## Sequence
-
-1. Deploy the sites stack (`./deploy-sites-dev.sh`) and confirm both sites load
-   on their `*.cloudfront.net` domains.
-2. Request ACM certs in **us-east-1** for each domain (apex + `www`), add the
-   validation CNAMEs at Namecheap, wait for `ISSUED`.
-3. Re-run the deploy with the cert ARNs so CloudFront serves the real domains:
-   ```bash
-   NUME_CERT_ARN=arn:aws:acm:us-east-1:... MYTHIC_CERT_ARN=arn:aws:acm:us-east-1:... ./deploy-sites-dev.sh
-   ```
-4. Resolve the forms blocker (bridge or replace) and verify a real submission
-   against the CloudFront URL.
-5. **Lower TTL to 300s at least 24h before cutover.** `mythic-rx.com` currently
-   has a ~4 hour TTL, so without this step a rollback would take four hours to
-   take effect. Do this early — it is the cheapest insurance in the plan.
-6. Cut over one domain first (recommend `mythic-rx.com`, the lower-traffic of
-   the two), watch it, then do the other.
-7. Verify after propagation: both apex and `www` resolve to CloudFront, HTTPS
-   is valid, forms submit successfully, **and send a test email in and out** to
-   confirm MX was untouched.
-8. Restore normal TTLs (3600s) once stable.
+1. **Before touching anything:** confirm `dmarc@` aliases exist; send/receive
+   a test email on both domains (baseline).
+2. **Swap nameservers** at Namecheap (table above). Both domains, or
+   mythic first if staging it. Old NS keep answering for cached resolvers;
+   answers are identical either way, so there is no cutover window risk.
+3. **Watch the certs** (usually minutes after propagation):
+   `aws acm describe-certificate --region us-east-1 --certificate-arn <arn>
+   --query Certificate.Status` → wait for `ISSUED` on both.
+4. **Attach certs to CloudFront:**
+   `NUME_CERT_ARN=<arn> MYTHIC_CERT_ARN=<arn> ./deploy-sites-dev.sh`
+5. **Flip the sites to CloudFront:** `SITE_TARGET=cloudfront ./deploy-dns-dev.sh`
+   (300s TTLs are already set — takes effect in ~5 minutes).
+6. **Verify:** apex + www load over HTTPS on both domains; forms submit;
+   **send a test email in and out on both domains** (MX untouched, but prove
+   it); `cpanel.<domain>` and `forms.<domain>` still reach the old host.
+7. Leave cPanel hosting active for at least a week. Do not cancel on cutover day.
 
 ## Rollback
 
-Set the apex A record back to `199.188.200.144` and `www` back to a CNAME at
-the apex. With TTL at 300s this takes effect in about five minutes. Keep the
-cPanel hosting active and unchanged until both domains have run on AWS for at
-least a week — do not cancel it on cutover day.
+- Site-only problem: `SITE_TARGET=cpanel ./deploy-dns-dev.sh` (≈5 min).
+- Anything worse: set Namecheap nameservers back to
+  `dns1/dns2.namecheaphosting.com` — the old zone still exists untouched.
 
-## Open questions
+## Post-cutover (SEO + marketing verifications — add TXTs to Route 53 via CFN)
 
-- Should DNS move to Route 53 as part of this, or stay at Namecheap? Staying is
-  less work and the `ALIAS` type makes it fully viable. Moving centralizes
-  everything in AWS and enables real Route 53 alias records and health checks.
-- Do any subdomains beyond `www` need to keep pointing at cPanel (webmail,
-  cpanel, ftp, autodiscover)? Namecheap hosting usually creates several. They
-  should be enumerated in the Namecheap dashboard before cutover — this plan
-  only covers records visible from public DNS queries.
+1. **Google Search Console**: verify both domains (DNS TXT), submit both
+   sitemaps.
+2. **Google Business Profile** for Mythic Rx (Millcreek NAP matches the
+   licensure page + JSON-LD exactly — keep it that way).
+3. **Ad platform domain verifications** as accounts are created: Meta
+   (`facebook-domain-verification=`), TikTok, Microsoft — each is one TXT
+   record added to `dns-main.yaml` + `./deploy-dns-dev.sh`.
+4. **SPF tightening** once the PHP forms bridge is retired:
+   `v=spf1 include:_spf.google.com ~all` (drop `+a +mx`).
+5. **DMARC ratchet** after ~30 days of clean rua reports: `p=quarantine`,
+   later `p=reject` — deliverability insurance before heavy ad sending.
+6. Raise site-record TTLs to 3600 once stable.
+
+## Decommissioned plan
+
+The earlier Namecheap-ALIAS approach (edit records in the Namecheap dashboard)
+is superseded by this Route 53 migration — DNS consolidates into AWS/CFN like
+everything else. The forms-blocker analysis from that plan still applies and
+is solved by the `forms.<domain>` bridge records.
