@@ -191,10 +191,13 @@ sharing as a first-class platform feature** — not one org with an Entity graph
    NDA-gated" — some resources marked unshareable without it). Cancelling the relationship
    stops all sharing ("cancel → nothing shared") without deleting either side's records —
    the §2a kill-switch survives, one level up.
-2. **Sharing rules are configured per resource type / per attribute** — Kramer: this lives
-   "under the tab called the **Publisher**": attributes are marked shareable, with
-   function-specific data-sharing options. UI pattern agreed: select a component →
-   right-click → configure visibility across fields.
+2. **Sharing rules are configured per resource type / per attribute.** (Correction: the
+   transcript's "tab called the publisher" was garbled audio — no such tab exists or was
+   meant. Grounded reading: sharing rides the **resource-event publisher** pipeline
+   (`api/kit/events` → SNS → SQS → eventworker); **components are where the SQS call
+   happens and where what-is-shared is configured**, and a workflow visualizes the events
+   and component triggers. See ORG_DASHBOARD_SPEC.md.) UI pattern agreed: select a
+   component → right-click → configure visibility across fields.
 3. **Sharing executes through WORKFLOWS** ("all the sharing can be in workflows"), which
    need a viewer for flow interactions. **Transport is SQS** (Kramer: "just use SQS") —
    consistent with the event/workflow infra that shipped in PR #46, including
