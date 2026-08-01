@@ -180,20 +180,37 @@ onboarding UI.
 
 ### Separate Apps, and possibly separate orgs
 
-Because the entities operate independently with gated data, Nume and Mythic are **separate
-Apps at minimum**. Whether they are separate **organizations** (the current hard tenant
-boundary — every row is org-scoped) or one org with an `Entity` type and relationship gating
-is the key modeling fork:
+> **DECIDED — Kramer call 2026-08-01 (viaim parts 1 + 2). This section's fork is resolved
+> AGAINST the earlier one-org recommendation.** Note the conversation moved: part 1 floated
+> shared databases; by the end of part 2 the model below is the landing point.
 
-- **Separate orgs** gives the strongest isolation but makes cross-org sharing — the whole
-  point — something the platform does not currently do; every query is org-scoped.
-- **One org, many Entities** makes sharing natural but puts the entire isolation burden on
-  the sharing-policy layer above.
+**The model: SEPARATE ORGANIZATIONS per entity (Nume org, Mythic org), with cross-org
+sharing as a first-class platform feature** — not one org with an Entity graph:
 
-The partner graph spans entities ("Nume may have other pharmacy partners", "Mythic already
-has other physician partners"), so two static orgs can't model it anyway. Recommend **one
-platform org per top-level customer with an `Entity`/`PartnerRelationship` graph inside**, and
-treat cross-customer isolation as the org boundary. Confirm with Kramer.
+1. **A top-level connection/relationship between orgs**, contract-gated ("needs a contract…
+   NDA-gated" — some resources marked unshareable without it). Cancelling the relationship
+   stops all sharing ("cancel → nothing shared") without deleting either side's records —
+   the §2a kill-switch survives, one level up.
+2. **Sharing rules are configured per resource type / per attribute** — Kramer: this lives
+   "under the tab called the **Publisher**": attributes are marked shareable, with
+   function-specific data-sharing options. UI pattern agreed: select a component →
+   right-click → configure visibility across fields.
+3. **Sharing executes through WORKFLOWS** ("all the sharing can be in workflows"), which
+   need a viewer for flow interactions. **Transport is SQS** (Kramer: "just use SQS") —
+   consistent with the event/workflow infra that shipped in PR #46, including
+   checkpoint/replay ("replay events after that point").
+4. **Attribution must survive the share:** the pharmacy org must see which campaign/position
+   a lead came from, or "campaign attribution stops working." The CRM's Lead→utm→Campaign
+   chain is therefore part of the shared payload, not marketing-private.
+5. **Identity: login is no longer one session** — separate identity per org (SSO to bridge;
+   on the to-do list). On relationship termination, the counterparty gets **time to download
+   their prescription history** — data portability is an obligation, not a courtesy.
+6. **Near-term sequencing (Dallin, end of call): set up ONE org now, then stand up the
+   multi-org test** (log in against each org separately) once the sharing layer exists.
+
+What stays true from the original spec: NPI-match + referral visibility, credential
+approval gating, and the row-level-visibility question — which now becomes "what the
+Publisher/workflow sharing layer enforces" rather than an intra-org view problem.
 
 ---
 
@@ -236,7 +253,17 @@ product we sell; the static pages are not necessarily ours to host.**
 
 Net: the deployed `workshift-frontend` is what serves the portal at those subdomains; the
 static-site question is now a **separate track** (our-hosted vs customer-hosted), not a
-blocker on the portal. What's still needed to light up a real portal is a **Domain row** for
+blocker on the portal.
+
+> **CONFIRMED — Kramer call 2026-08-01:** static sites are "big separate things" from the
+> portal/App model — they do NOT become an App type. What the call ADDS: their *management*
+> gets Workshift governance — domains we host for clients, campaign changes, and marketing
+> pages should run through **workflows with the required checks built in** ("build that
+> portion into Workshift and all the required checks built in… because eventually holes
+> [appear] when the next person takes over"). Domain verification is part of that checklist.
+> The config-driven site platform (sites/_platform + campaigns.config + the CRM Campaign
+> records) is the substrate; the remaining build is the workflow gates (campaign approval →
+> publish) and treating each hosted site/domain as an org-scoped resource. What's still needed to light up a real portal is a **Domain row** for
 each `portal.<customer>` hostname (there are none today — §2a status) and the participant
 Auth0 credentials.
 
