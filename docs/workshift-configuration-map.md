@@ -409,11 +409,23 @@ memory.
 
 Live snapshot taken while writing this update [MCP, 2026-08-01]: **2 Domains** (both junk),
 **9 Apps** (only "Nume Provider Portal" `9ac6a4d8` and "Test app with Activities" `46358287`
-are real; 7 are `testing…`/`Customer` stubs with no main activity), **13 ResourceTypes**
-(Patient, Prescription, Encounter, Doctor, Claim, Allergy, Condition, Consent profile,
-Message, Payment method, Customer, Resource, TestResource), **4 staff users** all on role
-`d505a419`. A convenience script lives in the session scratchpad (`mcp-state.mjs`) — node +
-the `.mcp.json` bearer token, since `gh`/python aren't reliably installed here.
+are real; 7 are `testing…`/`Customer` stubs with no main activity), **18 ResourceTypes** —
+the clinical set (Patient, Prescription, Encounter, Doctor, Claim, Allergy, Condition,
+Consent profile, Message, Payment method) plus a **marketing set added live during this
+update** (Lead, Marketing Campaign, Marketing Channel, Marketing Integration, Ad Spend — the
+"Workshift" session's forms→Lead build) and test junk (Customer, Resource, TestResource).
+**4 staff users** all on role `d505a419`. The count moved 13→18 within the hour — the org is
+actively mutated by parallel sessions, which is precisely why [MCP] claims must be re-queried
+rather than trusted from any doc, this one included.
+
+Current relationship graph [MCP, same query]: **Patient is the hub** (MANY→ Prescription,
+Encounter, Allergy, Condition, Claim, Payment method, Lead), the marketing funnel chains
+Channel→Campaign→{Lead, Ad Spend} with Lead→Patient as conversion, and **the only physician
+edge is Encounter→Doctor**. `Prescription` has **no prescriber link** and **no Pharmacy type
+exists** — the §2a gating model needs both added (config, populatable from Pioneer's
+NPI/pharmacy IDs) before any relationship-scoped visibility can work. A convenience script
+lives in the session scratchpad (`mcp-state.mjs` / `mcp-rels2.mjs`) — node + the `.mcp.json`
+bearer token, since `gh`/python aren't reliably installed here.
 
 **Recommendation:** the config half of this doc can be regenerated from the MCP any time; the
 deploy/secret/Pioneer/source halves cannot and must be re-checked by hand. When they diverge,
