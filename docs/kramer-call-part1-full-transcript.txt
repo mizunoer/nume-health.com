@@ -1,0 +1,300 @@
+# Full local transcription (faster-whisper distil-large-v3)
+# Source: C:\Users\Mizun\source\repos\Numi\docs\08-01 Pharmacy Data Integration and Website Management_Audio_2026-08-01 15_22_25.mp3
+# Audio duration: 1480s
+
+[00:04] All right, so it was my headphones that were going to die.
+[00:07] My phone's fine.
+[00:08] Okay, so the long story short, on your question, how is the relationship currently.
+[00:24] So patients can have, like, many prescriptions, many encounters.
+[00:30] They usually have one doctor, but the encounter would have one doctor.
+[00:34] They have many encounters.
+[00:36] Each encounter would only have one doctor.
+[00:38] They can have many allergies or conditions.
+[00:41] They can have several payment methods.
+[00:47] Like the pharmacy as an entity doesn't exist right now,
+[00:52] but that's what I'm working on right now.
+[00:54] But the pharmacist can see any patient that has a prescription at their pharmacy, right?
+[01:01] Yeah.
+[01:02] And then a technician can see tasks associated with that.
+[01:10] So what really I'm doing right now is I'm taking all of the static webpages and, like, the demo portal I did.
+[01:18] And I am building in those relationships into Workshift.
+[01:24] And I, because what I was doing before was I wasn't using the MCP and I was going into the resources and adding everything individually, and that was terrible.
+[01:31] But now that I'm using the OMPP, it's really fast.
+[01:35] But essentially what the legit script process is having me do and the, like, the, there are, it is so much harder to advertise on social media than it used to be.
+[01:52] Holy crap.
+[01:53] But like all of these compliance things, it's like, okay, prove that you have a contractual relationship between the pharmacy.
+[02:01] in the provider, and what happens if it's pet off?
+[02:05] And I'm like, well, the way I'm building it, it's all one app, right?
+[02:10] But essentially, while this has been part of our long-term plan,
+[02:16] I mean, since we're moving from Spider-Tex to WorkShift,
+[02:22] I'm trying to determine, I actually think the way it's structured,
+[02:29] it won't be that hard to gait and either have the have like specific resources shared between entities, domains.
+[02:40] I mean, sorry, apps is what I meant, which is kind of what we need to do anyway.
+[02:47] And so I don't know how you would want to structure it.
+[02:51] Is it something that at a app level, we have apps communicate with each other and we can gate them?
+[02:58] or is it something you would want to have at a, like, resource to resource level?
+[03:06] And how would you want that structure?
+[03:10] Yeah, so we should do event-driven, where it would be, it gets kind of tough.
+[03:30] So can I give you this?
+[03:32] There's the correct way, and there's the fact.
+[03:34] Well, what's, let's, hey, so here's a, here's the nice thing, Kramer.
+[03:40] I will say that, like, sometimes the correct way can be the fast way when I'm using
+[03:48] quad.
+[03:49] I'll be honest.
+[03:50] Yeah, well, okay, so here, let me, let me walk you through the correct way.
+[03:54] Okay.
+[03:54] The correct way is that it would be, it would be event-driven, meaning that each contractor
+[04:02] would have their own copy of the data.
+[04:04] that they get through events, right?
+[04:06] Right, right.
+[04:07] Where it gets trickier, and this is why I say it's the correct way,
+[04:12] but it's technically, it can be longer,
+[04:14] is let's say you now need to share one additional field of information.
+[04:18] You now have to resend all the events with this new field.
+[04:22] Completely fine, completely doable.
+[04:24] We just have to build that in there where it's like, hey, repopulate this.
+[04:27] Yeah, well, and that actually, because the, so here's the thing,
+[04:31] Because the thought would be, like, if they want to do, their original plan was to have the compounding pharmacy do everything, but I was like, uh, like one compounding pharmacy do everything.
+[04:44] And I was like, well, but you realize if you're going to have that one compounding pharmacy do testosterone, you have to have a clean room pharmacy.
+[04:52] Like most pharmacies won't do both the compounding on simple compound things and the,
+[05:01] clean room pharmacy. They'll just do referrals to the clean room pharmacy. It just has to be below
+[05:06] a certain percentage of their business as far if you're billing insurance. But that doesn't matter
+[05:14] if you're cash paid. So if this testosterone product, you just create a relationship with that other
+[05:20] pharmacy. However, if you're going to market that product, at that point, they have to get
+[05:26] legit script certified. You have to review that contract and then you have to get that approval.
+[05:31] And so that's great.
+[05:34] If you add that, that would add that functionality, and then we'd have to, like, pull from
+[05:39] their pharmacy, all the data and then do that import.
+[05:43] So I want to do this correct way anyway, because I feel like when a new prescriber comes
+[05:49] on, and if they're an independent contractor, they're going to create short-term contracts
+[05:55] with them, and if they terminate it, then that prescriber should legally be able to see
+[06:00] the historical things they did
+[06:02] but then lose all the access
+[06:04] to like new tasks or new patients or that
+[06:08] and I think doing it event driven
+[06:11] and then being able to
+[06:12] like have a process where it's like
+[06:15] oh we've added this field go and
+[06:17] populate it from here
+[06:19] because we're going to need to do that from the Pioneer RX
+[06:22] anyway
+[06:23] honestly I watch their workflow
+[06:26] like they might use our portal
+[06:28] to work in Pioneer
+[06:30] because then it wouldn't have the disassociation when they have external stuff.
+[06:38] We could, like, I already know a couple other pioneer pharmacies.
+[06:43] That could be an in for us just to create a drop shipping module and other stuff that they don't want.
+[06:51] So I actually, I want to build it the right way because that way it's scalable.
+[06:57] And the MCP is awesome.
+[07:00] Yeah.
+[07:01] Oh, yeah, sweet.
+[07:01] I mean, we can do that.
+[07:03] Yeah.
+[07:04] So I, like, I don't even mind going through and, and, like, unless you are dead set on trying to build it, I can go through and stub it in and look at that because I, yeah, I think I've, I think that's the right way to do it.
+[07:25] Because then on, because here's the other question I have now that I've got you.
+[07:30] on the domains where where we host their websites, right,
+[07:40] I'm basically telling them, hey, we'll, you know,
+[07:43] as long as you follow these guidelines,
+[07:46] you'll be able to be legit script certified.
+[07:49] You'll, and we'll be able to help your marketing campaigns,
+[07:54] your integrated texting, your integrated emails, right?
+[07:58] And the thought is that I, the thought is that I just,
+[08:02] build that compliance portion, bake it into WorkShift, and then, like, have the checks and, like, all of the, like, the requirement checklists and everything for that built in.
+[08:18] And what I'm doing is just making sure that as I do that, we add it to the WorkShift, like, MCP portion.
+[08:28] because eventually, like, the whole goal is putting in the extra work right now.
+[08:33] So then the next person, they fill out a bunch of, like, checklists and, you know, fill in the NPI information.
+[08:41] Do you have a new provider?
+[08:43] Yes.
+[08:43] Okay, I have the new provider here.
+[08:44] We do the NCPDP, garbage, all the OCR check, all that type of stuff.
+[08:49] But that's all automated.
+[08:51] And then, like, legit script, for example, they're like, oh, you're doing two.
+[08:55] Would you be interested in our referral program?
+[08:58] like, I don't know, what does that look like?
+[09:00] So to do an expedited legit script website, get it certified, it's like $30, oh, it's like $5,400, okay?
+[09:16] But if we are, their partner program, it's $2,200.
+[09:20] But they're like just listed for the full price.
+[09:24] you just are the, their facilitator, and, like, it's on almost every pharmacy website that does any
+[09:34] online campaigns.
+[09:35] We could just be a provider for that, but we could do that.
+[09:38] I want us to be able to put the static websites in WorkShift as well, have a checklist for
+[09:44] them, because with Claude, what took me like a month and a half to do the first two websites,
+[09:50] I did in a day.
+[09:52] And then with the MCP, if we have static websites as an app type,
+[09:58] I think we could do it.
+[09:59] I think we could just plug and play, set up a bunch of bees.
+[10:05] If they want to do a static website, that's great.
+[10:07] If they don't want to do it, we can give them the guidance and sell them that.
+[10:12] But, like, we would have the boilerplate TNCs, privacy policies, all that type of stuff.
+[10:18] So it would be compliant with the stat.
+[10:20] Is it, like, would the static websites be okay as an app type, or is that, or the apps only, should I create it like a new resource type or something like that for static pages?
+[10:35] Yeah, I mean, originally the way this was built is that we wouldn't be hosting static sites.
+[10:42] Yeah.
+[10:42] We would host apps, which could be embedded into their existing sites, like the contact form would be embedded in, and that would start the leaf flow or the.
+[10:50] A login link would be added.
+[10:53] So we can treat static sites as something separate completely from apps as just like this separate module thing that we offer.
+[11:01] Okay.
+[11:02] So, okay.
+[11:05] So that probably, especially because like the static sites aren't going to be sharing, like it's not sharing resources, information, anything like that.
+[11:20] I think that's great.
+[11:24] I will want to see how much the static site hosting is going to cost on AWS.
+[11:33] I just migrated the sites over, which, by the way, the way the MC, like the way the
+[11:41] AWS orchestration works for, that is awesome.
+[11:48] Like, just the fact.
+[11:48] Yeah, what are you using to host the static site?
+[11:52] Are you just using the serverless lambdas?
+[11:58] I'm using AWS.
+[12:02] Yeah, what, where is the, how is the static site being served?
+[12:05] Are you serving a direct from S3?
+[12:07] Are you serving it?
+[12:08] I think it's direct from S3.
+[12:10] I don't know, man.
+[12:11] Clyde did most of it.
+[12:12] I'm doing that. Let's see. Where is it?
+[12:17] Well, here's the thing. Okay. Currently, the entire AWS bill with all the storage and everything and land and all of that stuff, other than that one week where it was a couple hundred million dollars, it's about a couple hundred billion dollars.
+[12:31] No, not for us. For us, it was nearing a billion. It was going to be half a billion dollars. But, no, it's like 30 bucks a month. And that's it. Right. So it's not like, it's not like.
+[12:42] everything that I have set up is all serverless.
+[12:45] So it just will scale as, like, as it, as we get more traffic, like, it will get more expensive, but, like, moderately so, right?
+[12:53] Like, yeah, like, it should be pretty.
+[12:56] Yeah.
+[12:57] And there, like, I made sure, like, because when I pulled the templates and I was using all these, like, these open, the free images and everything, like, the site was way too big.
+[13:10] So, like, I made sure I made it smaller, made it a little bit more straightforward, and it is much better.
+[13:20] And one of them is still ugly.
+[13:23] I like the other one.
+[13:24] But anyway, the, okay, so I'll have it be its own tab.
+[13:31] So just static sites will maintain it there.
+[13:36] And then on the static site, we'll say, okay, like,
+[13:40] Do you think we would put, and do you, let's see, yeah, let me look how, because domain links, the app, links to app ID, and then we, okay.
+[14:09] I had to, I put some notes on the dashboard just to remind me how everything works together.
+[14:17] I saw that one.
+[14:18] I logged in, that was like.
+[14:20] I'm sorry.
+[14:21] That's really funny.
+[14:21] I like Kramer for 10 years it has said dashboard goes here okay so don't
+[14:31] judge me what does that even mean like what dashboard what what what
+[14:37] what what am I going to see on the dashboard so this is them this is the
+[14:41] administration login the dev login not the other stuff okay so then the
+[14:48] okay so I will add statics as
+[14:51] separate, but we can tie in the, I'll probably not have the domain type attribute be in there,
+[15:05] but we will be able to say, are, is there a portal app associated with the static website?
+[15:11] Yes, what's the subdomain? Yes. If we're hosting it, the awesome thing is that 53,
+[15:17] whatever Route 53
+[15:19] DNS orchestration
+[15:22] was amazing.
+[15:25] It was so good.
+[15:27] Yeah. It's nice.
+[15:29] You just have to remember
+[15:30] like if, well, I guess
+[15:33] maybe you don't even have to manually
+[15:35] verify the domains if you have
+[15:38] the DNS pointed to Route 53.
+[15:41] When you do certs for other domains, you have to go and
+[15:44] add a scene. And so
+[15:46] it just pauses and waits to
+[15:47] do that, but it's nice, yeah.
+[15:49] No, that was the thing, it's like,
+[15:52] well, since you're doing this,
+[15:54] the, what is it, Cloudfront
+[15:55] orchestration, you can
+[15:58] just, right after
+[15:59] you point, when you
+[16:02] change the name servers on Squarespace,
+[16:04] let me know, and I'll put
+[16:06] the, it said, I'll put the
+[16:08] C-name in for the
+[16:10] certificate. And
+[16:11] like, the
+[16:14] second I did it, it was done.
+[16:16] The certificates are issued,
+[16:17] everything.
+[16:19] It was like with so many,
+[16:21] I've made like thousands
+[16:23] of DNS typos over
+[16:25] the last 20 years and just
+[16:27] doing it, it was amazing.
+[16:30] So, it was so good.
+[16:33] And going from...
+[16:34] And the best thing about it,
+[16:35] yeah, is that
+[16:37] you can tear down the stack
+[16:40] and recreate a brand new. It'll be
+[16:42] exempted the same.
+[16:44] Yeah.
+[16:45] It's amazing.
+[16:47] Well, that's,
+[16:47] That's the thing is when you said for me to push the PRs, right, I was like, oh, okay, I looked at them and that was the nice thing is I was like, oh, co-pilot didn't approve it. Why didn't it approve it? And it's like, there's a bug that you introduced when you did this. I'm like, dang, I'm like, I know. Okay, wow.
+[17:07] Yeah, co-flying is pretty clutch. It catches a lot.
+[17:12] Yeah. Well, and then what I've tried, like, as the different.
+[17:17] What I've noticed is some of the nomenclature over, like, since you started Workshift to now, like, it's changed.
+[17:25] And so I just had it go and change it on the MCP, and all of a sudden the MCP worked better.
+[17:31] So it's pretty great.
+[17:34] And I added something where, like, I can rebuild.
+[17:39] Because I keep, I'm like, how is this working?
+[17:41] So now I have, like, a Workshift configuration map that is regenerated every time I make a change.
+[17:47] and the MCP is actually doing it.
+[17:51] And I feel like that way I can say, like, when I add the static sites, I'll add it to the MCP and how those things work together.
+[18:01] So back to the, okay, so we will have the crossover for separate organizations be an event-driven data sharing.
+[18:17] Where it doesn't share the databases, it will share data, port it to the other organization with a method to be able to say what items are kept and what items are not kept if the organization dissolve their relationship, right?
+[18:47] Yeah. So here, here's, here's how it would be set up, right? So it'll be, it'll be a mix of S&S and SQS events, right? And we, we have a lot of this plumbing already. There will need to be a screen, I imagine, where you configure this relationship between things and what resources and what, I would probably do a resource view, maybe, so you don't have to individually pick out.
+[19:18] attributes here, and when that view is updated, it will, like, automatically do stuff, right?
+[19:22] So of what they have access to, and this is one way read-only, right, I imagine, unless
+[19:29] you need them to be able to change things, which I don't think we do.
+[19:36] I mean, and part of that, so part of it would be, like, if, so they would not be, yeah, they
+[19:47] wouldn't need to change values within most things they made the only thing that may push
+[19:53] push back and forth is statuses but i i think i know how to do that that would also just be
+[20:00] something we would push back um yeah it would be events right yep yep it would be events so that
+[20:07] makes so so so and so then this one way this this or this data sharing event thing like once
+[20:13] that relationship is set up and i'm telling you more of this so that you can then
+[20:17] how clawed this, right?
+[20:18] It'll need to sync all of the resources that match what you configured, right,
+[20:24] and create events to pump it over to this other one that can then read the events and
+[20:29] store them in their own, in their own pivot tables or whatever, right?
+[20:35] Their own specific resource types.
+[20:40] And it can create all of this automatically behind the scenes.
+[20:43] then
+[20:47] yeah
+[20:51] and then
+[20:51] it'll tie into the events
+[20:53] when resources change
+[20:54] and if any of the impacted attributes
+[20:57] are changed it will pump that
+[20:59] change event over to all the connected
+[21:01] partners right or
+[21:02] I won't call them partners but all the connected
+[21:05] things
+[21:07] yes resources
+[21:09] organizations whatever
+[21:10] resources
+[21:11] um
+[21:13] yeah and then that way that way it's super clean and so nothing yeah nothing
+[21:21] nothing is directly shared and so everything is configured of like you get access to this
+[21:27] that information will be in the event that is then sent that is that and then it inserts it
+[21:33] into its own database right table right um and when things change it'll update it all automatically
+[21:40] then when you like sever the relationship or whatever it will send it will essentially drop that shared table right that one that it created specific to hold all this or whatever data you want it to wipe out it can write out just directly um and if that relationship ever comes back it'll just do the same backfilling process again right you set it up you click it it will queue up and send all of the patients and because it's all event based um it'll scale infinitely
+[22:10] right doesn't matter if they have a thousand patients or a hundred thousand patients it will
+[22:15] it will eventually all resolve and you'll get all that stuff in there right and that and that way
+[22:21] like because the just like any any database driven anything you want to see what's more relevant now
+[22:30] but you can search the historical so i can make it so that when they create and accept the new
+[22:40] relationship, they would pick the items they would share and essentially like a new, like a
+[22:49] physician would say, these are my partner pharmacies, have this one be the default.
+[22:56] Otherwise, like unless I choose to send it to a different pharmacy, yada, yada, yada, yada.
+[23:01] But then the patients will not leave the physician network until and go to the pharmacy network
+[23:09] until the patient has a prescription from the physician, right?
+[23:13] And that way that true, like, because at the end of the day,
+[23:18] like understanding how that separation of data works is,
+[23:22] as long as we bake it in, I think this is going to be pretty great.
+[23:29] So.
+[23:29] Yeah, yeah.
+[23:30] And then the only other important thing is we probably need a log of all of these events
+[23:39] I do wonder if it's, you can see what Claude recommend.
+[23:49] Normally I'd reach for Costco in this situation.
+[23:52] Costco?
+[23:53] How do I spell that?
+[23:56] K-A-S-K-A.
+[23:59] I don't know if AWS offers a managed Kafka.
+[24:02] It is a pain to set up.
+[24:05] But it is essentially, think of like, SMS and S-Q-S, but durable.
+[24:10] so the events are there forever, which is awesome.
+[24:15] And you can replay the events from any point in time.
+[24:20] It's amazing. It's the best thing in the world.
+[24:23] So C-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-K-A-A-K-A-F-K-K-F-K-A.

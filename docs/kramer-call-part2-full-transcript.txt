@@ -1,0 +1,373 @@
+# Full local transcription (faster-whisper distil-large-v3)
+# Source: C:\Users\Mizun\source\repos\Numi\docs\08-01 Architecting Shared Resources and Workflows_Audio_2026-08-01 15_47_43.mp3
+# Audio duration: 1658s
+
+[00:02] I don't know what the pricing is like on that.
+[00:05] Oh, it has serverless?
+[00:07] Oh, hell yeah.
+[00:10] Kafka, I have heard of that.
+[00:13] I don't know.
+[00:14] What is wrong with me?
+[00:15] My Bluetooth was messing up, and then all of a sudden, it failed.
+[00:22] By the way, I can't, I'm not going to go on the beta for,
+[00:32] iOS anymore. I did it because I was, I was interested in a couple
+[00:36] features, and now none of my phone works.
+[00:41] Well, it's a beta, you know?
+[00:43] Yeah, it's a developer beta. It's not even a public beta, is it?
+[00:47] Uh, no.
+[00:48] So. Yeah, that's your fault. Yeah, it is my fault. Nope. I, uh, yep.
+[00:58] Yeah, yeah, we might, we can, we can set up Amazon MSK.
+[01:03] Amazon MSK.
+[01:06] Man is streaming for Apache Kafka.
+[01:08] That's great.
+[01:10] Yeah, that'll be, that'll be great.
+[01:12] We can hit Claude towards that direction and we can set up the Cloudformation.
+[01:15] So that means us that we don't have to separately log the events.
+[01:19] The events are just always there.
+[01:21] Okay, perfect.
+[01:23] It's phenomenal.
+[01:24] That is great.
+[01:26] No, that, and that, I mean, I was leaning towards having a cusset, his log.
+[01:33] but I guess we will do this.
+[01:37] Yeah, this, you don't need it.
+[01:39] As long as we do everything through events, this is what you get.
+[01:44] No, because Kafka is what, it's how we built the shoot, what was it,
+[01:53] where we could just roll back to a certain point.
+[01:55] It was amazing.
+[01:59] It's like, oh, you know, we introduced a bug on this, roll it all back, fix the bug,
+[02:04] push the
+[02:06] Wasn't that Kafka?
+[02:08] No, I don't think so.
+[02:10] I don't think we used Kafka.
+[02:12] No, this was a different, oh, sorry, this was, oh, you didn't help on this, but I think
+[02:17] Kafka was, we had something where we were logging all, it was at a Zoba, we were logging
+[02:24] all of the different interactions, and we used Kafka because then we could say, oh, this
+[02:30] bug was introduced here, we would then replay the event.
+[02:34] events after that point, and then it would populate the data correctly.
+[02:39] It was awesome.
+[02:40] Yes.
+[02:41] Yeah.
+[02:41] So in event-driven world, the database is not your source of truth.
+[02:47] The event stream is your source of truth.
+[02:48] Right.
+[02:48] You create a database from the events.
+[02:52] And so at any point in time, you can completely drop your database, replay all the events,
+[02:57] and end up with a full, like the full state again, which is awesome.
+[03:02] There's lots of types and stuff you have to do to make that work efficient.
+[03:04] with large scale, but, um, yeah, and that, like, I mean, we can start with the, we can start
+[03:15] with all the sharing being Kafka driven, but I like the idea. Yeah, because really like at the end of
+[03:21] the day, the perspective client we have that is dental, like they want to do sharing, like,
+[03:28] They want to expand some clinical health exchange items for dental, but that would be perfect.
+[03:36] Like you go in, you can do an attestation of patient information, you can share it, and then you can kind of close the connection and but have a real time understanding of what has been shared and what hasn't.
+[03:52] That's great.
+[03:56] All right.
+[03:56] So that, so how, when looking at that, is it something we want to be able to, would we want to essentially take something like the workflows and either bring it and add a workflow component where we can workflow between app modules?
+[04:23] because I feel like this is saying,
+[04:30] okay, we've got the pharmacy app for Mythik RX
+[04:36] and we have the physician app for NUMI
+[04:39] and they are going to interact in this way.
+[04:44] This is how the records would be shared.
+[04:47] But then there's the CRM portion of, for the marketing on NUM
+[04:53] and at some point, a lead gets converted into a patient, right?
+[04:59] Like when an appointment is set.
+[05:01] And then the patient, if a script is created, then that patient can be shared between
+[05:07] NUMMI and Mithic, right?
+[05:09] Is that something we want to be able to visualize with the workflows and use the, because
+[05:17] like workflows would we add it like a, like a, like a,
+[05:23] record gate? I mean, you would probably break that into different, like, I don't know if that
+[05:30] would be one workflow. Oh, that wouldn't be one workflow. I'm just saying, like, each of those
+[05:36] gates, does that gate, should we manage that gate with a workflow? Because part of it, I, so the
+[05:42] way I'm thinking of it is, let's say we get, we, someone says, oh, we have a, they don't want to
+[05:50] use your portal, but we want to be able to send them scripts, right?
+[05:53] I would send them scripts through an API,
+[05:56] and all the API endpoint stuff would be managed on workflows, right?
+[06:01] Yeah.
+[06:02] And we would say, okay, you know, they send us a request.
+[06:06] They say, we want to send you a script.
+[06:09] They send us the script.
+[06:10] It goes to the pharmacy and vice versa.
+[06:13] We do any of those things.
+[06:15] Like an API listener is a workflow, right?
+[06:20] an API send is a workflow, but, like, would anything that, is that where these sit, these app
+[06:30] relationships, or do we, because that, those are in the resources, so do we need to create, like,
+[06:38] a workflows tab for apps? Is that a workflows tab at the domain level?
+[06:43] I mean, the apps kind of have that, is maybe not, maybe they don't.
+[06:50] I mean, it will be, those would still be at the resource level, right?
+[07:05] Like, regardless of what the app does, the app is either going to change a status,
+[07:09] change something with the resource that signals something needs to happen,
+[07:13] and that would kick off a workflow based on this resource has changed, right?
+[07:17] Right.
+[07:18] Like a checkbox was checked of like share with mythic or whatever, right?
+[07:22] Right.
+[07:23] I would kick off the workflow that says, oh, the attribute change that says share with Mythic.
+[07:27] Now let me share the information with Mythic.
+[07:29] Oh, it was unchecked.
+[07:30] Let me, like, pull back that data or whatever that it needs to do.
+[07:33] Well, because I feel like doing it on the resource type level, the resource level is going to be the least error prone because as soon as you do it at the app level and you add two ways to do the same thing, you'll forget to like hook up both of those paths.
+[07:51] Right.
+[07:51] So we would create a connection at the app level, and then the data sharing would be in the workflow.
+[08:03] Yes, I think so.
+[08:05] That sounds right.
+[08:08] Yeah, because then all of the data sharing can be in the workflows.
+[08:11] We may need to have it say, we may need to have like a view where it shows every workflow
+[08:17] flow interaction with
+[08:20] with resources on separate apps
+[08:24] because really what I'm trying to say
+[08:26] like trying to view
+[08:30] so it goes back to our modular
+[08:32] discussion all the way back to spider text
+[08:36] right so we have say we
+[08:37] you know we have a
+[08:40] module that is a SWAT team module
+[08:43] and we're going to share it between six
+[08:45] organizations
+[08:46] like we sell the other organization, that module.
+[08:53] It copies all the resources and everything,
+[08:55] and then we say at this point it's a crossover, right?
+[08:59] Like, if we need to send a message out for people who are in Davis County
+[09:03] just to do this, like I feel it's the same type of thing.
+[09:06] We would have a marketplace.
+[09:08] Do you want a CRM?
+[09:09] Do you want us to host your website?
+[09:12] Do you want these different things?
+[09:13] Here's what you need to do.
+[09:14] And when they create it, there's portions of the way it is right now, everything for my organization is encapsulated in the app, right?
+[09:27] But if I want to share with a different organization, I think that should probably definitely be a separate app.
+[09:34] So Mythic should have, Mythic and NUMI shouldn't be logging into the same app.
+[09:38] They should log into different apps, right?
+[09:40] Portal.com.
+[09:41] at portal. Numi, portal.
+[09:42] But they have shared resources.
+[09:47] And so
+[09:47] they have shared records
+[09:51] through an app
+[09:53] connection. Does that make sense?
+[09:56] Yeah.
+[10:01] Is that, are you
+[10:03] thinking it should be
+[10:04] done at a different level?
+[10:16] I mean, I think,
+[10:43] I think, I think, I think,
+[10:45] I think things.
+[10:46] So, I still think it should ultimately be triggered on something changing on the resource
+[11:08] and not hooked up directly as an action in the app.
+[11:29] The only, the only, like, I don't want the app to be where the actions reside.
+[11:37] I just want like so because what I'm thinking so for example
+[11:43] LegitScript needs a contract between Numi and Mythic
+[11:49] on how how they will share data what their relationship is
+[11:53] and what like what it's going to be
+[11:58] and so at that level I would say
+[12:01] like when we when we determine what that relationship is
+[12:09] what compliance steps we need to go through and how the data will be shared, I can say,
+[12:17] I need a high level here for App 1 and App 2 to shared data, I need the BAA, an NDA, this type of thing,
+[12:29] and then an outline of what can be shared. And then we, that is the, that allows any type of
+[12:39] data to be shared, like, well, not any.
+[12:42] That allows data sharing, but no data will be shared, if that makes sense.
+[12:48] And then we say, okay, at the resource level, if app sharing is enabled, these are the resources
+[12:57] that can share, and this, these are the, these are the, within those resource types,
+[13:07] These are the fields that can be shared, and these are the things that can trigger it.
+[13:12] But if I go to the app level and say, oh, Mithic and Numi no longer have a relationship, it turns off all active sharing.
+[13:20] Does that make sense?
+[13:25] Yes.
+[13:26] Because I don't necessarily want, I don't want the work, because you're right, we shouldn't have two places to configure the same thing.
+[13:33] I don't want what's going to be shared.
+[13:36] I don't want, like, I don't want, like, which fields are need to be de-identified, which, like, so when we go to marketing, if marketing pulls up, like, any information after they've handed off from the CRM module into the patient module for the physician, all they'll be able to see is still what was entered in in the marketing information, and then whether the account was converted.
+[14:06] or not. That's it, right? And that's it. But on the, all the way on the, the pharmacy side,
+[14:14] they would be able to see that the lead came from this physician group, which the physician
+[14:20] groups are the ones who were doing most of the marketing. This lead came from this, but they
+[14:23] wouldn't be able to see the campaign. They wouldn't be able to see a bunch of that other stuff
+[14:27] because we don't want them to see that, right? Because that is not what they're paying for.
+[14:31] So at the end of the day that like, but then if we say, we say, oh,
+[14:37] NUME is no longer going to be a physician partner, all the data that is owned at each entity,
+[14:43] like where they retain the rights to the PHAI through the treatment payment operations like HIPAA gates,
+[14:51] that information stays in their database, but anything new doesn't continue to go.
+[14:57] And I want, like that way, if they say, if they log in,
+[15:01] If the admin of that logs in and says, we no longer work with this one physician,
+[15:07] that physician's login is cut off, right?
+[15:10] And they can no longer get any tasks.
+[15:12] They can no longer do stuff.
+[15:13] But they don't run into the big problem that some of the, like some of these larger online groups,
+[15:22] they've gotten in trouble because they decide, oh, well, you know,
+[15:26] we're not longer going to work with this physician type.
+[15:29] they don't make us as much money.
+[15:31] We're going to go from MDs to PAs most of the time.
+[15:35] They do that, but they pet off the access of those physicians to their old patients.
+[15:41] And you have to give them time to download the records of their patients to have the history of what they've done
+[15:47] because they wrote prescriptions on their license, right?
+[15:51] So that's what I'm talking about, is at some, like, there's the –
+[16:00] Because what I'm thinking is I will have to create the resource workflows, which is what triggers the Kafka action, which then takes and post the data in all the places the data needs to be.
+[16:14] Because we may have a patient.
+[16:16] Okay.
+[16:16] What's that?
+[16:18] Okay.
+[16:18] I think, I think for this initial rollout, we should just use S&S and SQS, not Kafka.
+[16:28] Okay.
+[16:28] We can log all the events, but in my mind, it's screaming at me saying that if we actually start doing Kafka right now, it'll take too long.
+[16:37] Because it does take a long time to set up properly, even with AI help.
+[16:42] Because every event and every field on the event all has to be strictly typed in like proto buffs.
+[16:47] It's not as easy and quick.
+[16:50] And we can then, once we have all that working, then we can just have like Claude go through and be like convert all of the events to use Kafka streams and stuff.
+[16:57] And I can crank on that for a while.
+[16:59] Well, I, would that be something, because what I've done,
+[17:06] would that be something we'd want to wire into the MCP where we say every single change,
+[17:13] like, always review to see what we'll need to do to make the caucus scream in the future,
+[17:19] or is that not worth it?
+[17:21] No, I don't think is worth it right now, anyway.
+[17:23] Okay.
+[17:25] Okay.
+[17:25] Okay, then for this use case that you've kind of gone through, so under the resource types, there's a tab that's called components.
+[17:37] That's where the messaging component, you know, that enables like being able to send text messages can exist.
+[17:44] We can add a data sharing component there and have it where that's where you can configure the rules of like what is shared from this resource to where.
+[17:55] to which organization and which app
+[17:58] and whatever else it is that we want
+[18:00] to set up there.
+[18:02] Okay.
+[18:03] I think that that is probably a good
+[18:06] place to do it.
+[18:08] So it is under
+[18:10] components. Yeah, components
+[18:12] configuration will be available after
+[18:14] we add the corresponding backend RPCs.
+[18:17] Yeah, I never set up to the other ones.
+[18:19] But that tab, like, is, that's what it was for.
+[18:21] Is that kind of like, you know,
+[18:24] oh, does this resource type need
+[18:25] messaging that you can add the messaging component and find which attribute is the uh which attribute
+[18:31] is the phone number or you need email marketing for this you know that's a component that's whatever
+[18:36] and so it allows additional functionality around this resource type so we can have one that's specifically
+[18:42] data sharing and it can be it can have super in-depth configuration options and workflows and whatever else
+[18:50] just nested underneath it's all contained within this thing right because the the component
+[18:55] are wired into the workflows.
+[18:59] Okay, that's perfect.
+[19:00] Yes.
+[19:01] If I remember that, okay.
+[19:04] So they essentially the workflows will have a node available
+[19:07] if that component was enabled,
+[19:09] and then whatever, you know,
+[19:12] logic or execution nodes that belong to that component,
+[19:15] you can now access in the workflow.
+[19:17] Okay.
+[19:17] And then-
+[19:18] Messaging component, now there's a send message available in the workflow.
+[19:22] So we'll add a component,
+[19:23] we'll add a component,
+[19:25] to, I mean, we'll essentially add a component for resource sharing, right?
+[19:35] And then we can configure that component to say where when you add the component
+[19:41] and it's a resource share component, you would be able to take that resource.
+[19:47] You would be able to see all of the different, like all the fields,
+[19:51] and basically, Mark, is this field shareable?
+[19:54] Yes, no, yes, no, yes, no, yes.
+[19:55] No, it, okay, no, that's great, because that would also, that would be something, I don't know, that actually ties in perfect.
+[20:08] And then if we, if we disable the app to app sharing it, we don't have to delete the component.
+[20:16] We don't have to do anything.
+[20:17] It'll just be disabled.
+[20:19] Correct, yeah.
+[20:20] Okay, so we'll add an attribute to an app, like does this app?
+[20:25] Can you share this with other things?
+[20:27] And I'll add something like maybe a tab under the app where it's like, you know, share with other apps.
+[20:41] And then everything else is managed in components and workflows.
+[20:45] Yes.
+[20:46] Perfect.
+[20:46] I think that sounds correct.
+[20:48] That actually, that makes a lot of sense.
+[20:51] So, okay.
+[20:54] That is great.
+[20:55] And then I'm thinking as a, like, so instead of trying to fold static sites under domains or anything like that, like, would you rather have me, because under the static types, there's like a resource, no, but that resource type ID is tied to an app, right?
+[21:28] Okay, so.
+[21:30] So, it's not so, so domains allows you to, to set up a domain to point to a specific app.
+[21:38] We could technically have it so that it, you set up a domain that points either to an app or to a static site.
+[21:46] So would, would, so my thinking going back, no, it doesn't need to be there.
+[21:53] Okay.
+[21:53] It can be separate, have static sites be separate.
+[21:56] So domains is literally just a mapping so that when a request comes in and hits our service.
+[22:00] our service looks at the domain name,
+[22:02] looks at that table,
+[22:03] and determines where it needs to route it to.
+[22:05] That would not happen with a static site
+[22:06] because the static site is not hitting this service,
+[22:10] it's hitting the static site.
+[22:13] Right.
+[22:13] Yeah, it can be separate.
+[22:16] Okay, so we'll have it as a separate.
+[22:20] And then one thing is just the,
+[22:26] with all the app lists,
+[22:27] with all that type of stuff,
+[22:28] we really don't have anywhere where we can just put a client.
+[22:31] You know?
+[22:34] What do you mean?
+[22:35] Like, we've got two clients, New Me Health and Mythic RX.
+[22:45] Like, I can't put what they're, I can't really put what, like, I can't see our clients
+[23:01] and then what domains, apps, and stuff that are tied to them.
+[23:08] Oh, yeah.
+[23:11] Yeah, so we probably need to change this up a little bit.
+[23:15] So this view that we're looking at is technically nestled underneath organization.
+[23:22] So this would technically be like the, this would technically be like the super admin for one specific organization.
+[23:36] Oh, okay.
+[23:37] So this is the login as screen that we used to have.
+[23:42] Yeah, this is the like, they shouldn't touch it.
+[23:45] but like this is us
+[23:47] looking at that organization
+[23:49] yeah
+[23:50] is that
+[23:51] the one that would be above it
+[23:54] that would be like multi-organization thing
+[23:56] that's just direct database access at the moment
+[23:58] okay
+[23:59] should I have cloud build that out
+[24:02] because that's going to help me
+[24:04] because then I'd be able to see
+[24:05] I think that organization to organization
+[24:08] that organization dashboard
+[24:10] is where I should say
+[24:12] okay new me and mythic are connected
+[24:14] Correct. Yes. Yeah. So that would be, that would be outside of this. So this is underneath, this would be like underneath Yuma or underneath whatever organization, right, that's going to own this data. Right. And you would set up the other ones as separate organization. So yeah, it probably does need like an org management, a tenant, tenant management. Tenant. Tenant would be great. Yeah.
+[24:40] Yeah. Tenant admin. Yeah, you can set up another app.
+[24:44] similar to this one,
+[24:46] Claude will be great at that.
+[24:47] Okay, so I will do that.
+[24:49] I will set it up.
+[24:50] So this is a dashboard for one org.
+[24:53] We'll set up the multi-org dashboard,
+[24:56] essentially the Workshift admin portal.
+[24:59] And then when we hit Login as,
+[25:04] or like dev for that tenant,
+[25:07] this is the dev for that tenant.
+[25:09] That makes that actually,
+[25:11] that'll help a lot too.
+[25:13] This one technically should be.
+[25:14] be dev.
+[25:14] It would be dev.workship.io.
+[25:16] This would be dev.
+[25:17] Numa.
+[25:17] You know, like this is...
+[25:19] Yes.
+[25:20] Yes.
+[25:21] Which, so that'll be created every time we create a new client.
+[25:25] Yes.
+[25:26] A new tenant.
+[25:28] A new tenant.
+[25:29] Yeah.
+[25:31] The...
+[25:33] The...
+[25:34] That actually may just fits multiple of those.
+[25:40] So this is where we'd be able to see their domain at the org
+[25:44] level, we would set, okay, I want a legit script default for privacy policy, turns and conditions,
+[25:53] whatever, and then we put in the tenant variables, which is what their domain is, what their
+[25:58] organization name is, what type of organization they are, and it auto-filled it, and we go
+[26:03] forward. That's perfect. Yeah.
+[26:06] The, no, that's great. That actually makes even more sense. And then the, um,
+[26:14] So that answers the static page, the many to many, the how we,
+[26:21] and it's essentially building towards the, building towards the marketplace, right?
+[26:35] The, I think, I think I, I can do all of that.
+[26:47] I have to run.
+[26:49] Okay, I, just when you get a second, look at those PRs that,
+[26:54] I've pushed, I don't think anything's a problem, and I've made it so everything's revertible,
+[26:59] so I don't think it's in the ship at the end.
+[27:02] Sorry, you cut out for just a second, and I have a chance to what?
+[27:06] Review those PRs, but I think it's good.
+[27:09] Everything is revertible, and I made sure that co-pilot said okay.
+[27:14] Cool, yeah, I mean, that's all I would really do is just make sure co-pilot says it's okay.
+[27:18] Okay.
+[27:19] I also just pushed another PR that I was noticing that,
+[27:24] we're running a little sluggish so it speeds it up a bit okay okay all right i got a run okay
+[27:33] thanks man but yep talk to later see you bye bye

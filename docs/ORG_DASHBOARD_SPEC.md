@@ -1,24 +1,27 @@
 # Dashboard architecture: Workshift Admin vs Org Dashboard
 
-_Spec from Dallin's direction 2026-08-02, refining the 8/1 Kramer call. Supersedes the
-"Publisher tab" wording in workshift-configuration-map.md §2a (see correction below)._
+_Spec from Dallin's direction 2026-08-02, refining the 8/1 Kramer call. RESOLVED against
+the full local transcripts (kramer-call-part{1,2}-full-transcript.txt) — the viaim shares
+had dropped the second half of both calls._
 
-## Correction: what "the publisher" actually is
+## "The publisher" — solved from the clean transcript
 
-The call transcript garbled this. Grounded in the codebase, the only "publisher" in the
-platform is the **resource-event publisher**: `api/kit/events/events.go`
-(`PublishResourceCreated/Updated/Deleted`) → SNS → SQS → `eventworker`. Combined with
-Dallin's clarification, the sharing architecture is:
+viaim garbled **"under the resource types, there's a tab that's called Components"** into
+"the tab that's called the publisher." Kramer's actual design (part 2, 17:25–19:55):
 
-- **Components are where the SQS call happens and where what-is-shared is configured** — a
-  share component subscribes to resource events, applies the per-attribute share mask, and
-  posts the filtered payload onto the partner connection's queue.
-- **A workflow shows the events and how the component is triggered** — the workflow editor
-  is the viewer for "what fired, what was shared, when" (the node registry already supports
-  event-driven props: `PROPERTY_TYPE_EVENT` populates from workflow event context).
-
-So: no "Publisher tab." Sharing rides the existing event-publishing pipeline, configured on
-components, visualized in workflows.
+- The **Components tab on a resource type** is where capability components live (his
+  example: a messaging component that binds "which attribute is the phone number").
+- **Add a DATA-SHARING COMPONENT there**: configured with destination organization + app,
+  and a **field-by-field shareable yes/no mark** over the resource's attributes.
+- **Components expose nodes to the workflow editor when enabled** (messaging → a
+  send-message node appears; sharing → share/sync nodes appear). Sharing executes in
+  workflows, triggered by RESOURCE changes (e.g. a "share with Mythic" checkbox), never by
+  app-level actions.
+- Disabling app-to-app sharing disables the component in place — no deletion.
+- ⚠️ Kramer: "components configuration will be available **after we add the corresponding
+  backend RPCs**" — the tab is UI-only today. The component RPCs are a named build item.
+- Transport: **SNS + SQS for the initial rollout; Kafka/MSK later** (explicitly decided —
+  Kafka rejected for now as too slow to set up properly).
 
 ## The two-level model
 

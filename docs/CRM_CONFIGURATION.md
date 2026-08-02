@@ -46,6 +46,16 @@ Marketing Channel ──MANY→ Marketing Campaign ──MANY→ Lead ──MANY
 Relationships (10, both directions): Campaign↔Lead, Channel↔Campaign,
 Campaign↔AdSpend, Patient↔Lead, Lead↔Encounter.
 
+## Visibility correction from the full Kramer transcripts (2026-08-02)
+
+The pharmacy's view of a converted lead must be **narrower than the provider's**: the
+pharmacy may see that a lead came from a given **physician group**, but **NOT the campaign**
+or other marketing detail ("that's not what they're paying for"). Marketing, after handoff,
+sees only its originally entered info + converted-or-not. So when cross-org sharing lands:
+- Provider (same org): the existing minimal view `ff65219f` (name/state/status/answers).
+- Pharmacy (partner org): an even narrower share mask — source physician group + conversion
+  state only; no utm, no campaign, no funnel answers.
+
 ## Enforcement — verified live
 
 Reading Wilma Flintstone's lead through the **Provider minimal view** returns

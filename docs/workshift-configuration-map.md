@@ -184,36 +184,64 @@ onboarding UI.
 > AGAINST the earlier one-org recommendation.** Note the conversation moved: part 1 floated
 > shared databases; by the end of part 2 the model below is the landing point.
 
-**The model: SEPARATE ORGANIZATIONS per entity (Nume org, Mythic org), with cross-org
-sharing as a first-class platform feature** — not one org with an Entity graph:
+**The model: SEPARATE ORGANIZATIONS per entity (Nume org, Mythic org), with EVENT-DRIVEN
+cross-org data sharing** — verified against the full local transcripts
+(kramer-call-part{1,2}-full-transcript.txt; the viaim shares had dropped the second half
+of both calls, which is where most of this was decided):
 
-1. **A top-level connection/relationship between orgs**, contract-gated ("needs a contract…
-   NDA-gated" — some resources marked unshareable without it). Cancelling the relationship
-   stops all sharing ("cancel → nothing shared") without deleting either side's records —
-   the §2a kill-switch survives, one level up.
-2. **Sharing rules are configured per resource type / per attribute.** (Correction: the
-   transcript's "tab called the publisher" was garbled audio — no such tab exists or was
-   meant. Grounded reading: sharing rides the **resource-event publisher** pipeline
-   (`api/kit/events` → SNS → SQS → eventworker); **components are where the SQS call
-   happens and where what-is-shared is configured**, and a workflow visualizes the events
-   and component triggers. See ORG_DASHBOARD_SPEC.md.) UI pattern agreed: select a
-   component → right-click → configure visibility across fields.
-3. **Sharing executes through WORKFLOWS** ("all the sharing can be in workflows"), which
-   need a viewer for flow interactions. **Transport is SQS** (Kramer: "just use SQS") —
-   consistent with the event/workflow infra that shipped in PR #46, including
-   checkpoint/replay ("replay events after that point").
-4. **Attribution must survive the share:** the pharmacy org must see which campaign/position
-   a lead came from, or "campaign attribution stops working." The CRM's Lead→utm→Campaign
-   chain is therefore part of the shared payload, not marketing-private.
-5. **Identity: login is no longer one session** — separate identity per org (SSO to bridge;
-   on the to-do list). On relationship termination, the counterparty gets **time to download
-   their prescription history** — data portability is an obligation, not a courtesy.
-6. **Near-term sequencing (Dallin, end of call): set up ONE org now, then stand up the
-   multi-org test** (log in against each org separately) once the sharing layer exists.
+1. **Event-driven copies, not shared databases** (Kramer: "the correct way"). Each side
+   holds its own copy of shared data, received through events; the receiving org stores
+   them in its own auto-created resource tables. Adding a newly shared field = replay/
+   repopulate events. Event stream is the source of truth; DB is derived.
+2. **The app-level connection is the gate.** A relationship between the two orgs' apps
+   carries the compliance artifacts — contract, **BAA, NDA** — and an outline of what MAY
+   be shared. Establishing it "allows data sharing, but no data WILL be shared" until the
+   resource level is configured. Turning the relationship off **turns off all active
+   sharing at once**; on sever, the auto-created shared tables are dropped; re-establishing
+   backfills from scratch (event-based, scales regardless of patient count).
+3. **"The publisher" mystery SOLVED — it's the COMPONENTS tab.** Kramer: "under the
+   resource types, there's a tab that's called **Components**" (viaim garbled this to
+   "publisher") — the same place a messaging component would live. **A DATA-SHARING
+   COMPONENT is added per resource type**, configured with: destination org + app, and a
+   field-by-field shareable yes/no mark. ⚠️ The tab exists in the UI but **the component
+   backend RPCs do not exist yet** — a named build item. Components expose their nodes to
+   the workflow editor when enabled (messaging → send-message node; sharing → share nodes).
+   Disabling app-to-app sharing just disables the component — nothing is deleted.
+4. **Sharing triggers on RESOURCE changes, never app actions** ("I don't want the app to
+   be where the actions reside") — e.g. a "share with Mythic" checkbox attribute changes →
+   workflow fires → data flows; unchecked → pull-back. One config path by design. Sharing
+   is one-way read-only except statuses, which push back as events. Kramer also suggested
+   a resource VIEW may define the shared attribute set so updates propagate automatically.
+5. **Transport: SNS + SQS now, NOT Kafka** — explicitly decided: Kafka/MSK is the future
+   upgrade (durable, replayable event stream), rejected for the initial rollout as too
+   slow to set up properly; convert later. Don't pre-wire Kafka prep into the MCP ("not
+   worth it right now"). An event log is still wanted; events themselves largely provide it.
+6. **Marketing visibility — CORRECTED (this reverses an earlier note):** after the CRM
+   hands a converted lead to the physician module, marketing sees only the original
+   marketing-entered info + converted-or-not. **The pharmacy sees that a lead came from a
+   given PHYSICIAN GROUP but NOT the campaign** or other marketing detail — "that's not
+   what they're paying for." The CRM's pharmacy-facing lead view must be narrower than the
+   provider view.
+7. **Termination & HIPAA:** each entity retains its PHI rights under HIPAA
+   treatment/payment/operations — data already received stays in their database; only NEW
+   data stops flowing. A cut-off physician's login is terminated for new work, but they
+   get **time to download the records of their patients** ("they wrote prescriptions on
+   their license") — the failure mode of the big telehealth groups to avoid.
+8. **Separate apps, separate logins:** Mythic and NuMe never log into the same app
+   (portal.<brand> each), sharing records only through the app connection.
+9. **The multi-org dashboard is APPROVED to build** ("Should I have Claude build that
+   out?" — "Yes… org management, tenant management… set up another app similar to this
+   one, Claude will be great at that"). Today's dev.workshift.io is the super-admin for
+   ONE org; the level above is "just direct database access." Every new tenant gets its
+   own org dashboard (dev.<tenant>); tenant-level defaults: LegitScript-compliant privacy
+   policy/T&C templates auto-filled from tenant variables (domain, org name, org type).
+10. **Second customer for sharing:** a prospective dental client wants clinical
+    health-exchange sharing — attestation-based, close-able connection, real-time view of
+    what has/hasn't been shared. Build it generic.
 
-What stays true from the original spec: NPI-match + referral visibility, credential
-approval gating, and the row-level-visibility question — which now becomes "what the
-Publisher/workflow sharing layer enforces" rather than an intra-org view problem.
+What stays true from the original spec: NPI-match + referral visibility and credential
+approval gating; row-level visibility is now enforced by the sharing component + workflow
+layer rather than intra-org views.
 
 ---
 
